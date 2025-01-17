@@ -127,7 +127,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Admin.cpp" />
+    <ClCompile Include="Dictionary.cpp" />
+    <ClCompile Include="DoublyLinkedList.cpp" />
     <ClCompile Include="DSA-Assignment.cpp" />
+    <ClCompile Include="Movie.cpp" />
+    <ClCompile Include="User.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="Admin.h" />
+    <ClInclude Include="Dictionary.h" />
+    <ClInclude Include="DoublyLinkedList.h" />
+    <ClInclude Include="Movie.h" />
+    <ClInclude Include="User.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
