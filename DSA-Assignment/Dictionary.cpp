@@ -36,26 +36,26 @@ int Dictionary::hash(const KeyType key) const {
 // Precondition: Key must be unique.
 // Postcondition: Adds the key-value pair, or updates the value if the key already exists.
 bool Dictionary::add(const KeyType newKey, ItemType newItem) {
-	int index = hash(newKey) {
-		Node* current = items[index];
+	int index = hash(newKey);
 
-		while (current != nullptr) {
-			if (current->key == newKey) {
-				current->item = newItem;
-				return true;
-			}
-			current = current->next;
+	Node* current = items[index];
+
+	while (current != nullptr) {
+		if (current->key == newKey) {
+			current->item = newItem;
+			return true;
 		}
-
-		Node* newNode = new Node;
-		newNode->key = newKey;
-		newNode->item = newItem;
-		newNode->next = items[index];
-
-		items[index] = newNode;
-		size++;
-		return true;
+		current = current->next;
 	}
+
+	Node* newNode = new Node;
+	newNode->key = newKey;
+	newNode->item = newItem;
+	newNode->next = items[index];
+
+	items[index] = newNode;
+	size++;
+	return true;
 }
 
 // Purpose: Remove a key-value pair from the dictionary.

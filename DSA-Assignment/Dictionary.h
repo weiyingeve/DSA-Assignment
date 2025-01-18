@@ -40,7 +40,7 @@ public:
 	// Purpose: Remove a key-value pair from the dictionary.
 	// Precondition: The key must exist in the dictionary.
 	// Postcondition: Removes the key-value pair if it exists, returns true if successful.
-	void remove(const KeyType key);
+	bool remove(const KeyType key);
 
 	// Purpose: Retrieve the value associated with a key.
 	// Precondition: The key must exist in the dictionary.
