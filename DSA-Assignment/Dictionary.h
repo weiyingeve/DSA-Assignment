@@ -27,34 +27,43 @@ public:
 	// destructor
 	~Dictionary();
 
-	//
-	//pre: 
-	//post:
-	//
-	int hash(KeyType key);
+	// Purpose: Generate a hash index for a given key.
+	// Precondition: None.
+	// Postcondition: Returns an index between 0 and tableSize - 1.
+	int hash(const KeyType key) const;
 
-	// add a new item with the specified key to the Dictionary
-	//pre: size < MAX_SIZE
-	//post:
-	//
-	bool add(KeyType newKey, ItemType newItem);
+	// Purpose: Add a key-value pair to the dictionary.
+	// Precondition: Key must be unique.
+	// Postcondition: Adds the key-value pair, or updates the value if the key already exists.
+	bool add(const KeyType newKey, ItemType newItem);
 
-	// remove an item with the specified key in the Dictionary
-	void remove(KeyType key);
+	// Purpose: Remove a key-value pair from the dictionary.
+	// Precondition: The key must exist in the dictionary.
+	// Postcondition: Removes the key-value pair if it exists, returns true if successful.
+	void remove(const KeyType key);
 
-	// get an item with the specified key in the Dictionary (retrieve)
-	ItemType get(KeyType key);
+	// Purpose: Retrieve the value associated with a key.
+	// Precondition: The key must exist in the dictionary.
+	// Postcondition: Returns the value associated with the key.
+	ItemType get(const KeyType key) const;
 
-	// check if the Dictionary is empty
+	// Purpose: Check if a key exists in the dictionary.
+	// Precondition: None.
+	// Postcondition: Returns true if the key exists; otherwise, returns false.
+	bool contains(const KeyType& key);
+
+	// Purpose: Check if the dictionary is empty.
+	// Precondition: None.
+	// Postcondition: Returns true if the dictionary is empty; otherwise, returns false.
 	bool isEmpty();
 
-	// check the size of the Dictionary
+	// Purpose: Check the size of the dictionary.
+	// Precondition: None.
+	// Postcondition: Returns the number of items currently in the dictionary.
 	int getLength();
 
-	// display the items in the Dictionary
-	void print();  //print all elements in array
-
-	//get the corresponding integer for the character
-	int charvalue(char c);
-
+	// Purpose: Display all key-value pairs in the dictionary.
+	// Precondition: None.
+	// Postcondition: Prints all key-value pairs to the console.
+	void print();
 };

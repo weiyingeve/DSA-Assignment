@@ -58,10 +58,10 @@ bool DoublyLinkedList::add(const ItemType item) {
 // Purpose: Remove an item.
 // Precondition: None.
 // Postcondition: The item is removed. The size of the list decreases by 1.
-void DoublyLinkedList::remove(const ItemType item) {
+bool DoublyLinkedList::remove(const ItemType item) {
 	if (isEmpty()) {
 		cout << "The list is empty, there is nothing to remove." << endl;
-		return;
+		return false;
 	}
 	Node* current = firstNode;
 
@@ -71,7 +71,7 @@ void DoublyLinkedList::remove(const ItemType item) {
 
 	if (current == nullptr) {
 		cout << "Item not found in list." << endl;
-		return;
+		return false;
 	}
 
 	if (current == firstNode) {
@@ -95,6 +95,7 @@ void DoublyLinkedList::remove(const ItemType item) {
 	delete current;
 	size--;
 	cout << "Item removed successfully." << endl;
+	return true;
 }
 
 // Purpose: Check if an item exists in the list.
@@ -135,5 +136,4 @@ void DoublyLinkedList::print() {
 		cout << current->item << endl;
 		current = current->next;
 	}
-	cout << endl;
 }

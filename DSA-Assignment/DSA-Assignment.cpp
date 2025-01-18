@@ -3,8 +3,12 @@
 
 #include <iostream>
 using namespace std;
+#include "Actor.h"
+#include "Movie.h"
+#include "Dictionary.h"
+#include "DoublyLinkedList.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    
 }
