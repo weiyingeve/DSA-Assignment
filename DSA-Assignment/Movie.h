@@ -2,6 +2,7 @@
 using namespace std;
 #include <string>;
 #include "DoublyLinkedList.h"
+#include "Actor.h"
 
 class Movie
 {
@@ -10,8 +11,9 @@ private:
 	string title;
 	string plot;
 	int yearOfRelease;
-	float rating;
-	DoublyLinkedList actors;
+	float totalRatings;
+	int noOfVoters;
+	DoublyLinkedList<Actor> actors;
 	
 
 public:
@@ -20,6 +22,11 @@ public:
 
 	//deconstructor
 	~Movie();
+	
+	//Purpose: Retrieve the movie's id.
+	//Precondition : None.
+	//Postcondition : Returns the id of the movie.
+	int getMovieId() const;
 
 	//Purpose: Retrieve the movie's title.
 	//Precondition: None.
@@ -36,10 +43,30 @@ public:
 	//Postcondition: Returns the year of release of the movie.
 	int getYearOfRelease() const;
 
+	//Purpose: Retrieve the movie's total ratings.
+	//Precondition : None.
+	//Postcondition : Returns the total ratings of the movie.
+	float getTotalRatings() const;
+
+	//Purpose: Retrieve the number of voters of the movie's rating.
+	//Precondition : None.
+	//Postcondition : Returns the number of voters of the movie's rating.
+	int getNoOfVoters() const;
+
+	//Purpose: Calculate the rating of the movie.
+	//Precondition: None.
+	//Postcondition: Returns the updated rating of the movie.
+	float calculateRating() const;
+
+	//Purpose: Updates rating based on user input.
+	//Precondition : None.
+	//Postcondition : Updates rating for the movie.
+	void updateRating();
+
 	//Purpose: Add an actor to the movie's list of actors.
-	//Precondition: The actor name must be a valid, non-empty string.
-	//Postcondition: The actor name is added to the movie's actor list.
-	void addActor(const string name);
+	//Precondition: None.
+	//Postcondition: The actor is added to the movie's actor list.
+	void addActor(Actor actor);
 
 	//Purpose: Retrieve the list of actors in the movie.
 	//Precondition: None.

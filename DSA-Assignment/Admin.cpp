@@ -27,27 +27,27 @@ int Admin::getAdminId() const {
 //Purpose: Add a new actor to the dictionary
 //Precondition: Actor must not exist already
 //Postcondition: Adds actor to dictionary
-void Admin::addActor(const string& actorName) {
-    if (actors.contains(actorName)) {
+void Admin::addActor(const Actor actor) {
+    if (actors.contains(actor.getActorId())) {
         cout << "Actor already exists!" << endl;
         return;
     }
-    actors.add(actorName, "Actor Details Placeholder");
-    actorList.add(actorName);
-    cout << "Actor " << actorName << " added successfully." << endl;
+    actors.add(actor.getActorId(), actor);
+    actorList.add(actor);
+    cout << "Actor " << actor.getName() << " added successfully." << endl;
 }
 
 //Purpose: Add a new movie to the dictionary
 //Precondition: Movie must not exist already
 //Postcondition: Adds movie to dictionary
-void Admin::addMovie(const string& movieName) {
-    if (movies.contains(movieName)) {
-        cout << "Movie already exists!" << endl;
-        return;
-    }
-    movies.add(movieName, "Movie Details Placeholder");
-    movieList.add(movieName);
-    cout << "Movie " << movieName << " added successfully." << endl;
+void Admin::addMovie(const Movie movie) {
+	if (movies.contains(movieName)) {
+		cout << "Movie already exists!" << endl;
+		return;
+	}
+	movies.add(movieName, "Movie Details Placeholder");
+	movieList.add(movieName);
+	cout << "Movie " << movieName << " added successfully." << endl;
 }
 
 //Purpose: Add/link actor to a movie

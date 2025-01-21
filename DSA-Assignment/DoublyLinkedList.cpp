@@ -3,10 +3,12 @@
 using namespace std;
 
 // Constructor
-DoublyLinkedList::DoublyLinkedList() : firstNode(nullptr), lastNode(nullptr), size(0) {}
+template <typename T>
+DoublyLinkedList<T>::DoublyLinkedList() : firstNode(nullptr), lastNode(nullptr), size(0) {}
 
 // Destructor
-DoublyLinkedList::~DoublyLinkedList() {
+template <typename T>
+DoublyLinkedList<T>::~DoublyLinkedList() {
 	while (!isEmpty()) {
 		remove(firstNode->item);
 	}
@@ -15,7 +17,8 @@ DoublyLinkedList::~DoublyLinkedList() {
 // Purpose: Add an item to the list in alphabetical order
 // Precondition: The item must be a valid ItemType value.
 // Postcondition: The item is added to the list, size of the list increases by 1.
-bool DoublyLinkedList::add(const ItemType item) {
+template <typename T>
+bool DoublyLinkedList<T>::add(const T item) {
 	Node* newNode = new Node;
 	newNode->item = item;
 	newNode->prev = nullptr;
@@ -58,7 +61,8 @@ bool DoublyLinkedList::add(const ItemType item) {
 // Purpose: Remove an item.
 // Precondition: None.
 // Postcondition: The item is removed. The size of the list decreases by 1.
-bool DoublyLinkedList::remove(const ItemType item) {
+template <typename T>
+bool DoublyLinkedList<T>::remove(const T item) {
 	if (isEmpty()) {
 		cout << "The list is empty, there is nothing to remove." << endl;
 		return false;
@@ -101,7 +105,8 @@ bool DoublyLinkedList::remove(const ItemType item) {
 // Purpose: Check if an item exists in the list.
 // Precondition: The list is non-empty (although it works for empty lists as well).
 // Postcondition: Returns true if the item exists in the list; otherwise, returns false.
-bool DoublyLinkedList::search(const ItemType item) {
+template <typename T>
+bool DoublyLinkedList<T>::search(const T item) {
 	Node* current = firstNode;
 
 	while (current != nullptr) {
@@ -116,21 +121,24 @@ bool DoublyLinkedList::search(const ItemType item) {
 // Purpose: Check if the list is empty.
 // Precondition: None.
 // Postcondition: Returns true if the list is empty; otherwise, returns false.
-bool DoublyLinkedList::isEmpty() {
+template <typename T>
+bool DoublyLinkedList<T>::isEmpty() {
 	return size == 0;
 }
 
 // Purpose: Check the size of the list.
 // Precondition: None.
 // Postcondition: Returns the number of items currently in the list.
-int DoublyLinkedList::getLength() {
+template <typename T>
+int DoublyLinkedList<T>::getLength() {
 	return size;
 }
 
 // Purpose: Display all the items in the list.
 // Precondition: None.
 // Postcondition: The items in the list are printed to the console in order.
-void DoublyLinkedList::print() {
+template <typename T>
+void DoublyLinkedList<T>::print() {
 	Node* current = firstNode;
 	while (current != nullptr) {
 		cout << current->item << endl;

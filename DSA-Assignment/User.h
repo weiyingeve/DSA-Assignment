@@ -2,6 +2,8 @@
 #include <string>
 #include "DoublyLinkedList.h"
 #include "Dictionary.h"
+#include "Movie.h"
+#include "Actor.h"
 using namespace std;
 class User
 {
@@ -9,8 +11,8 @@ private:
 	string username;
 	int userId;
 
-	DoublyLinkedList favoriteMovies;
-	DoublyLinkedList favoriteActors;
+	DoublyLinkedList<Movie> favoriteMovies;
+	DoublyLinkedList<Actor> favoriteActors;
 public:
 	//Constructor
 	User(const string username, const int userId);

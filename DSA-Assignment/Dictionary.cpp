@@ -3,14 +3,16 @@ using namespace std;
 #include <iostream>
 
 // constructor
-Dictionary::Dictionary() : size(0) {
+template <typename KeyType, typename ItemType>
+Dictionary<KeyType, ItemType>::Dictionary() : size(0) {
 	for (int i = 0; i < MAX_SIZE; i++) {
 		items[i] = nullptr;
 	}
 }
 
 // destructor
-Dictionary::~Dictionary() {
+template <typename KeyType, typename ItemType>
+Dictionary<KeyType, ItemType>::~Dictionary() {
 	for (int i = 0; i < MAX_SIZE; i++) {
 		Node* current = items[i];
 		while (current != nullptr) {
@@ -24,7 +26,8 @@ Dictionary::~Dictionary() {
 // Purpose: Generate a hash index for a given key.
 // Precondition: None.
 // Postcondition: Returns an index between 0 and tableSize - 1.
-int Dictionary::hash(const KeyType key) const {
+template <typename KeyType, typename ItemType>
+int Dictionary<KeyType, ItemType>::hash(const KeyType key) const {
 	int hashValue = 0;
 	for (char ch : key) {
 		hashValue = (hashValue * 31 + ch) % MAX_SIZE;
@@ -35,7 +38,8 @@ int Dictionary::hash(const KeyType key) const {
 // Purpose: Add a key-value pair to the dictionary.
 // Precondition: Key must be unique.
 // Postcondition: Adds the key-value pair, or updates the value if the key already exists.
-bool Dictionary::add(const KeyType newKey, ItemType newItem) {
+template <typename KeyType, typename ItemType>
+bool Dictionary<KeyType, ItemType>::add(const KeyType newKey, ItemType newItem) {
 	int index = hash(newKey);
 
 	Node* current = items[index];
@@ -61,7 +65,8 @@ bool Dictionary::add(const KeyType newKey, ItemType newItem) {
 // Purpose: Remove a key-value pair from the dictionary.
 // Precondition: The key must exist in the dictionary.
 // Postcondition: Removes the key-value pair if it exists, returns true if successful.
-bool Dictionary::remove(const KeyType key) {
+template <typename KeyType, typename ItemType>
+bool Dictionary<KeyType, ItemType>::remove(const KeyType key) {
 	int index = hash(key);
 	Node* current = items[index];
 	Node* previous = nullptr;
@@ -86,7 +91,8 @@ bool Dictionary::remove(const KeyType key) {
 // Purpose: Retrieve the value associated with a key.
 // Precondition: The key must exist in the dictionary.
 // Postcondition: Returns the value associated with the key.
-ItemType Dictionary::get(const KeyType key) const {
+template <typename KeyType, typename ItemType>
+ItemType Dictionary<KeyType, ItemType>::get(const KeyType key) const {
 	int index = hash(key);
 	Node* current = items[index];
 
@@ -103,7 +109,8 @@ ItemType Dictionary::get(const KeyType key) const {
 // Purpose: Check if a key exists in the dictionary.
 // Precondition: None.
 // Postcondition: Returns true if the key exists; otherwise, returns false.
-bool Dictionary::contains(const KeyType& key) {
+template <typename KeyType, typename ItemType>
+bool Dictionary<KeyType, ItemType>::contains(const KeyType& key) {
 	int index = hash(key);
 	Node* current = items[index];
 
@@ -119,21 +126,24 @@ bool Dictionary::contains(const KeyType& key) {
 // Purpose: Check if the dictionary is empty.
 // Precondition: None.
 // Postcondition: Returns true if the dictionary is empty; otherwise, returns false.
-bool Dictionary::isEmpty() {
+template <typename KeyType, typename ItemType>
+bool Dictionary<KeyType, ItemType>::isEmpty() {
 	return size == 0;
 }
 
 // Purpose: Check the size of the dictionary.
 // Precondition: None.
 // Postcondition: Returns the number of items currently in the dictionary.
-int Dictionary::getLength() {
+template <typename KeyType, typename ItemType>
+int Dictionary<KeyType, ItemType>::getLength() {
 	return size;
 }
 
 // Purpose: Display all key-value pairs in the dictionary.
 // Precondition: None.
 // Postcondition: Prints all key-value pairs to the console.
-void Dictionary::print() {
+template <typename KeyType, typename ItemType>
+void Dictionary<KeyType, ItemType>::print() {
 	for (int i = 0; i < MAX_SIZE; i++) {
 		Node* current = items[i];
 		while (current != nullptr) {

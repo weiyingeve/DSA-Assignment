@@ -6,11 +6,16 @@ using namespace std;
 
 //Constructor
 Actor::Actor(int actorId, string name, int yearOfBirth) 
-	: actorId(actorId), name(name), yearOfBirth(yearOfBirth) {}
+	: actorId(actorId), name(name), yearOfBirth(yearOfBirth) {
+	noOfVoters = 0;
+	totalRatings = 0;
+}
 
 //Deconstructor
 Actor::~Actor() {
 	movies.~DoublyLinkedList();
+	noOfVoters = 0;
+	totalRatings = 0;
 }
 
 //Purpose: Retrieve the actor's name.
@@ -27,6 +32,27 @@ int Actor::getYearOfBirth() const {
 	return yearOfBirth;
 }
 
+//Purpose: Retrieve the actor's id.
+//Precondition : None.
+//Postcondition : Returns the id of the actor.
+int Actor::getActorId() const {
+	return actorId;
+}
+
+//Purpose: Retrieve the actor's total ratings.
+//Precondition : None.
+//Postcondition : Returns the total ratings of the actor.
+float Actor::getTotalRatings() const {
+	return totalRatings;
+}
+
+//Purpose: Retrieve the number of voters of the actor's rating.
+//Precondition : None.
+//Postcondition : Returns the number of voters of the actor's rating.
+int Actor::getNoOfVoters() const {
+	return noOfVoters;
+}
+
 //Purpose: Calculate the age of the actor.
 //Precondition: YearOfBirth is valid
 //Postcondition: Returns age of the actor.
@@ -40,22 +66,34 @@ int Actor::calculateAge() const {
 	return currentYear - yearOfBirth;
 }
 
+//Purpose: Calculate and updates the rating of the actor.
+//Precondition: None
+//Postcondition: Returns the updated rating of the actor.
+float Actor::calculateRating() const {
+	float newRating = totalRatings / noOfVoters;
+	return newRating;
+}
+
+//Purpose: Updates rating based on user input.
+//Precondition : None.
+//Postcondition : Updates rating for the actor.
+void Actor::updateRating() {
+	cout << "Add rating: ";
+	float newRating;
+	cin >> newRating;
+	noOfVoters += 1;
+	totalRatings += newRating;
+
+	float rating = calculateRating();
+
+	cout << "Rating for " << name << " has been updated to " << rating << "/5." << endl;
+}
+
 //Purpose: Add a movie to the actor's list of movies.
-//Precondition : The movie title must be a valid, non - empty string.
-//Postcondition : The movie title is added to the actor's movie list.
-void Actor::addMovie(const string title) {
-	if (!title.empty()) {
-		if (!movies.search(title)) {
-			movies.add(title);
-			cout << "Movie \"" << title << "\" added to list. " << endl;
-		}
-		else {
-			cout << "Movie \"" << title << "\" is already in the list. " << endl;
-		}
-	}
-	else {
-		cout << "Error: Movie title cannot be empty" << endl;
-	}
+//Precondition : None.
+//Postcondition : The movie is added to the actor's movie list.
+void Actor::addMovie(const Movie movie) {
+	movies.add(movie);
 }
 
 //Purpose: Print list of movies the actor has starred in.

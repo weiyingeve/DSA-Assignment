@@ -3,22 +3,21 @@
 #include<iostream>
 using namespace std;
 
-const int MAX_SIZE = 101;
-typedef string ItemType;
-typedef string KeyType;
-
-struct Node
-{
-	KeyType  key;   // search key
-	ItemType item;	// data item
-	Node* next;	// pointer pointing to next item
-};
-
-class Dictionary
-{
+template <typename KeyType, typename ItemType>
+class Dictionary {
 private:
-	Node* items[MAX_SIZE];
-	int  size;			// number of items in the Dictionary
+	struct Node {
+		KeyType key;      // search key
+		ItemType value;  // data item
+		Node* next;       // pointer to the next item
+	};
+
+	static const int MAX_SIZE = 101;
+	Node* items[MAX_SIZE]; // array of pointers to linked lists
+	int size;              // number of items in the Dictionary
+
+	// Helper function to generate a hash index for a given key
+	int hash(const KeyType& key) const;
 
 public:
 	// constructor
