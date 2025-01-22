@@ -51,6 +51,6 @@ public:
 	//Purpose: Update movie/actor details
 	//Precondition: Movie and actor exists 
 	//Postcondition:Movie/Actor details are updated
-	void updateDetails(const string& type, const int& key, const string& newValue);
+	void updateDetails(const string& type, const string& key, const string& newValue);
 };
 

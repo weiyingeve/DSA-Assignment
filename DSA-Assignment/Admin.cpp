@@ -41,32 +41,34 @@ void Admin::addActor(const Actor actor) {
 //Precondition: Movie must not exist already
 //Postcondition: Adds movie to dictionary
 void Admin::addMovie(const Movie movie) {
-	if (movies.contains(movieName)) {
-		cout << "Movie already exists!" << endl;
-		return;
-	}
-	movies.add(movieName, "Movie Details Placeholder");
-	movieList.add(movieName);
-	cout << "Movie " << movieName << " added successfully." << endl;
+    if (movies.contains(movie.getMovieId())) {
+        cout << "Movie already exists!" << endl;
+        return;
+    }
+    movies.add(movie.getMovieId(), movie);
+    movieList.add(movie);
+    cout << "Movie " << movie.getTitle() << " added successfully." << endl;
 }
 
 //Purpose: Add/link actor to a movie
 //Precondition: Movie exists, Actor exists
 //Postcondition: Actor is added to an existing movie
-void Admin::addActorToMovie(const string& actorName, const string& movieName) {
-    if (!actors.contains(actorName)) {
+void Admin::addActorToMovie(const int& actorId, const int& movieId) {
+    if (!actors.contains(actorId)) {
         cout << "Actor does not exist!" << endl;
         return;
     }
-    if (!movies.contains(movieName)) {
+    if (!movies.contains(movieId)) {
         cout << "Movie does not exist!" << endl;
         return;
     }
-    string currentActors = movies.get(movieName);
-    currentActors += ", " + actorName;
-    movies.add(movieName, currentActors);
-    cout << "Actor " << actorName << " added to movie " << movieName << " successfully." << endl;
+    Movie movie = movies.get(movieId);
+    Actor actor = actors.get(actorId);
+    movie.addActor(actor); 
+    movies.add(movieId, movie);
+    cout << "Actor " << actor.getName() << " added to movie " << movie.getTitle() << " successfully." << endl;
 }
+
 
 //Purpose: Update movie/actor details
 //Precondition: Movie and actor exists 
