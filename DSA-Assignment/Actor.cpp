@@ -4,6 +4,9 @@ using namespace std;
 #include <iostream>
 #include <ctime>
 
+//default constructor
+Actor::Actor() {}
+
 //Constructor
 Actor::Actor(int actorId, string name, int yearOfBirth) 
 	: actorId(actorId), name(name), yearOfBirth(yearOfBirth) {
@@ -107,4 +110,14 @@ void Actor::getMovies() {
 	else {
 		movies.print();
 	}
+}
+
+// Purpose: Display details of the actor.
+// Precondition: None.
+// Postcondition: The actor is displayed.
+void Actor::print() {
+	cout << "ID: " << actorId << endl;
+	cout << "Name: " << name << endl;
+	cout << "Year of Birth: " << yearOfBirth << endl;
+	cout << "Rating: " << calculateRating() << "/5" << endl;
 }

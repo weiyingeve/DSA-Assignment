@@ -17,9 +17,9 @@ void displayUserMenu();
 void loadDataFromCSV();
 
 int main() {
-    Dictionary actors;
-    Dictionary movies;
-    Dictionary cast;
+    Dictionary<int, Actor> actors;
+    Dictionary<int, Movie> movies;
+    Dictionary<string, void> cast;
 
     loadDataFromCSV(actors, movies, cast);
 
@@ -59,7 +59,7 @@ void displayUserMenu() {
 }
 
 // Function to load data from CSV files into the dictionary
-void loadDataFromCSV(Dictionary& actors, Dictionary& movies, Dictionary& cast) {
+void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies, Dictionary<string, void>& cast) {
     ifstream actorsFile("actors.csv");
     if (actorsFile.is_open()) {
         string line;
@@ -71,8 +71,8 @@ void loadDataFromCSV(Dictionary& actors, Dictionary& movies, Dictionary& cast) {
             getline(ss, name, ',');
             getline(ss, birth, ',');
 
-            Actor* actor = new Actor(stoi(id), name, stoi(birth));
-            actors.add(id, actor);
+            Actor actor = Actor(stoi(id), name, stoi(birth));
+            actors.add(stoi(id), actor);
         }
         actorsFile.close();
     }
@@ -91,8 +91,8 @@ void loadDataFromCSV(Dictionary& actors, Dictionary& movies, Dictionary& cast) {
             getline(ss, title, ',');
             getline(ss, year, ',');
 
-            Movie* movie = new Movie(stoi(id), title, "", stoi(year));
-            movies.add(id, movie);
+            Movie movie = Movie(stoi(id), title, "", stoi(year));
+            movies.add(stoi(id), movie);
         }
         moviesFile.close();
     }

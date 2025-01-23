@@ -28,11 +28,7 @@ Dictionary<KeyType, ItemType>::~Dictionary() {
 // Postcondition: Returns an index between 0 and tableSize - 1.
 template <typename KeyType, typename ItemType>
 int Dictionary<KeyType, ItemType>::hash(const KeyType key) const {
-	int hashValue = 0;
-	for (char ch : key) {
-		hashValue = (hashValue * 31 + ch) % MAX_SIZE;
-	}
-	return hashValue;
+	return key % MAX_SIZE;
 }
 
 // Purpose: Add a key-value pair to the dictionary.

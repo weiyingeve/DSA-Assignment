@@ -69,11 +69,10 @@ void Admin::addActorToMovie(const int& actorId, const int& movieId) {
     cout << "Actor " << actor.getName() << " added to movie " << movie.getTitle() << " successfully." << endl;
 }
 
-
-//Purpose: Update movie/actor details
-//Precondition: Movie and actor exists 
-//Postcondition:Movie/Actor details are updated
-void Admin::updateDetails(const string& type, const string& key, const string& newValue) {
+//Purpose: Update movie details
+//Precondition: Movie exists 
+//Postcondition:Movie details are updated
+void Admin::updateDetails(const string& type, const int& key,const Movie& newValue) {
     if (type == "movie") {
         if (movies.contains(key)) {
             movies.add(key, newValue);
@@ -83,13 +82,22 @@ void Admin::updateDetails(const string& type, const string& key, const string& n
             cout << "Movie does not exist." << endl;
         }
     }
-    else if (type == "actor") {
+    else {
+        cout << "Invalid type. Use 'movie' or 'actor'." << endl;
+    }
+}
+
+//Purpose: Update actor details
+//Precondition: actor exists 
+//Postcondition: actor details are updated
+void Admin::updateDetails(const string& type, const int& key, const Actor& newValue) {
+    if (type == "actor") {
         if (actors.contains(key)) {
             actors.add(key, newValue);
-            cout << "Actor details updated successfully." << endl;
+            cout << "Movie details updated successfully." << endl;
         }
         else {
-            cout << "Actor does not exist." << endl;
+            cout << "Movie does not exist." << endl;
         }
     }
     else {

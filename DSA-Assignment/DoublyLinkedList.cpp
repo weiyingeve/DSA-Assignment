@@ -141,7 +141,7 @@ template <typename T>
 void DoublyLinkedList<T>::print() {
 	Node* current = firstNode;
 	while (current != nullptr) {
-		cout << current->item << endl;
+		current->item.print();
 		current = current->next;
 	}
 }

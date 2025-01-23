@@ -93,3 +93,14 @@ void Movie::addActor(Actor actor) {
 void Movie::getActors() {
 	actors.print();
 }
+
+// Purpose: Display details of the movie.
+// Precondition: None.
+// Postcondition: The movie is displayed.
+void Movie::print() {
+	cout << "ID: " << movieId << endl;
+	cout << "Title: " << title << endl;
+	cout << "Plot: " << plot << endl;
+	cout << "Year of Release: " << yearOfRelease << endl;
+	cout << "Rating: " << calculateRating() << "/5" << endl;
+}

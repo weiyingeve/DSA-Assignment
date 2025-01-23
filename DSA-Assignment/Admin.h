@@ -6,6 +6,7 @@
 #include "Actor.h"
 using namespace std;
 
+typename ItemType;
 class Admin
 {
 private:
@@ -48,9 +49,14 @@ public:
 	//Postcondition: Actor is added to an existing movie
 	void addActorToMovie(const int& actorId, const int& movieId);
 
-	//Purpose: Update movie/actor details
-	//Precondition: Movie and actor exists 
-	//Postcondition:Movie/Actor details are updated
-	void updateDetails(const string& type, const string& key, const string& newValue);
+	//Purpose: Update movie details
+	//Precondition: Movie exists 
+	//Postcondition:Movie details are updated
+	void updateDetails(const string& type, const int& key, const Movie& newValue);
+
+	//Purpose: Update actor details
+	//Precondition: actpr exists 
+	//Postcondition:actor details are updated
+	void updateDetails(const string& type, const int& key, const Actor& newValue);
 };
 

@@ -6,20 +6,20 @@ using namespace std;
 template <typename KeyType, typename ItemType>
 class Dictionary {
 private:
+	static const int MAX_SIZE = 101;
+	Node* items[MAX_SIZE]; // array of pointers to linked lists
+	int size;              // number of items in the Dictionary
+
+	//Purpose: Helper function to generate a hash index for a given key
+	int hash(const KeyType& key) const;
+
+public:
 	struct Node {
 		KeyType key;      // search key
 		ItemType value;  // data item
 		Node* next;       // pointer to the next item
 	};
 
-	static const int MAX_SIZE = 101;
-	Node* items[MAX_SIZE]; // array of pointers to linked lists
-	int size;              // number of items in the Dictionary
-
-	// Helper function to generate a hash index for a given key
-	int hash(const KeyType& key) const;
-
-public:
 	// constructor
 	Dictionary();
 

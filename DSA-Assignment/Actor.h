@@ -17,6 +17,9 @@ private:
 	DoublyLinkedList<Movie> movies;
 
 public:
+	//default constructor
+	Actor();
+
 	//Constructor
 	Actor(int actorId, string name, int yearOfBirth);
 
@@ -73,5 +76,8 @@ public:
 	//Postcondition : Prints movies actor has starred in in alphabetical order.
 	void getMovies();
 
-	
+	// Purpose: Display details of the actor.
+	// Precondition: None.
+	// Postcondition: The actor is displayed.
+	void print();
 };

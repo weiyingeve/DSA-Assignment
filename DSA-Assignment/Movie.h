@@ -72,5 +72,10 @@ public:
 	//Precondition: None.
 	//Postcondition: Returns a pointer to the head of the actor list.
 	void getActors();
+
+	// Purpose: Display details of the movie.
+	// Precondition: None.
+	// Postcondition: The movie is displayed.
+	void print();
 };
 
