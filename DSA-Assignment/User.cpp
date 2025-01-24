@@ -1,8 +1,7 @@
 #include "User.h"
 #include <iostream>
-#include <vector>
 #include <algorithm>
-#include <ctime> 
+#include <ctime>
 
 using namespace std;
 
@@ -106,40 +105,86 @@ void User::displayActorsByMovie(Dictionary<int, Movie>& movieDict, const string&
     cout << "Movie not found in the dictionary." << endl;
 }
 
+/// Purpose: Display a list of all actors that a particular actor knows.
+/// Precondition: The actor must exist in the movies.
+/// Postcondition: Outputs the names of all actors known to the given actor.
+void User::displayActorsKnown(Dictionary<int, Movie>& movieDict, const Actor& actor) {
+    Dictionary<string, bool> knownActors;  // Tracks known actors by their names
+    Dictionary<string, bool> visitedMovies;  // Tracks movies already processed
 
-//Purpose: . Display a list of all actors that a particular actor knows.
-//Precondition: Actor must exist
-//Postcondition: 
-void User::displayActorsKnown(Dictionary<int, Movie>& movieDict, const string& actorName) {
-    vector<string> knownActors;
+    cout << "Actors known by " << actor.getName() << ":" << endl;
 
-    for (char c = 'A'; c <= 'Z'; ++c) { 
-        string key(1, c);
+    // Step 1: Process all movies the given actor starred in
+    for (int movieKey = 0; movieKey < movieDict.getLength(); ++movieKey) {
+        if (!movieDict.contains(movieKey)) continue;
 
-        if (movieDict.contains(key)) {
-            string actors = movieDict.get(key);
-            vector<string> actorList;
+        Movie movie = movieDict.get(movieKey);
 
-            size_t pos = 0;
-            while ((pos = actors.find(',')) != string::npos) {
-                actorList.push_back(actors.substr(0, pos));
-                actors.erase(0, pos + 1);
+        // Retrieve the cast of the movie
+        DoublyLinkedList<Actor> cast = movie.getActorList();
+
+        // Check if the given actor is in the cast
+        bool actorInMovie = false;
+        typename DoublyLinkedList<Actor>::Node* currentNode = cast.firstNode; // Access the first node
+        while (currentNode != nullptr) {
+            if (currentNode->item.getName() == actor.getName()) {
+                actorInMovie = true;
+                break;
             }
-            actorList.push_back(actors); 
+            currentNode = currentNode->next;
+        }
 
-            if (find(actorList.begin(), actorList.end(), actorName) != actorList.end()) {
-                for (const auto& actor : actorList) {
-                    if (actor != actorName && find(knownActors.begin(), knownActors.end(), actor) == knownActors.end()) {
-                        knownActors.push_back(actor);
-                    }
-                }
+        if (!actorInMovie) continue;
+
+        // Mark this movie as visited
+        visitedMovies.add(movie.getTitle(), true);
+
+        // Add all other actors in the movie to the knownActors list
+        currentNode = cast.firstNode;  // Reset to the start of the list
+        while (currentNode != nullptr) {
+            const Actor& coActor = currentNode->item;
+            if (coActor.getName() != actor.getName() && !knownActors.contains(coActor.getName())) {
+                knownActors.add(coActor.getName(), true);
+                cout << "- " << coActor.getName() << endl;
             }
+            currentNode = currentNode->next;
         }
     }
 
-    cout << "Actors known by " << actorName << ":" << endl;
-    sort(knownActors.begin(), knownActors.end());
-    for (const auto& actor : knownActors) {
-        cout << actor << endl;
+    // Step 2: Extend the list by processing movies of known actors
+    for (int movieKey = 0; movieKey < movieDict.getLength(); ++movieKey) {
+        if (!movieDict.contains(movieKey)) continue;
+
+        Movie movie = movieDict.get(movieKey);
+
+        // Skip movies that have already been processed
+        if (visitedMovies.contains(movie.getTitle())) continue;
+
+        // Retrieve the cast of the movie
+        DoublyLinkedList<Actor> cast = movie.getActorList();
+
+        // Check if any known actor is in the cast
+        bool related = false;
+        typename DoublyLinkedList<Actor>::Node* currentNode = cast.firstNode; // Access the first node
+        while (currentNode != nullptr) {
+            if (knownActors.contains(currentNode->item.getName())) {
+                related = true;
+                break;
+            }
+            currentNode = currentNode->next;
+        }
+
+        if (!related) continue;
+
+        // Add all actors from this related movie to the knownActors list
+        currentNode = cast.firstNode;  // Reset to the start of the list
+        while (currentNode != nullptr) {
+            const Actor& coActor = currentNode->item;
+            if (!knownActors.contains(coActor.getName())) {
+                knownActors.add(coActor.getName(), true);
+                cout << "- " << coActor.getName() << endl;
+            }
+            currentNode = currentNode->next;
+        }
     }
 }

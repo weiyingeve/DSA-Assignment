@@ -2,7 +2,8 @@
 using namespace std;
 #include<string>
 #include "DoublyLinkedList.h"
-#include "Movie.h"
+
+class Movie;
 
 typedef string ItemType;
 
@@ -69,7 +70,7 @@ public:
 	//Purpose: Add a movie to the actor's list of movies.
 	//Precondition : None.
 	//Postcondition : The movie is added to the actor's movie list.
-	void addMovie(const Movie movie);
+	void addMovie(const Movie& movie);
 
 	//Purpose: Print list of movies the actor has starred in.
 	//Precondition : None.
@@ -80,4 +81,7 @@ public:
 	// Precondition: None.
 	// Postcondition: The actor is displayed.
 	void print();
+
+	//for comparison reasons
+	bool operator<(const Actor& actor);
 };

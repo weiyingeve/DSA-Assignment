@@ -1,8 +1,9 @@
 #pragma once
-using namespace std;
 #include <string>;
+using namespace std;
 #include "DoublyLinkedList.h"
-#include "Actor.h"
+
+class Actor;
 
 class Movie
 {
@@ -14,15 +15,18 @@ private:
 	float totalRatings;
 	int noOfVoters;
 	DoublyLinkedList<Actor> actors;
-	
+
 
 public:
+	//default constructor
+	Movie();
+
 	//Constructor
 	Movie(int movieId, string title, string plot, int yearOfRelease);
 
 	//deconstructor
 	~Movie();
-	
+
 	//Purpose: Retrieve the movie's id.
 	//Precondition : None.
 	//Postcondition : Returns the id of the movie.
@@ -42,6 +46,11 @@ public:
 	//Precondition: None.
 	//Postcondition: Returns the year of release of the movie.
 	int getYearOfRelease() const;
+
+	//Purpose: Retrieve the movie's cast.
+	//Precondition: None.
+	//Postcondition: Returns the cast of the movie.
+	DoublyLinkedList<Actor> getActorList() const;
 
 	//Purpose: Retrieve the movie's total ratings.
 	//Precondition : None.
@@ -66,7 +75,7 @@ public:
 	//Purpose: Add an actor to the movie's list of actors.
 	//Precondition: None.
 	//Postcondition: The actor is added to the movie's actor list.
-	void addActor(Actor actor);
+	void addActor(const Actor& actor);
 
 	//Purpose: Retrieve the list of actors in the movie.
 	//Precondition: None.
@@ -77,5 +86,8 @@ public:
 	// Precondition: None.
 	// Postcondition: The movie is displayed.
 	void print();
+
+	//for comparison reasons
+	bool operator<(const Movie& movie);
 };
 

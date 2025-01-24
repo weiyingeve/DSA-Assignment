@@ -53,6 +53,6 @@ public:
 	//Purpose: . Display a list of all actors that a particular actor knows.
 	//Precondition: Actor must exist
 	//Postcondition: 
-	void displayActorsKnown(Dictionary<int, Movie>& movieDict, const string& actorName);
+	void displayActorsKnown(Dictionary<int, Movie>& movieDict, const Actor& actor);
 };
 

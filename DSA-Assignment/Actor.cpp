@@ -3,6 +3,7 @@ using namespace std;
 #include <string>
 #include <iostream>
 #include <ctime>
+#include "Movie.h"
 
 //default constructor
 Actor::Actor() {}
@@ -95,14 +96,14 @@ void Actor::updateRating() {
 //Purpose: Add a movie to the actor's list of movies.
 //Precondition : None.
 //Postcondition : The movie is added to the actor's movie list.
-void Actor::addMovie(const Movie movie) {
+void Actor::addMovie(const Movie& movie) {
 	movies.add(movie);
 }
 
 //Purpose: Print list of movies the actor has starred in.
 //Precondition : None.
 //Postcondition : Prints movies actor has starred in in alphabetical order.
-void Actor::getMovies() {
+void Actor::getMovies(){
 	cout << "Movie starring " << name << ":" << endl;
 	if (movies.isEmpty()) {
 		cout << "No movies found. " << endl;
@@ -120,4 +121,9 @@ void Actor::print() {
 	cout << "Name: " << name << endl;
 	cout << "Year of Birth: " << yearOfBirth << endl;
 	cout << "Rating: " << calculateRating() << "/5" << endl;
+}
+
+//for comparison reasons
+bool Actor::operator<(const Actor& actor) {
+	return actor.name < name;
 }

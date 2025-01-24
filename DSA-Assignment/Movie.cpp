@@ -3,6 +3,9 @@ using namespace std;
 #include <iostream>
 # include "Actor.h"
 
+//default constructor
+Movie::Movie() {}
+
 //Constructor
 Movie::Movie(int movieId, string title, string plot, int yearOfRelease)
 	: movieId(movieId), title(title), plot(plot), yearOfRelease(yearOfRelease) {
@@ -41,6 +44,13 @@ string Movie::getPlot() const{
 //Postcondition: Returns the year of release of the movie.
 int Movie::getYearOfRelease() const {
 	return yearOfRelease;
+}
+
+//Purpose: Retrieve the movie's cast.
+//Precondition: None.
+//Postcondition: Returns the cast of the movie.
+DoublyLinkedList<Actor> Movie::getActorList() const {
+	return actors;
 }
 
 //Purpose: Retrieve the actor's total ratings.
@@ -83,13 +93,13 @@ void Movie::updateRating() {
 //Purpose: Add an actor to the movie's list of actors.
 //Precondition: None.
 //Postcondition: The actor is added to the movie's actor list.
-void Movie::addActor(Actor actor) {
+void Movie::addActor(const Actor& actor) {
 	actors.add(actor);
 }
 
 //Purpose: Retrieve the list of actors in the movie.
 //Precondition: None.
-//Postcondition: Returns a pointer to the head of the actor list.
+//Postcondition: Prints the actors.
 void Movie::getActors() {
 	actors.print();
 }
@@ -103,4 +113,9 @@ void Movie::print() {
 	cout << "Plot: " << plot << endl;
 	cout << "Year of Release: " << yearOfRelease << endl;
 	cout << "Rating: " << calculateRating() << "/5" << endl;
+}
+
+//for comparison reasons
+bool Movie::operator<(const Movie& movie) {
+	return movie.title < title;
 }

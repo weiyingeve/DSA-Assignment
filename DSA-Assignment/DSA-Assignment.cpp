@@ -9,21 +9,38 @@
 #include "Movie.h"
 #include "Dictionary.h"
 #include "DoublyLinkedList.h"
+#include "User.h"
+#include "Admin.h"
 using namespace std;
 
 void displayMainMenu();
 void displayAdminMenu();
 void displayUserMenu();
-void loadDataFromCSV();
+static void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies, Dictionary<string, void*>& cast);
 
 int main() {
     Dictionary<int, Actor> actors;
     Dictionary<int, Movie> movies;
-    Dictionary<string, void> cast;
+    Dictionary<string, void*> cast;
 
     loadDataFromCSV(actors, movies, cast);
 
     int choice;
+    displayMainMenu();
+    cin >> choice;
+    while (choice != 0) {
+        if (choice == 1) {
+            displayAdminMenu();
+        }
+        else if (choice == 2) {
+            displayUserMenu();
+        }
+        else {
+            cout << "Please enter a valid choice." << endl;
+            displayMainMenu();
+            cin >> choice;
+        }
+    }
 
 }
 
@@ -59,7 +76,7 @@ void displayUserMenu() {
 }
 
 // Function to load data from CSV files into the dictionary
-void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies, Dictionary<string, void>& cast) {
+static void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies, Dictionary<string, void*>& cast) {
     ifstream actorsFile("actors.csv");
     if (actorsFile.is_open()) {
         string line;
