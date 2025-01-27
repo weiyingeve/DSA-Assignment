@@ -94,3 +94,22 @@ void Admin::updateDetails(const string& type, const int& key, const Actor& newVa
         cout << "Actor does not exist." << endl;
     }
 }
+
+//Purpose: View list of reports made by users.
+//Precondition: none
+//Postcondition: Display all unresolved reports.
+void Admin::viewReports() {
+
+}
+
+//Purpose: Resolves a report made by a user.
+//Precondition: Report exists.
+//Postcondition: Updates details based on the report, updates status of report.
+void Admin::resolveIssue() {
+    viewReports();
+    int reportId;
+    cout << "Enter reportId of report you would like to resolve: ";
+    cin >> reportId;
+    //loop through reports to check if report exists.
+    //update details and update status
+}

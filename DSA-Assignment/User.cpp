@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <ctime>
+#include "Report.h"
 
 using namespace std;
 
@@ -186,7 +187,17 @@ void User::displayActorsKnown(Dictionary<int, Movie>& movieDict, const Actor& ac
 //Precondition: Actor or Movie must exist.
 //Postcondition: Creates new report.
 void User::reportError() {
-    cout << "Enter " << endl;
+    string type, description;
+    int reportId;
+    cout << "Enter type of report: ";
+    cin >> type;
+    cout << "Enter description of report: ";
+    cin >> description;
+    //generate report Id
+
+    Report Report(reportId, type, description);
+    cout << "Report created successfully. Report details: " << endl;
+    Report.print();
 }
 
 //Purpose: Add a new rating for a specific actor.

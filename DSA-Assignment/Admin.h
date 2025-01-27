@@ -55,8 +55,18 @@ public:
 	void updateDetails(const string& type, const int& key, const Movie& newValue);
 
 	//Purpose: Update actor details
-	//Precondition: actpr exists 
+	//Precondition: actor exists 
 	//Postcondition:actor details are updated
 	void updateDetails(const string& type, const int& key, const Actor& newValue);
+
+	//Purpose: View list of reports made by users.
+	//Precondition: none
+	//Postcondition: Display all unresolved reports.
+	void viewReports();
+
+	//Purpose: Resolves a report made by a user.
+	//Precondition: Report exists.
+	//Postcondition: Updates details based on the report, updates status of report.
+	void resolveIssue();
 };
 
