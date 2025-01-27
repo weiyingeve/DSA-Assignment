@@ -55,6 +55,11 @@ public:
 	//Postcondition: Displays connections between actors.
 	void displayActorsKnown(Dictionary<int, Movie>& movieDict, const Actor& actor);
 
+	//Purpose: Report an error for an actor or movie.
+	//Precondition: Actor or Movie must exist.
+	//Postcondition: Creates new report.
+	void reportError();
+
 	//Purpose: Add a new rating for a specific actor.
 	//Precondition: Actor exists in the Dictionary.
 	//Postcondition: Updates rating for the actor.
@@ -64,5 +69,10 @@ public:
 	//Precondition: Movie exists in the Dictionary.
 	//Postcondition: Updates rating for the movie.
 	void addMovieRating(Dictionary<int, Movie>& movieDict, const string& movieName);
+
+    //Purpose: Get recommendations of a movie by ranking.
+    //Precondition: movieDict not empty.
+    //Postcondition: Displays movies by ranking in descending order.
+	void getRecommendationsByRanking(Dictionary<int, Movie>& movieDict);
 };
 

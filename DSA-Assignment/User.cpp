@@ -107,10 +107,10 @@ void User::displayActorsByMovie(Dictionary<int, Movie>& movieDict, const string&
 
 /// Purpose: Display a list of all actors that a particular actor knows.
 /// Precondition: The actor must exist in the movies.
-/// Postcondition: Outputs the names of all actors known to the given actor.
+/// Postcondition: Outputs the names of all actors known to the given actor. 
 void User::displayActorsKnown(Dictionary<int, Movie>& movieDict, const Actor& actor) {
-    Dictionary<string, bool> knownActors;  // Tracks known actors by their names
-    Dictionary<string, bool> visitedMovies;  // Tracks movies already processed
+    Dictionary<string, bool> knownActors; 
+    Dictionary<string, bool> visitedMovies;
 
     cout << "Actors known by " << actor.getName() << ":" << endl;
 
@@ -120,12 +120,10 @@ void User::displayActorsKnown(Dictionary<int, Movie>& movieDict, const Actor& ac
 
         Movie movie = movieDict.get(movieKey);
 
-        // Retrieve the cast of the movie
         DoublyLinkedList<Actor> cast = movie.getActorList();
 
-        // Check if the given actor is in the cast
         bool actorInMovie = false;
-        typename DoublyLinkedList<Actor>::Node* currentNode = cast.firstNode; // Access the first node
+        typename DoublyLinkedList<Actor>::Node* currentNode = cast.firstNode; 
         while (currentNode != nullptr) {
             if (currentNode->item.getName() == actor.getName()) {
                 actorInMovie = true;
@@ -136,11 +134,11 @@ void User::displayActorsKnown(Dictionary<int, Movie>& movieDict, const Actor& ac
 
         if (!actorInMovie) continue;
 
-        // Mark this movie as visited
+        
         visitedMovies.add(movie.getTitle(), true);
 
-        // Add all other actors in the movie to the knownActors list
-        currentNode = cast.firstNode;  // Reset to the start of the list
+        
+        currentNode = cast.firstNode;  
         while (currentNode != nullptr) {
             const Actor& coActor = currentNode->item;
             if (coActor.getName() != actor.getName() && !knownActors.contains(coActor.getName())) {
@@ -151,21 +149,17 @@ void User::displayActorsKnown(Dictionary<int, Movie>& movieDict, const Actor& ac
         }
     }
 
-    // Step 2: Extend the list by processing movies of known actors
     for (int movieKey = 0; movieKey < movieDict.getLength(); ++movieKey) {
         if (!movieDict.contains(movieKey)) continue;
 
         Movie movie = movieDict.get(movieKey);
 
-        // Skip movies that have already been processed
         if (visitedMovies.contains(movie.getTitle())) continue;
 
-        // Retrieve the cast of the movie
         DoublyLinkedList<Actor> cast = movie.getActorList();
 
-        // Check if any known actor is in the cast
         bool related = false;
-        typename DoublyLinkedList<Actor>::Node* currentNode = cast.firstNode; // Access the first node
+        typename DoublyLinkedList<Actor>::Node* currentNode = cast.firstNode;
         while (currentNode != nullptr) {
             if (knownActors.contains(currentNode->item.getName())) {
                 related = true;
@@ -176,8 +170,7 @@ void User::displayActorsKnown(Dictionary<int, Movie>& movieDict, const Actor& ac
 
         if (!related) continue;
 
-        // Add all actors from this related movie to the knownActors list
-        currentNode = cast.firstNode;  // Reset to the start of the list
+        currentNode = cast.firstNode;
         while (currentNode != nullptr) {
             const Actor& coActor = currentNode->item;
             if (!knownActors.contains(coActor.getName())) {
@@ -187,6 +180,13 @@ void User::displayActorsKnown(Dictionary<int, Movie>& movieDict, const Actor& ac
             currentNode = currentNode->next;
         }
     }
+}
+
+//Purpose: Report an error for an actor or movie.
+//Precondition: Actor or Movie must exist.
+//Postcondition: Creates new report.
+void User::reportError() {
+    cout << "Enter " << endl;
 }
 
 //Purpose: Add a new rating for a specific actor.
@@ -215,4 +215,34 @@ void User::addMovieRating(Dictionary<int, Movie>& movieDict, const string& movie
         }
     }
     cout << "Movie not found in the dictionary." << endl;
+}
+
+//Purpose: Get recommendations of a movie by ranking.
+//Precondition: movieDict not empty.
+//Postcondition: Displays movies by ranking in descending order.
+void User::getRecommendationsByRanking(Dictionary<int, Movie>& movieDict) {
+	DoublyLinkedList<Movie> movieList;
+	for (int i = 0; i < Dictionary<int, Movie>::MAX_SIZE; i++) {
+		Dictionary<int, Movie>::Node* current = movieDict.items[i];
+		while (current != nullptr) {
+			movieList.add(current->item);
+			current = current->next;
+		}
+	}
+
+	// Step 2: Sort the DoublyLinkedList by ranking in descending order
+	DoublyLinkedList<Movie>::Node* outer = movieList.firstNode;
+	while (outer != nullptr) {
+		DoublyLinkedList<Movie>::Node* inner = outer->next;
+		while (inner != nullptr) {
+			if (outer->item.calculateRating() < inner->item.calculateRating()) {
+				swap(outer->item, inner->item);
+			}
+			inner = inner->next;
+		}
+		outer = outer->next;
+	}
+
+	cout << "Recommended Movies by Ranking:" << endl;
+	movieList.print();
 }
