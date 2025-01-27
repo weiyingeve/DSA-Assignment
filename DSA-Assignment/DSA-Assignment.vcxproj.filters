@@ -57,4 +57,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\data\actors.csv">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\data\cast.csv">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\data\movies.csv">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

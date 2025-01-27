@@ -188,3 +188,31 @@ void User::displayActorsKnown(Dictionary<int, Movie>& movieDict, const Actor& ac
         }
     }
 }
+
+//Purpose: Add a new rating for a specific actor.
+//Precondition: Actor exists in the Dictionary.
+//Postcondition: Updates rating for the actor.
+void User::addActorRating(Dictionary<int, Actor>& actorDict, const string& actorName) {
+    for (int key = 0; key < actorDict.getLength(); key++) {
+        if (actorDict.get(key).getName() == actorName) {
+            Actor actor = actorDict.get(key);
+            actor.updateRating();
+            return;
+        }
+    }
+    cout << "Actor not found in the dictionary." << endl;
+}
+
+//Purpose: Add a new rating for a specific movie.
+//Precondition: Movie exists in the Dictionary.
+//Postcondition: Updates rating for the movie.
+void User::addMovieRating(Dictionary<int, Movie>& movieDict, const string& movieName) {
+    for (int key = 0; key < movieDict.getLength(); key++) {
+        if (movieDict.get(key).getTitle() == movieName) {
+            Movie movie = movieDict.get(key);
+            movie.updateRating();
+            return;
+        }
+    }
+    cout << "Movie not found in the dictionary." << endl;
+}

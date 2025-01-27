@@ -28,18 +28,8 @@ int main() {
     int choice;
     displayMainMenu();
     cin >> choice;
-    while (choice != 0) {
-        if (choice == 1) {
-            displayAdminMenu();
-        }
-        else if (choice == 2) {
-            displayUserMenu();
-        }
-        else {
-            cout << "Please enter a valid choice." << endl;
-            displayMainMenu();
-            cin >> choice;
-        }
+    while (true) {
+        
     }
 
 }
@@ -77,7 +67,7 @@ void displayUserMenu() {
 
 // Function to load data from CSV files into the dictionary
 static void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies, Dictionary<string, void*>& cast) {
-    ifstream actorsFile("actors.csv");
+    ifstream actorsFile("./actors.csv");
     if (actorsFile.is_open()) {
         string line;
         getline(actorsFile, line);
@@ -97,7 +87,7 @@ static void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movi
         cerr << "Failed to open actors.csv file." << endl;
     }
 
-    ifstream moviesFile("movies.csv");
+    ifstream moviesFile("./movies.csv");
     if (moviesFile.is_open()) {
         string line;
         getline(moviesFile, line);
@@ -117,7 +107,7 @@ static void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movi
         cerr << "Failed to open movies.csv file." << endl;
     }
 
-    ifstream castFile("cast.csv");
+    ifstream castFile("./cast.csv");
     if (castFile.is_open()) {
         string line;
         getline(castFile, line);

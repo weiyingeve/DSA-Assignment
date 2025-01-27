@@ -143,6 +143,11 @@
     <ClInclude Include="Movie.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\data\actors.csv" />
+    <None Include="..\..\data\cast.csv" />
+    <None Include="..\..\data\movies.csv" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
