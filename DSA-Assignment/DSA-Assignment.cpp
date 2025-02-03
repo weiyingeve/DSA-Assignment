@@ -16,14 +16,13 @@ using namespace std;
 void displayMainMenu();
 void displayAdminMenu();
 void displayUserMenu();
-void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies, Dictionary<string, void*>& cast);
+void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies);
 
 int main() {
     Dictionary<int, Actor> actors;
     Dictionary<int, Movie> movies;
-    Dictionary<string, void*> cast;
 
-    loadDataFromCSV(actors, movies, cast);
+    loadDataFromCSV(actors, movies);
     Admin admin("Rena", 1);
     User user("Isabelle", 1);
     while (true) {
@@ -209,7 +208,7 @@ void displayUserMenu() {
 }
 
 // Function to load data from CSV files into the dictionary
-static void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies, Dictionary<string, void*>& cast) {
+static void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies) {
     ifstream actorsFile("actors.csv");
     ifstream moviesFile("movies.csv");
     ifstream castFile("cast.csv");
@@ -260,8 +259,13 @@ static void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movi
             getline(ss, actorId, ',');
             getline(ss, movieId, ',');
 
-            string castKey = actorId + "," + movieId;
-            cast.add(castKey, nullptr);
+            int aId = stoi(actorId);
+            int mId = stoi(movieId);
+
+            if (actors.contains(aId) && movies.contains(mId)) {
+                actors.get(aId).addMovie(movies.get(mId));
+                movies.get(mId).addActor(actors.get(aId));
+            }
         }
         castFile.close();
     }
