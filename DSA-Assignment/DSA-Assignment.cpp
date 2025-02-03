@@ -4,7 +4,6 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <stdexcept>
 #include "Actor.h"
 #include "Movie.h"
 #include "Dictionary.h"
@@ -45,19 +44,11 @@ int main() {
                 displayAdminMenu();
                 cin >> adminChoice;
 
-                if (adminChoice == 0) {
+                switch (adminChoice) {
+                case 0:
                     cout << "Returning to main menu..." << endl;
                     break;
-                }
-
-                switch (adminChoice) {
                 case 1: // add new actor
-                    // display list of actors
-                    cout << "\n ==== Actor list ====\n";
-                    for (int key = 0; key < actors.getLength(); key++) {
-                        actors.get(key).print();
-                    }
-
                     cout << "Enter actor ID: ";
                     cin >> actorID;
                     cin.ignore(); // Clear buffer
@@ -96,11 +87,12 @@ int main() {
                     break;
 
                 case 4: // view report 
-                    admin.viewReports();
+                    admin.viewReports(reports);
                     break;
 
                 case 5: // resolve issue
-                    admin.resolveIssue();
+
+                    admin.resolveIssue(reports, actors, movies);
                     break;
 
                 default:
@@ -281,7 +273,7 @@ static void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movi
 
 		while (getline(moviesFile, line)) {
 			stringstream ss(line);
-			string id, title, year;
+			string id, title, plot, year;
 
 			getline(ss, id, ','); // Read movie ID
 
@@ -293,14 +285,15 @@ static void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movi
 			}
 			else {
 				getline(ss, title, ','); // Read normal title
+            
 			}
-
+            getline(ss, plot, ','); // read plot
 			getline(ss, year, ','); // Read year
 
 			// Validate and add movie
 			if (!id.empty() && !year.empty()) {
 				try {
-					Movie movie(stoi(id), title, "", stoi(year));
+					Movie movie(stoi(id), title, plot, stoi(year));
 					movies.add(stoi(id), movie);
 				}
 				catch (const invalid_argument&) {

@@ -72,7 +72,7 @@ void Admin::addActorToMovie(const int& actorId, const int& movieId) {
 //Purpose: Update movie details
 //Precondition: Movie exists 
 //Postcondition:Movie details are updated
-void Admin::updateDetails(const string& type, const int& key,const Movie& newValue) {
+void Admin::updateDetails(const int& key,const Movie& newValue) {
     if (movies.contains(key)) {
         movies.add(key, newValue);
         cout << "Movie details updated successfully." << endl;
@@ -85,7 +85,7 @@ void Admin::updateDetails(const string& type, const int& key,const Movie& newVal
 //Purpose: Update actor details
 //Precondition: actor exists 
 //Postcondition: actor details are updated
-void Admin::updateDetails(const string& type, const int& key, const Actor& newValue) {
+void Admin::updateDetails(const int& key, const Actor& newValue) {
     if (actors.contains(key)) {
         actors.add(key, newValue);
         cout << "Actor details updated successfully." << endl;
@@ -98,18 +98,99 @@ void Admin::updateDetails(const string& type, const int& key, const Actor& newVa
 //Purpose: View list of reports made by users.
 //Precondition: none
 //Postcondition: Display all unresolved reports.
-void Admin::viewReports() {
-
+void Admin::viewReports(Dictionary<int, Report> reportDict) {
+    for (int key=0; key < reportDict.getLength(); key++) {
+        if (reportDict.contains(key)) {
+            reportDict.get(key).print();
+        }
+    }
 }
 
 //Purpose: Resolves a report made by a user.
 //Precondition: Report exists.
 //Postcondition: Updates details based on the report, updates status of report.
-void Admin::resolveIssue() {
-    viewReports();
+void Admin::resolveIssue(Dictionary<int, Report> reportDict, Dictionary<int, Actor> actorDict, Dictionary<int, Movie> movieDict) {
+    viewReports(reportDict);
     int reportId;
     cout << "Enter reportId of report you would like to resolve: ";
     cin >> reportId;
     //loop through reports to check if report exists.
-    //update details and update status
+    for (int key = 0; key < reportDict.getLength(); key++) {
+        if (reportDict.contains(key)) {
+            if (reportDict.contains(reportId)) {
+				reportDict.get(reportId).print();
+                string type;
+                cout << "Update actor / movie: ";
+                cin >> type;
+                int keyOfValue;
+                if (type == "movie" || type == "Movie") {
+					cout << "Enter id of movie:";
+                    cin >> keyOfValue;
+                    for (int i; i < movieDict.getLength(); i++) {
+                        if (movieDict.contains(i)) {
+                            if (movieDict.contains(keyOfValue)) {
+                                Movie toUpdate = movieDict.get(keyOfValue);
+                                toUpdate.print();
+                                string title, plot, year;
+                                cout << "Enter new title (leave blank if no changes needed): ";
+                                cin >> title;
+                                cout << "Enter new plot (leave blank if no changes needed): ";
+                                cin >> plot;
+                                cout << "Enter new year of release (leave blank if no changes needed): ";
+                                cin >> year;
+                                int newYear;
+                                if (title.empty()) {
+                                    title = toUpdate.getTitle();
+                                }
+								if (plot.empty()) {
+									plot = toUpdate.getPlot();
+								}
+                                if (year.empty()) {
+                                    newYear = toUpdate.getYearOfRelease();
+                                }
+                                Movie movie(keyOfValue, title, plot, newYear);
+                                updateDetails(keyOfValue, movie);
+                                reportDict.get(reportId).updateStatus();
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (type == "actor" || type == "Actor") {
+                    cout << "Enter id of Actor: ";
+                    cin >> keyOfValue;
+                    for (int i; i < actorDict.getLength(); i++) {
+                        if (actorDict.contains(i)) {
+                            if (actorDict.contains(keyOfValue)) {
+                                Actor toUpdate = actorDict.get(keyOfValue);
+                                toUpdate.print();
+                                string name, year;
+                                cout << "Enter new name (leave blank if no changes needed): ";
+                                cin >> name;
+                                cout << "Enter new year of birth (Leave blank if no changes needed): ";
+                                cin >> year;
+                                int yearOfBirth;
+                                if (name.empty()) {
+                                    name = toUpdate.getName();
+                                }
+                                if (year.empty()) {
+                                    yearOfBirth = toUpdate.getYearOfBirth();
+                                }
+                                Actor actor(keyOfValue, name, yearOfBirth);
+                                updateDetails(keyOfValue, actor);
+								reportDict.get(reportId).updateStatus();
+                                break;
+                            }
+                        }
+                    }
+                }
+                else {
+                    cout << "Invalid type. Please try again." << endl;
+                    break;
+                }
+            }
+        }
+    }
+    cout << "Report does not exist. Please try again.";
+    return;
 }

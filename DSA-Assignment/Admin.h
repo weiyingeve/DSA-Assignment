@@ -4,6 +4,7 @@
 #include "DoublyLinkedList.h"
 #include "Movie.h"
 #include "Actor.h"
+#include "Report.h"
 using namespace std;
 
 typename ItemType;
@@ -52,21 +53,21 @@ public:
 	//Purpose: Update movie details
 	//Precondition: Movie exists 
 	//Postcondition:Movie details are updated
-	void updateDetails(const string& type, const int& key, const Movie& newValue);
+	void updateDetails(const int& key, const Movie& newValue);
 
 	//Purpose: Update actor details
 	//Precondition: actor exists 
 	//Postcondition:actor details are updated
-	void updateDetails(const string& type, const int& key, const Actor& newValue);
+	void updateDetails(const int& key, const Actor& newValue);
 
 	//Purpose: View list of reports made by users.
 	//Precondition: none
 	//Postcondition: Display all unresolved reports.
-	void viewReports();
+	void viewReports(Dictionary<int, Report> reportDict);
 
 	//Purpose: Resolves a report made by a user.
 	//Precondition: Report exists.
 	//Postcondition: Updates details based on the report, updates status of report.
-	void resolveIssue();
+	void resolveIssue(Dictionary<int, Report> reportDict, Dictionary<int, Actor> actorDict, Dictionary<int, Movie> movieDict);
 };
 

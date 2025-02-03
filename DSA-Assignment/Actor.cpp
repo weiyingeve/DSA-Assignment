@@ -74,7 +74,10 @@ int Actor::calculateAge() const {
 //Precondition: None
 //Postcondition: Returns the updated rating of the actor.
 float Actor::calculateRating() const {
-	float newRating = totalRatings / noOfVoters;
+	float newRating = 0;
+	if (totalRatings != 0 && noOfVoters != 0) {
+		newRating = totalRatings / noOfVoters;
+	}
 	return newRating;
 }
 

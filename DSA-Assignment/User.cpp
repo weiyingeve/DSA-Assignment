@@ -190,7 +190,7 @@ void User::reportError(Dictionary<int, Report> reportDict) {
     int reportId;
     cout << "Enter type of report: ";
     cin >> type;
-    cout << "Enter description of report: ";
+    cout << "Enter description of report (include id of actor or movie): ";
     cin >> description;
     //generate report Id
     reportId = reportDict.size + 1;

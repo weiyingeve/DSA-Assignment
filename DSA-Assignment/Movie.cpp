@@ -71,8 +71,11 @@ int Movie::getNoOfVoters() const {
 //Precondition: None
 //Postcondition: Returns the updated rating of the actor.
 float Movie::calculateRating() const {
-	float newRating = totalRatings / noOfVoters;
-	return newRating;
+    float newRating = 0;
+    if (totalRatings != 0 && noOfVoters != 0) {
+        newRating = totalRatings / noOfVoters;
+    }
+    return newRating;
 }
 
 //Purpose: Updates rating based on user input.
