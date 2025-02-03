@@ -129,8 +129,6 @@
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Admin.cpp" />
-    <ClCompile Include="Dictionary.cpp" />
-    <ClCompile Include="DoublyLinkedList.cpp" />
     <ClCompile Include="DSA-Assignment.cpp" />
     <ClCompile Include="Movie.cpp" />
     <ClCompile Include="Report.cpp" />

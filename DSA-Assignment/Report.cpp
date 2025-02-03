@@ -19,7 +19,7 @@ Report::~Report() {}
 //Postcondition: Status is updated to Resolved.
 bool Report::updateStatus() {
 	if (status == 'U') {
-		status = 'R';
+		return status = 'R';
 	}
 	else {
 		cout << "Status is already resolved." << endl;

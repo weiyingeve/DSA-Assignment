@@ -4,6 +4,7 @@
 #include "Dictionary.h"
 #include "Movie.h"
 #include "Actor.h"
+#include "Report.h"
 using namespace std;
 class User
 {
@@ -58,7 +59,7 @@ public:
 	//Purpose: Report an error for an actor or movie.
 	//Precondition: Actor or Movie must exist.
 	//Postcondition: Creates new report.
-	void reportError();
+	void reportError(Dictionary<int, Report> reportDict);
 
 	//Purpose: Add a new rating for a specific actor.
 	//Precondition: Actor exists in the Dictionary.

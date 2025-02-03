@@ -11,6 +11,7 @@
 #include "DoublyLinkedList.h"
 #include "User.h"
 #include "Admin.h"
+#include "Report.h"
 using namespace std;
 
 void displayMainMenu();
@@ -21,6 +22,7 @@ void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movie>& mov
 int main() {
     Dictionary<int, Actor> actors;
     Dictionary<int, Movie> movies;
+    Dictionary<int, Report> reports;
 
     loadDataFromCSV(actors, movies);
     Admin admin("Rena", 1);
@@ -49,7 +51,13 @@ int main() {
                 }
 
                 switch (adminChoice) {
-                case 1:
+                case 1: // add new actor
+                    // display list of actors
+                    cout << "\n ==== Actor list ====\n";
+                    for (int key = 0; key < actors.getLength(); key++) {
+                        actors.get(key).print();
+                    }
+
                     cout << "Enter actor ID: ";
                     cin >> actorID;
                     cin.ignore(); // Clear buffer
@@ -61,7 +69,7 @@ int main() {
                     admin.addActor(Actor(actorID, actorName, yob));
                     break;
 
-                case 2:
+                case 2: // add new movie
                     cout << "Enter movie ID: ";
                     cin >> movieID;
                     cin.ignore();
@@ -78,7 +86,7 @@ int main() {
                     admin.addMovie(Movie(movieID, movieTitle, plot, yearOfRelease));
                     break;
 
-                case 3:
+                case 3: // add actor to movie
                     cout << "Enter actor ID: ";
                     cin >> actorID;
                     cout << "Enter movie ID: ";
@@ -87,9 +95,18 @@ int main() {
                     admin.addActorToMovie(actorID, movieID);
                     break;
 
+                case 4: // view report 
+                    admin.viewReports();
+                    break;
+
+                case 5: // resolve issue
+                    admin.resolveIssue();
+                    break;
+
                 default:
                     cout << "Invalid choice. Please try again." << endl;
                 }
+
             }
         }
 
@@ -107,7 +124,7 @@ int main() {
                 }
 
                 switch (userChoice) {
-                case 1:
+                case 1: // display actor by age
                     int min;
                     int max;
                     cout << "Enter min age: " << endl;
@@ -118,21 +135,23 @@ int main() {
                     user.displayActorsByAgeRange(actors, min, max);
                     break;
 
-                case 2:
+                case 2: // display movies made within the past 3 years
                     user.displayMoviesPast3Years(movies);;
                     break;
 
-                case 3:
+                case 3: // display all movies an actor starred in
                     cout << "Enter name of actor: " << endl;
                     cin >> actorName;
                     user.displayMoviesByActor(actors, actorName);
                     break;
-                case 4:
+
+                case 4: // display all actors in a movie
                     cout << "Enter movie title: " << endl;
                     cin >> movieName;
 
                     user.displayActorsByMovie(movies, movieName);
                     break;
+
                 case 5: // display actors actor knows
                     int actorID;
                     cout << "Enter actor id: " << endl;
@@ -143,7 +162,11 @@ int main() {
                     else {
                         cout << "Actor not found" << endl;
                         break;
-                case 6: // add rating to actor or movie
+                case 6: // report error
+                    user.reportError(reports);
+                    break;
+
+                case 7: // add rating to actor or movie
                     cout << "Add rating to [actor/movie]? " << endl;
                     cin >> choice;
                     if (choice == "actor" || choice == "Actor") {
@@ -162,9 +185,11 @@ int main() {
                         cout << "Invalid input. Please enter [actor/movie]" << endl;
                     }
                     break;
-                case 7: // get reccommendation based on ratings
+
+                case 8: // get reccommendation based on ratings
                     user.getRecommendationsByRanking(movies);
                     break;
+
                 default:
                     cout << "Invalid choice. Please try again." << endl;
                     }
@@ -189,7 +214,8 @@ void displayAdminMenu() {
     cout << "[1] Add new actor\n";
     cout << "[2] Add new movie\n";
     cout << "[3] Add an actor to a movie\n";
-    cout << "[4] Update actor/movie details\n";
+    cout << "[4] View reports\n";
+    cout << "[5] Resolve issues\n";
     cout << "[0] Return to Main Menu\n";
     cout << "Choose an option: ";
 }
@@ -201,75 +227,128 @@ void displayUserMenu() {
     cout << "[3] Display all movies an actor starred in\n";
     cout << "[4] Display all actors in a movie\n";
     cout << "[5] Display list of all actors that an actor knows\n";
-    cout << "[6] Add rating to an actor or movie\n";
-    cout << "[7] Get recommendations based on ratings (actor/movie)\n";
+	cout << "[6] Report error\n";
+    cout << "[7] Add rating to an actor or movie\n";
+    cout << "[8] Get recommendations based on ratings (actor/movie)\n";
     cout << "[0] Return to Main Menu\n";
     cout << "Choose an option: ";
 }
 
+
 // Function to load data from CSV files into the dictionary
 static void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies) {
-    ifstream actorsFile("actors.csv");
-    ifstream moviesFile("movies.csv");
-    ifstream castFile("cast.csv");
-    if (actorsFile.is_open()) {
-        string line;
-        getline(actorsFile, line);
-        while (getline(actorsFile, line)) {
-            stringstream ss(line);
-            string id, name, birth;
-            getline(ss, id, ',');
-            getline(ss, name, ',');
-            getline(ss, birth, ',');
+	ifstream actorsFile("actors.csv");
+	ifstream moviesFile("movies.csv");
+	ifstream castFile("cast.csv");
 
-            Actor actor = Actor(stoi(id), name, stoi(birth));
-            actors.add(stoi(id), actor);
-        }
-        actorsFile.close();
-    }
-    else {
-        cerr << "Failed to open actors.csv file." << endl;
-    }
+	// Load actors
+	if (actorsFile.is_open()) {
+		string line;
+		getline(actorsFile, line); // Skip header row
 
-    if (moviesFile.is_open()) {
-        string line;
-        getline(moviesFile, line);
-        while (getline(moviesFile, line)) {
-            stringstream ss(line);
-            string id, title, year;
-            getline(ss, id, ',');
-            getline(ss, title, ',');
-            getline(ss, year, ',');
+		while (getline(actorsFile, line)) {
+			stringstream ss(line);
+			string id, name, birth;
 
-            Movie movie = Movie(stoi(id), title, "", stoi(year));
-            movies.add(stoi(id), movie);
-        }
-        moviesFile.close();
-    }
-    else {
-        cerr << "Failed to open movies.csv file." << endl;
-    }
+			getline(ss, id, ',');
+			getline(ss, name, ',');
+			getline(ss, birth, ',');
 
-    if (castFile.is_open()) {
-        string line;
-        getline(castFile, line);
-        while (getline(castFile, line)) {
-            stringstream ss(line);
-            string actorId, movieId;
-            getline(ss, actorId, ',');
-            getline(ss, movieId, ',');
+			// Validate and add actor
+			if (!id.empty() && !birth.empty()) {
+				try {
+					Actor actor(stoi(id), name, stoi(birth));
+					actors.add(stoi(id), actor);
+				}
+				catch (const invalid_argument&) {
+					cerr << "Invalid data in actors.csv: " << line << endl;
+				}
+			}
+			else {
+				cerr << "Skipping invalid line in actors.csv: " << line << endl;
+			}
+		}
+		actorsFile.close();
+	}
+	else {
+		cerr << "Failed to open actors.csv file." << endl;
+	}
 
-            int aId = stoi(actorId);
-            int mId = stoi(movieId);
+	// Load movies
+	if (moviesFile.is_open()) {
+		string line;
+		getline(moviesFile, line); // Skip header row
 
-            if (actors.contains(aId) && movies.contains(mId)) {
-                actors.get(aId).addMovie(movies.get(mId));
-                movies.get(mId).addActor(actors.get(aId));
-            }
-        }
-        castFile.close();
-    }
-    else {
-        cerr << "Failed to open cast.csv file." << endl;
-    }
+		while (getline(moviesFile, line)) {
+			stringstream ss(line);
+			string id, title, year;
+
+			getline(ss, id, ','); // Read movie ID
+
+			// Handle movie titles with and without quotes
+			if (ss.peek() == '"') {  // If the title starts with a quote
+				ss.get(); // Consume the opening quote
+				getline(ss, title, '"'); // Read until the closing quote
+				ss.get(); // Consume the comma after the closing quote
+			}
+			else {
+				getline(ss, title, ','); // Read normal title
+			}
+
+			getline(ss, year, ','); // Read year
+
+			// Validate and add movie
+			if (!id.empty() && !year.empty()) {
+				try {
+					Movie movie(stoi(id), title, "", stoi(year));
+					movies.add(stoi(id), movie);
+				}
+				catch (const invalid_argument&) {
+					cerr << "Invalid data in movies.csv: " << line << endl;
+				}
+			}
+			else {
+				cerr << "Skipping invalid line in movies.csv: " << line << endl;
+			}
+		}
+		moviesFile.close();
+	}
+	else {
+		cerr << "Failed to open movies.csv file." << endl;
+	}
+
+	// Load cast relationships
+	if (castFile.is_open()) {
+		string line;
+		getline(castFile, line); // Skip header row
+
+		while (getline(castFile, line)) {
+			stringstream ss(line);
+			string actorId, movieId;
+
+			getline(ss, actorId, ',');
+			getline(ss, movieId, ',');
+
+			if (!actorId.empty() && !movieId.empty()) {
+				try {
+					int aId = stoi(actorId);
+					int mId = stoi(movieId);
+					if (actors.contains(aId) && movies.contains(mId)) {
+						actors.get(aId).addMovie(movies.get(mId));
+						movies.get(mId).addActor(actors.get(aId));
+					}
+				}
+				catch (const invalid_argument&) {
+					cerr << "Invalid cast entry: " << line << endl;
+				}
+			}
+			else {
+				cerr << "Skipping invalid line in cast.csv: " << line << endl;
+			}
+		}
+		castFile.close();
+	}
+	else {
+		cerr << "Failed to open cast.csv file." << endl;
+	}
 }
