@@ -30,10 +30,7 @@
     <ClCompile Include="User.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dictionary.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DoublyLinkedList.cpp">
+    <ClCompile Include="Report.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,16 +53,16 @@
     <ClInclude Include="DoublyLinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Report.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dictionary.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\data\actors.csv">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="..\..\data\cast.csv">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="..\..\data\movies.csv">
-      <Filter>Source Files</Filter>
-    </None>
+    <None Include="actors.csv" />
+    <None Include="cast.csv" />
+    <None Include="movies.csv" />
   </ItemGroup>
 </Project>
