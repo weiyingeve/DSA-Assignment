@@ -238,7 +238,7 @@ void User::addMovieRating(Dictionary<int, Movie>& movieDict, const string& movie
 //Postcondition: Displays movies by ranking in descending order.
 void User::getRecommendationsByRanking(Dictionary<int, Movie>& movieDict) {
 	DoublyLinkedList<Movie> movieList;
-	for (int i = 0; i < Dictionary<int, Movie>::MAX_SIZE; i++) {
+	for (int i = 0; i < movieDict.getLength(); i++) {
 		Dictionary<int, Movie>::Node* current = movieDict.items[i];
 		while (current != nullptr) {
 			movieList.add(current->item);

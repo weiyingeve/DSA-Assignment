@@ -5,6 +5,8 @@ using namespace std;
 #ifndef DICTIONARY_H
 #define DICTIONARY_H
 
+const int MAX_SIZE = 101;
+
 template <typename KeyType, typename ItemType> class Dictionary {
 public:
     struct Node {
@@ -16,7 +18,6 @@ public:
         Node() : key(), item(), next(nullptr) {}
     };
 
-    static const int MAX_SIZE = 10000;
     Node* items[MAX_SIZE]; // array of pointers to linked lists
     int size;              // number of items in the Dictionary
 
@@ -117,14 +118,17 @@ public:
         int index = hash(key);
         Node* current = items[index];
 
-        while (current != nullptr) {
-            if (current->key == key)
-            {
-                return current->item;
-            }
-            current = current->next;
+        if (current == nullptr) {
+            return ItemType();
         }
-        throw runtime_error("Key not found.");
+        else {
+            while (current != nullptr) {
+                if (current->key == key) {
+                    return current->item;
+                }
+                current = current->next;
+            }
+        }
     }
 
     // Purpose: Check if a key exists in the dictionary.
@@ -132,16 +136,28 @@ public:
     // Postcondition: Returns true if the key exists; otherwise, returns false.
     bool contains(const KeyType& key) const {
         int index = hash(key);
+
+        // Validate index bounds
+        if (index < 0 || index >= size) {
+            throw std::out_of_range("Index out of bounds in hash table.");
+        }
+
         Node* current = items[index];
 
+        // Traverse the linked list
         while (current != nullptr) {
+            // Ensure the current node is valid
+            if (current == nullptr) break;
+
             if (current->key == key) {
                 return true;
             }
             current = current->next;
         }
+
         return false;
     }
+
 
     // Purpose: Check if the dictionary is empty.
     // Precondition: None.
