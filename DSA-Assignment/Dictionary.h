@@ -69,4 +69,4 @@ public:
     // Postcondition: Prints all key-value pairs to the console.
     void print() const;
 };
-#endif 
+#include "Dictionary.hpp"

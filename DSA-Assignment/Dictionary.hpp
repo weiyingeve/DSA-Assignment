@@ -39,9 +39,6 @@ int Dictionary<KeyType, ItemType>::hash(const KeyType& key) const {
         }
         return hash_value % MAX_SIZE;
     }
-    else {
-        static_assert(always_false<KeyType>::value, "Unsupported key type for hash function.");
-    }
 }
 
 // Purpose: Add a key-value pair to the dictionary.
