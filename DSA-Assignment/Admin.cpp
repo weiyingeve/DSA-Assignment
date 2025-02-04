@@ -97,11 +97,8 @@ void Admin::updateDetails(const int& key, const Actor& newValue, Dictionary<int,
 //Precondition: none
 //Postcondition: Display all unresolved reports.
 void Admin::viewReports(Dictionary<int, Report> reportDict) {
-    for (int key=0; key < reportDict.getLength(); key++) {
-        if (reportDict.contains(key)) {
-            reportDict.get(key).print();
-        }
-    }
+    DoublyLinkedList<Report*> reportList = reportDict.getAllItems();
+    reportList.print();
 }
 
 //Purpose: Resolves a report made by a user.
@@ -113,6 +110,7 @@ void Admin::resolveIssue(Dictionary<int, Report> reportDict, Dictionary<int, Act
     cout << "Enter reportId of report you would like to resolve: ";
     cin >> reportId;
     //loop through reports to check if report exists.
+    DoublyLinkedList<Report*> reportList = reportDict.getAllItems();
     for (int key = 0; key < reportDict.getLength(); key++) {
         if (reportDict.contains(key)) {
             if (reportDict.contains(reportId)) {

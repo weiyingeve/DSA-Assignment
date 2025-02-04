@@ -140,6 +140,7 @@
     <ClInclude Include="Dictionary.h" />
     <ClInclude Include="Dictionary.hpp" />
     <ClInclude Include="DoublyLinkedList.h" />
+    <ClInclude Include="DoublyLinkedList.hpp" />
     <ClInclude Include="Movie.h" />
     <ClInclude Include="Report.h" />
     <ClInclude Include="User.h" />
