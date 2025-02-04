@@ -15,7 +15,7 @@ private:
 	int actorId;
 	float totalRatings;
 	int noOfVoters;
-	DoublyLinkedList<Movie> movies;
+	static DoublyLinkedList<Movie> movies;
 
 public:
 	//default constructor

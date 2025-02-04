@@ -4,7 +4,7 @@ using namespace std;
 
 //Constructor
 Admin::Admin(string name, int adminId)
-	: name(name), adminId(adminId) {}
+	: name(name), adminId(adminId){}
 
 //Deconstructor
 Admin::~Admin() {};
@@ -27,33 +27,31 @@ int Admin::getAdminId() const {
 //Purpose: Add a new actor to the dictionary
 //Precondition: Actor must not exist already
 //Postcondition: Adds actor to dictionary
-void Admin::addActor(const Actor actor) {
+void Admin::addActor(const Actor actor, Dictionary<int, Actor> actors) {
     if (actors.contains(actor.getActorId())) {
         cout << "Actor already exists!" << endl;
         return;
     }
     actors.add(actor.getActorId(), actor);
-    actorList.add(actor);
     cout << "Actor " << actor.getName() << " added successfully." << endl;
 }
 
 //Purpose: Add a new movie to the dictionary
 //Precondition: Movie must not exist already
 //Postcondition: Adds movie to dictionary
-void Admin::addMovie(const Movie movie) {
+void Admin::addMovie(const Movie movie, Dictionary<int, Movie> movies) {
     if (movies.contains(movie.getMovieId())) {
         cout << "Movie already exists!" << endl;
         return;
     }
     movies.add(movie.getMovieId(), movie);
-    movieList.add(movie);
     cout << "Movie " << movie.getTitle() << " added successfully." << endl;
 }
 
 //Purpose: Add/link actor to a movie
 //Precondition: Movie exists, Actor exists
 //Postcondition: Actor is added to an existing movie
-void Admin::addActorToMovie(const int& actorId, const int& movieId) {
+void Admin::addActorToMovie(const int& actorId, const int& movieId, Dictionary<int, Actor> actors, Dictionary<int, Movie> movies) {
     if (!actors.contains(actorId)) {
         cout << "Actor does not exist!" << endl;
         return;
@@ -72,7 +70,7 @@ void Admin::addActorToMovie(const int& actorId, const int& movieId) {
 //Purpose: Update movie details
 //Precondition: Movie exists 
 //Postcondition:Movie details are updated
-void Admin::updateDetails(const int& key,const Movie& newValue) {
+void Admin::updateDetails(const int& key,const Movie& newValue, Dictionary<int, Movie> movies) {
     if (movies.contains(key)) {
         movies.add(key, newValue);
         cout << "Movie details updated successfully." << endl;
@@ -85,7 +83,7 @@ void Admin::updateDetails(const int& key,const Movie& newValue) {
 //Purpose: Update actor details
 //Precondition: actor exists 
 //Postcondition: actor details are updated
-void Admin::updateDetails(const int& key, const Actor& newValue) {
+void Admin::updateDetails(const int& key, const Actor& newValue, Dictionary<int, Actor> actors) {
     if (actors.contains(key)) {
         actors.add(key, newValue);
         cout << "Actor details updated successfully." << endl;
@@ -126,7 +124,7 @@ void Admin::resolveIssue(Dictionary<int, Report> reportDict, Dictionary<int, Act
                 if (type == "movie" || type == "Movie") {
 					cout << "Enter id of movie:";
                     cin >> keyOfValue;
-                    for (int i; i < movieDict.getLength(); i++) {
+                    for (int i = 0; i < movieDict.getLength(); i++) {
                         if (movieDict.contains(i)) {
                             if (movieDict.contains(keyOfValue)) {
                                 Movie toUpdate = movieDict.get(keyOfValue);
@@ -149,7 +147,7 @@ void Admin::resolveIssue(Dictionary<int, Report> reportDict, Dictionary<int, Act
                                     newYear = toUpdate.getYearOfRelease();
                                 }
                                 Movie movie(keyOfValue, title, plot, newYear);
-                                updateDetails(keyOfValue, movie);
+                                updateDetails(keyOfValue, movie, movieDict);
                                 reportDict.get(reportId).updateStatus();
                                 break;
                             }
@@ -159,7 +157,7 @@ void Admin::resolveIssue(Dictionary<int, Report> reportDict, Dictionary<int, Act
                 else if (type == "actor" || type == "Actor") {
                     cout << "Enter id of Actor: ";
                     cin >> keyOfValue;
-                    for (int i; i < actorDict.getLength(); i++) {
+                    for (int i = 0; i < actorDict.getLength(); i++) {
                         if (actorDict.contains(i)) {
                             if (actorDict.contains(keyOfValue)) {
                                 Actor toUpdate = actorDict.get(keyOfValue);
@@ -177,7 +175,7 @@ void Admin::resolveIssue(Dictionary<int, Report> reportDict, Dictionary<int, Act
                                     yearOfBirth = toUpdate.getYearOfBirth();
                                 }
                                 Actor actor(keyOfValue, name, yearOfBirth);
-                                updateDetails(keyOfValue, actor);
+                                updateDetails(keyOfValue, actor, actorDict);
 								reportDict.get(reportId).updateStatus();
                                 break;
                             }

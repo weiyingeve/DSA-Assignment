@@ -110,7 +110,7 @@ public:
 
         delete current;
         size--;
-        cout << "Item removed successfully." << endl;
+        cout << "Item removed from doubly linked list successfully." << endl;
         return true;
     }
 

@@ -3,6 +3,8 @@ using namespace std;
 #include <iostream>
 # include "Actor.h"
 
+DoublyLinkedList<Actor> Movie::actors;
+
 //default constructor
 Movie::Movie() {}
 
@@ -15,6 +17,7 @@ Movie::Movie(int movieId, string title, string plot, int yearOfRelease)
 
 //deconstructor
 Movie::~Movie() {
+	cout << "Movie " << title << " is being destroyed" << endl;
 	actors.~DoublyLinkedList();
 }
 

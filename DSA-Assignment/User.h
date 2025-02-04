@@ -12,8 +12,6 @@ private:
 	string username;
 	int userId;
 
-	DoublyLinkedList<Movie> favoriteMovies;
-	DoublyLinkedList<Actor> favoriteActors;
 public:
 	//Constructor
 	User(const string username, const int userId);

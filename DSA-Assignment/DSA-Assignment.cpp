@@ -19,9 +19,9 @@ void displayUserMenu();
 void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies);
 
 int main() {
-    Dictionary<int, Actor> actors;
-    Dictionary<int, Movie> movies;
-    Dictionary<int, Report> reports;
+    static Dictionary<int, Actor> actors;
+    static Dictionary<int, Movie> movies;
+    static Dictionary<int, Report> reports;
 
     loadDataFromCSV(actors, movies);
     Admin admin("Rena", 1);
@@ -57,7 +57,7 @@ int main() {
                     cout << "Enter year of birth: ";
                     cin >> yob;
 
-                    admin.addActor(Actor(actorID, actorName, yob));
+                    admin.addActor(Actor(actorID, actorName, yob), actors);
                     break;
 
                 case 2: // add new movie
@@ -74,7 +74,7 @@ int main() {
                     cout << "Enter plot: ";
                     getline(cin, plot);
 
-                    admin.addMovie(Movie(movieID, movieTitle, plot, yearOfRelease));
+                    admin.addMovie(Movie(movieID, movieTitle, plot, yearOfRelease), movies);
                     break;
 
                 case 3: // add actor to movie
@@ -83,7 +83,7 @@ int main() {
                     cout << "Enter movie ID: ";
                     cin >> movieID;
 
-                    admin.addActorToMovie(actorID, movieID);
+                    admin.addActorToMovie(actorID, movieID, actors, movies);
                     break;
 
                 case 4: // view report 

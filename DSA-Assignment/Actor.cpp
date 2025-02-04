@@ -5,6 +5,8 @@ using namespace std;
 #include <ctime>
 #include "Movie.h"
 
+DoublyLinkedList<Movie> Actor::movies;
+
 //default constructor
 Actor::Actor() {}
 
@@ -17,6 +19,7 @@ Actor::Actor(int actorId, string name, int yearOfBirth)
 
 //Deconstructor
 Actor::~Actor() {
+	cout << "Actor " << name << " is being destroyed" << endl;
 	movies.~DoublyLinkedList();
 	noOfVoters = 0;
 	totalRatings = 0;
