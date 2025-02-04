@@ -89,7 +89,7 @@ ItemType Dictionary<KeyType, ItemType>::get(const KeyType& key) const {
 // Postcondition: Returnsall values in the dictionary.
 template <typename KeyType, typename ItemType>
 DoublyLinkedList<ItemType*> Dictionary<KeyType, ItemType>::getAllItems() const {
-    DoublyLinkedList<ItemType> itemList;
+    DoublyLinkedList<ItemType*> itemList;
     for (int i = 0; i < MAX_SIZE; i++) {
         Node* current = items[i];
         while (current != nullptr) {

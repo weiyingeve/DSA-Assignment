@@ -79,7 +79,7 @@ public:
 
 	//Purpose: Retrieve the list of actors in the movie.
 	//Precondition: None.
-	//Postcondition: Returns a pointer to the head of the actor list.
+	//Postcondition: Prints the actors.
 	void getActors();
 
 	// Purpose: Display details of the movie.

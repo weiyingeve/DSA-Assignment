@@ -42,6 +42,11 @@ public:
     // Postcondition: Returns the item from the list.
     T& get(int index);
 
+    // Purpose: Places an item in the list based on the index.
+    // Precondition: None.
+    // Postcondition: Returns if set was successful.
+    bool set(int index, T item);
+
     // Purpose: Check if the list is empty.
     // Precondition: None.
     // Postcondition: Returns true if the list is empty; otherwise, returns false.

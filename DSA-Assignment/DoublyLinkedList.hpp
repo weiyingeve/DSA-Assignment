@@ -127,12 +127,30 @@ T& DoublyLinkedList<T>::get(int index) {
         throw std::out_of_range("Index out of range");
     }
 
-    Node* current = head;
+    Node* current = firstNode;
     for (int i = 0; i < index; i++) {
         current = current->next;
     }
 
     return current->item;
+}
+
+// Purpose: Places an item in the list based on the index.
+// Precondition: None.
+// Postcondition: Returns if set was successful.
+template <typename T>
+bool DoublyLinkedList<T>::set(int index, T item) {
+    if (index < 0 || index >= size) {
+        return false;
+    }
+
+    Node* current = firstNode;
+    for (int i = 0; i < index; i++) {
+        current = current->next;
+    }
+
+    current->item = item;
+    return true;
 }
 
 // Purpose: Check if the list is empty.

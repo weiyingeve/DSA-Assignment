@@ -111,82 +111,74 @@ void Admin::resolveIssue(Dictionary<int, Report> reportDict, Dictionary<int, Act
     cin >> reportId;
     //loop through reports to check if report exists.
     DoublyLinkedList<Report*> reportList = reportDict.getAllItems();
-    for (int key = 0; key < reportDict.getLength(); key++) {
-        if (reportDict.contains(key)) {
-            if (reportDict.contains(reportId)) {
-				reportDict.get(reportId).print();
-                string type;
-                cout << "Update actor / movie: ";
-                cin >> type;
-                int keyOfValue;
-                if (type == "movie" || type == "Movie") {
-					cout << "Enter id of movie:";
-                    cin >> keyOfValue;
-                    for (int i = 0; i < movieDict.getLength(); i++) {
-                        if (movieDict.contains(i)) {
-                            if (movieDict.contains(keyOfValue)) {
-                                Movie toUpdate = movieDict.get(keyOfValue);
-                                toUpdate.print();
-                                string title, plot, year;
-                                cout << "Enter new title (leave blank if no changes needed): ";
-                                cin >> title;
-                                cout << "Enter new plot (leave blank if no changes needed): ";
-                                cin >> plot;
-                                cout << "Enter new year of release (leave blank if no changes needed): ";
-                                cin >> year;
-                                int newYear;
-                                if (title.empty()) {
-                                    title = toUpdate.getTitle();
-                                }
-								if (plot.empty()) {
-									plot = toUpdate.getPlot();
-								}
-                                if (year.empty()) {
-                                    newYear = toUpdate.getYearOfRelease();
-                                }
-                                Movie movie(keyOfValue, title, plot, newYear);
-                                updateDetails(keyOfValue, movie, movieDict);
-                                reportDict.get(reportId).updateStatus();
-                                break;
-                            }
-                        }
+    if (reportDict.contains(reportId)) {
+        for (int i = 0; i < reportList.getLength(); i++) {
+			reportDict.get(reportId).print();
+            string type;
+            cout << "Update actor / movie: ";
+            cin >> type;
+            int keyOfValue;
+            if (type == "movie" || type == "Movie") {
+				cout << "Enter id of movie:";
+                cin >> keyOfValue;
+                if (movieDict.contains(keyOfValue)) {
+                    Movie toUpdate = movieDict.get(keyOfValue);
+                    toUpdate.print();
+                    string title, plot, year;
+                    cout << "Enter new title (leave blank if no changes needed): ";
+                    cin >> title;
+                    cout << "Enter new plot (leave blank if no changes needed): ";
+                    cin >> plot;
+                    cout << "Enter new year of release (leave blank if no changes needed): ";
+                    cin >> year;
+                    int newYear;
+                    if (title.empty()) {
+                        title = toUpdate.getTitle();
                     }
-                }
-                else if (type == "actor" || type == "Actor") {
-                    cout << "Enter id of Actor: ";
-                    cin >> keyOfValue;
-                    for (int i = 0; i < actorDict.getLength(); i++) {
-                        if (actorDict.contains(i)) {
-                            if (actorDict.contains(keyOfValue)) {
-                                Actor toUpdate = actorDict.get(keyOfValue);
-                                toUpdate.print();
-                                string name, year;
-                                cout << "Enter new name (leave blank if no changes needed): ";
-                                cin >> name;
-                                cout << "Enter new year of birth (Leave blank if no changes needed): ";
-                                cin >> year;
-                                int yearOfBirth;
-                                if (name.empty()) {
-                                    name = toUpdate.getName();
-                                }
-                                if (year.empty()) {
-                                    yearOfBirth = toUpdate.getYearOfBirth();
-                                }
-                                Actor actor(keyOfValue, name, yearOfBirth);
-                                updateDetails(keyOfValue, actor, actorDict);
-								reportDict.get(reportId).updateStatus();
-                                break;
-                            }
-                        }
+					if (plot.empty()) {
+						plot = toUpdate.getPlot();
+					}
+                    if (year.empty()) {
+                        newYear = toUpdate.getYearOfRelease();
                     }
-                }
-                else {
-                    cout << "Invalid type. Please try again." << endl;
+                    Movie movie(keyOfValue, title, plot, newYear);
+                    updateDetails(keyOfValue, movie, movieDict);
+                    reportDict.get(reportId).updateStatus();
                     break;
                 }
             }
+            else if (type == "actor" || type == "Actor") {
+                cout << "Enter id of Actor: ";
+                cin >> keyOfValue;
+                if (actorDict.contains(keyOfValue)) {
+                    Actor toUpdate = actorDict.get(keyOfValue);
+                    toUpdate.print();
+                    string name, year;
+                    cout << "Enter new name (leave blank if no changes needed): ";
+                    cin >> name;
+                    cout << "Enter new year of birth (Leave blank if no changes needed): ";
+                    cin >> year;
+                    int yearOfBirth;
+                    if (name.empty()) {
+                        name = toUpdate.getName();
+                    }
+                    if (year.empty()) {
+                        yearOfBirth = toUpdate.getYearOfBirth();
+                    }
+                    Actor actor(keyOfValue, name, yearOfBirth);
+                    updateDetails(keyOfValue, actor, actorDict);
+					reportDict.get(reportId).updateStatus();
+                    break;
+                }
+            }
+            else {
+                cout << "Invalid type. Please try again." << endl;
+                break;
+            }
         }
     }
-    cout << "Report does not exist. Please try again.";
-    return;
+    else {
+        cout << "Report does not exist. Please try again.";
+        return;
+    }
 }
