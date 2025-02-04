@@ -81,10 +81,13 @@ void User::displayMoviesPast3Years(Dictionary<int, Movie>& movieDict) {
 //Postcondition: Movies displayed must be in alphabetical order
 void User::displayMoviesByActor(Dictionary<int, Actor>& actorDict, const string& actorName) {
     for (int key = 0; key < actorDict.getLength(); key++) {
-        if (actorDict.get(key).getName() == actorName) {
-            Actor actor = actorDict.get(key);
-            actor.getMovies();
-            return;
+        if (actorDict.contains(key)) {
+            if (actorDict.get(key).getName() == actorName) {
+                cout << key << endl;
+                Actor actor = actorDict.get(key);
+                actor.getMovies();
+                return;
+            }
         }
     }
     cout << "Actor not found in the dictionary." << endl;
@@ -96,10 +99,12 @@ void User::displayMoviesByActor(Dictionary<int, Actor>& actorDict, const string&
 //Postcondition: Actor displayed must be in alphebetical order
 void User::displayActorsByMovie(Dictionary<int, Movie>& movieDict, const string& movieName) {
     for (int key = 0; key < movieDict.getLength(); key++) {
-        if (movieDict.get(key).getTitle() == movieName) {
-            Movie movie = movieDict.get(key);
-            movie.getActors();
-            return;
+        if (movieDict.contains(key)) {
+            if (movieDict.get(key).getTitle() == movieName) {
+                Movie movie = movieDict.get(key);
+                movie.getActors();
+                return;
+            }
         }
     }
     cout << "Movie not found in the dictionary." << endl;

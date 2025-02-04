@@ -19,7 +19,7 @@ Actor::Actor(int actorId, string name, int yearOfBirth)
 
 //Deconstructor
 Actor::~Actor() {
-	cout << "Actor " << name << " is being destroyed" << endl;
+	//cout << "Actor " << name << " is being destroyed" << endl;
 	movies.~DoublyLinkedList();
 	noOfVoters = 0;
 	totalRatings = 0;

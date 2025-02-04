@@ -16,7 +16,7 @@ public:
         Node() : key(), item(), next(nullptr) {}
     };
 
-    static const int MAX_SIZE = 1000;
+    static const int MAX_SIZE = 10000;
     Node* items[MAX_SIZE]; // array of pointers to linked lists
     int size;              // number of items in the Dictionary
 
