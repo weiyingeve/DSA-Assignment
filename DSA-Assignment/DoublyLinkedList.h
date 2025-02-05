@@ -16,6 +16,8 @@ private:
     Node* firstNode;
     Node* lastNode;
 public:
+    Node* getFirstNode() { return firstNode; }
+
     // Constructor
     DoublyLinkedList();
 
@@ -34,7 +36,7 @@ public:
 
     // Purpose: Check if an item exists in the list.
     // Precondition: The list is non-empty (although it works for empty lists as well).
-    // Postcondition: Returns true if the item exists in the list; otherwise, returns false.
+    // Postcondition: Returns true if the item exists in the list otherwise, returns false.
     bool search(const T item);
 
     // Purpose: Retrieves an item in the list based on the index.
