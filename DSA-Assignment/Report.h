@@ -1,7 +1,9 @@
 #pragma once
 using namespace std;
 #include <string>
-class Report
+#include "Printable.h"
+
+class Report : Printable
 {
 private:
 	string type;
@@ -26,6 +28,6 @@ public:
 	//Purpose: Print details of the report.
 	//Precondition: None.
 	//Postcondition: Displays details of the report.
-	void print();
+	void print() const override;
 };
 

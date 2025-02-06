@@ -1,4 +1,5 @@
 #pragma once
+#include "DoublyLinkedList.h"
 #include <iostream>
 #include "Printable.h"
 using namespace std;

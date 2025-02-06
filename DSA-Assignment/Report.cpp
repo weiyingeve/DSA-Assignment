@@ -29,7 +29,7 @@ bool Report::updateStatus() {
 //Purpose: Print details of the report.
 //Precondition: None.
 //Postcondition: Displays details of the report.
-void Report::print() {
+void Report::print() const{
 	cout << "Report ID: " << reportId << endl;
 	cout << "Type: " << type << endl;
 	cout << "Description: " << description << endl;

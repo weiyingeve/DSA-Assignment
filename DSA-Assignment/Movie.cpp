@@ -113,7 +113,7 @@ void Movie::getActors() {
 // Purpose: Display details of the movie.
 // Precondition: None.
 // Postcondition: The movie is displayed.
-void Movie::print() {
+void Movie::print() const{
 	cout << "ID: " << movieId << endl;
 	cout << "Title: " << title << endl;
 	cout << "Plot: " << plot << endl;

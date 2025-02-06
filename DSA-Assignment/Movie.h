@@ -5,7 +5,7 @@ using namespace std;
 
 class Actor;
 
-class Movie
+class Movie : Printable
 {
 private:
 	int movieId;
@@ -85,7 +85,7 @@ public:
 	// Purpose: Display details of the movie.
 	// Precondition: None.
 	// Postcondition: The movie is displayed.
-	void print();
+	void print() const override;
 
 	//for comparison reasons
 	bool operator<(const Movie& movie);

@@ -131,6 +131,7 @@
     <ClCompile Include="Admin.cpp" />
     <ClCompile Include="DSA-Assignment.cpp" />
     <ClCompile Include="Movie.cpp" />
+    <ClCompile Include="Printable.cpp" />
     <ClCompile Include="Report.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
@@ -138,8 +139,11 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Dictionary.h" />
+    <ClInclude Include="Dictionary.hpp" />
     <ClInclude Include="DoublyLinkedList.h" />
+    <ClInclude Include="DoublyLinkedList.hpp" />
     <ClInclude Include="Movie.h" />
+    <ClInclude Include="Printable.h" />
     <ClInclude Include="Report.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>

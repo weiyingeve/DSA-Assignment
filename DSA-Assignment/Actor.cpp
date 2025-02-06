@@ -122,7 +122,7 @@ void Actor::getMovies(){
 // Purpose: Display details of the actor.
 // Precondition: None.
 // Postcondition: The actor is displayed.
-void Actor::print() {
+void Actor::print() const{
 	cout << "ID: " << actorId << endl;
 	cout << "Name: " << name << endl;
 	cout << "Year of Birth: " << yearOfBirth << endl;

@@ -2,12 +2,13 @@
 using namespace std;
 #include<string>
 #include "DoublyLinkedList.h"
+#include "Printable.h"
 
 class Movie;
 
 typedef string ItemType;
 
-class Actor
+class Actor : Printable
 {
 private:
 	string name;
@@ -80,7 +81,7 @@ public:
 	// Purpose: Display details of the actor.
 	// Precondition: None.
 	// Postcondition: The actor is displayed.
-	void print();
+	void print() const override;
 
 	//for comparison reasons
 	bool operator<(const Actor& actor);

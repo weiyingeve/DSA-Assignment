@@ -34,16 +34,14 @@ void User::displayActorsByAgeRange(Dictionary<int, Actor>& actorDict, int x, int
         cout << "Invalid age range: y must be greater than x." << endl;
     }
 
-    Dictionary<int, Actor> tempDict; 
-
+    Dictionary<int, Actor> tempDict;
+    DoublyLinkedList<Actor*> actorList = actorDict.getAllItems();
     // Populate the temporary dictionary with actors in the specified age range
-    for (int key = 0; key < actorDict.getLength(); ++key) { 
-        if (actorDict.contains(key)) {
-            Actor actor = actorDict.get(key);
-            int age = actor.calculateAge();
-            if (age >= x && age <= y) {
-                tempDict.add(age, actor); // Use age as the key for ordering
-            }
+    for (int i = 0; i < actorList.getLength(); i++) {
+        Actor actor = actorDict.get(i);
+        int age = actor.calculateAge();
+        if (age >= x && age <= y) {
+            tempDict.add(age, actor); // Use age as the key for ordering
         }
     }
 
@@ -62,16 +60,15 @@ void User::displayActorsByAgeRange(Dictionary<int, Actor>& actorDict, int x, int
 //Precondition: None
 //Postcondition: Movies displayed in ascending order of year
 void User::displayMoviesPast3Years(Dictionary<int, Movie>& movieDict) {
-    int currentYear = 2025; 
+    int currentYear = 2025;
 
     cout << "Movies released in the past 3 years:" << endl;
 
-    for (int key = 0; key < movieDict.getLength(); key++) {
-        if (movieDict.contains(key)) {
-            int releaseYear = movieDict.get(key).getYearOfRelease();
-            if (currentYear - releaseYear <= 3) {
-                cout << "Name: " << key << ", Year: " << releaseYear << endl;
-            }
+    DoublyLinkedList<Movie*> movieList = movieDict.getAllItems();
+    for (int i = 0; i < movieList.getLength(); i++) {
+        int releaseYear = movieDict.get(i).getYearOfRelease();
+        if (currentYear - releaseYear <= 3) {
+            cout << "Title: " << movieDict.get(i).getTitle() << ", Year: " << releaseYear << endl;
         }
     }
 }
@@ -80,31 +77,29 @@ void User::displayMoviesPast3Years(Dictionary<int, Movie>& movieDict) {
 //Precondition: Actor must exist
 //Postcondition: Movies displayed must be in alphabetical order
 void User::displayMoviesByActor(Dictionary<int, Actor>& actorDict, const string& actorName) {
-    for (int key = 0; key < actorDict.getLength(); key++) {
-        if (actorDict.contains(key)) {
-            if (actorDict.get(key).getName() == actorName) {
-                cout << key << endl;
-                Actor actor = actorDict.get(key);
-                actor.getMovies();
-                return;
-            }
+    DoublyLinkedList<Actor*> actorList = actorDict.getAllItems();
+    for (int i = 0; i < actorList.getLength(); i++) {
+        if (actorDict.get(i).getName() == actorName) {
+            cout << "Movies " << actorName << " acted in: " << endl;
+            Actor actor = actorDict.get(i);
+            actor.getMovies();
+            return;
         }
     }
     cout << "Actor not found in the dictionary." << endl;
-    
+
 }
 
 //Purpose: Display actors in a movie
 //Precondition: Movie must exist
 //Postcondition: Actor displayed must be in alphebetical order
 void User::displayActorsByMovie(Dictionary<int, Movie>& movieDict, const string& movieName) {
-    for (int key = 0; key < movieDict.getLength(); key++) {
-        if (movieDict.contains(key)) {
-            if (movieDict.get(key).getTitle() == movieName) {
-                Movie movie = movieDict.get(key);
-                movie.getActors();
-                return;
-            }
+    DoublyLinkedList<Movie*> movieList = movieDict.getAllItems();
+    for (int i = 0; i < movieList.getLength(); i++) {
+        if (movieDict.get(i).getTitle() == movieName) {
+            cout << "Actors in " << movieName << ": " << endl;
+            movieDict.get(i).getActors();
+            return;
         }
     }
     cout << "Movie not found in the dictionary." << endl;
@@ -114,78 +109,95 @@ void User::displayActorsByMovie(Dictionary<int, Movie>& movieDict, const string&
 /// Precondition: The actor must exist in the movies.
 /// Postcondition: Outputs the names of all actors known to the given actor. 
 void User::displayActorsKnown(Dictionary<int, Movie>& movieDict, const Actor& actor) {
-    Dictionary<string, bool> knownActors; 
+    Dictionary<string, bool> knownActors;
     Dictionary<string, bool> visitedMovies;
 
     cout << "Actors known by " << actor.getName() << ":" << endl;
 
     // Step 1: Process all movies the given actor starred in
-    for (int movieKey = 0; movieKey < movieDict.getLength(); ++movieKey) {
-        if (!movieDict.contains(movieKey)) continue;
+    DoublyLinkedList<Movie*> movieList = movieDict.getAllItems();
+    auto movieNode = movieList.getFirstNode();  // Use getFirstNode()
 
-        Movie movie = movieDict.get(movieKey);
+    while (movieNode != nullptr) {
+        Movie* movie = movieNode->item;
 
-        DoublyLinkedList<Actor> cast = movie.getActorList();
-
+        // Check if actor starred in the movie
+        DoublyLinkedList<Actor> cast = movie->getActorList();
         bool actorInMovie = false;
-        typename DoublyLinkedList<Actor>::Node* currentNode = cast.firstNode; 
-        while (currentNode != nullptr) {
-            if (currentNode->item.getName() == actor.getName()) {
+
+        typename DoublyLinkedList<Actor>::Node* actorNode = cast.getFirstNode();  // Use getFirstNode()
+        while (actorNode != nullptr) {
+            if (actorNode->item.getName() == actor.getName()) {
                 actorInMovie = true;
                 break;
             }
-            currentNode = currentNode->next;
+            actorNode = actorNode->next;
         }
 
-        if (!actorInMovie) continue;
+        if (!actorInMovie) {
+            movieNode = movieNode->next;
+            continue;
+        }
 
-        
-        visitedMovies.add(movie.getTitle(), true);
+        // Mark movie as visited
+        visitedMovies.add(movie->getTitle(), true);
 
-        
-        currentNode = cast.firstNode;  
-        while (currentNode != nullptr) {
-            const Actor& coActor = currentNode->item;
+        // Collect co-actors from the movie
+        actorNode = cast.getFirstNode();  // Use getFirstNode()
+        while (actorNode != nullptr) {
+            const Actor& coActor = actorNode->item;
             if (coActor.getName() != actor.getName() && !knownActors.contains(coActor.getName())) {
                 knownActors.add(coActor.getName(), true);
                 cout << "- " << coActor.getName() << endl;
             }
-            currentNode = currentNode->next;
+            actorNode = actorNode->next;
         }
+
+        movieNode = movieNode->next;
     }
 
-    for (int movieKey = 0; movieKey < movieDict.getLength(); ++movieKey) {
-        if (!movieDict.contains(movieKey)) continue;
+    // Step 2: Find second-degree connections
+    movieNode = movieList.getFirstNode();  // Use getFirstNode()
+    while (movieNode != nullptr) {
+        Movie* movie = movieNode->item;
+        if (visitedMovies.contains(movie->getTitle())) {
+            movieNode = movieNode->next;
+            continue;
+        }
 
-        Movie movie = movieDict.get(movieKey);
-
-        if (visitedMovies.contains(movie.getTitle())) continue;
-
-        DoublyLinkedList<Actor> cast = movie.getActorList();
-
+        // Check if any known actor is in this movie
+        DoublyLinkedList<Actor> cast = movie->getActorList();
         bool related = false;
-        typename DoublyLinkedList<Actor>::Node* currentNode = cast.firstNode;
-        while (currentNode != nullptr) {
-            if (knownActors.contains(currentNode->item.getName())) {
+
+        typename DoublyLinkedList<Actor>::Node* actorNode = cast.getFirstNode();  // Use getFirstNode()
+        while (actorNode != nullptr) {
+            if (knownActors.contains(actorNode->item.getName())) {
                 related = true;
                 break;
             }
-            currentNode = currentNode->next;
+            actorNode = actorNode->next;
         }
 
-        if (!related) continue;
+        if (!related) {
+            movieNode = movieNode->next;
+            continue;
+        }
 
-        currentNode = cast.firstNode;
-        while (currentNode != nullptr) {
-            const Actor& coActor = currentNode->item;
+        // Add new actors from the movie
+        actorNode = cast.getFirstNode();  // Use getFirstNode()
+        while (actorNode != nullptr) {
+            const Actor& coActor = actorNode->item;
             if (!knownActors.contains(coActor.getName())) {
                 knownActors.add(coActor.getName(), true);
                 cout << "- " << coActor.getName() << endl;
             }
-            currentNode = currentNode->next;
+            actorNode = actorNode->next;
         }
+
+        movieNode = movieNode->next;
     }
 }
+
 
 //Purpose: Report an error for an actor or movie.
 //Precondition: Actor or Movie must exist.
@@ -198,7 +210,7 @@ void User::reportError(Dictionary<int, Report> reportDict) {
     cout << "Enter description of report (include id of actor or movie): ";
     cin >> description;
     //generate report Id
-    reportId = reportDict.size + 1;
+    reportId = reportDict.getLength() + 1;
     Report Report(reportId, type, description);
     cout << "Report created successfully. Report details: " << endl;
     Report.print();
@@ -237,28 +249,23 @@ void User::addMovieRating(Dictionary<int, Movie>& movieDict, const string& movie
 //Precondition: movieDict not empty.
 //Postcondition: Displays movies by ranking in descending order.
 void User::getRecommendationsByRanking(Dictionary<int, Movie>& movieDict) {
-	DoublyLinkedList<Movie> movieList;
-	for (int i = 0; i < movieDict.getLength(); i++) {
-		Dictionary<int, Movie>::Node* current = movieDict.items[i];
-		while (current != nullptr) {
-			movieList.add(current->item);
-			current = current->next;
-		}
-	}
+    DoublyLinkedList<Movie*> movieList = movieDict.getAllItems();
 
-	// Step 2: Sort the DoublyLinkedList by ranking in descending order
-	DoublyLinkedList<Movie>::Node* outer = movieList.firstNode;
-	while (outer != nullptr) {
-		DoublyLinkedList<Movie>::Node* inner = outer->next;
-		while (inner != nullptr) {
-			if (outer->item.calculateRating() < inner->item.calculateRating()) {
-				swap(outer->item, inner->item);
-			}
-			inner = inner->next;
-		}
-		outer = outer->next;
-	}
+    // Step 2: Sort the DoublyLinkedList by ranking in descending order
+    int size = movieList.getLength();
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            Movie* movie1 = movieList.get(j);
+            Movie* movie2 = movieList.get(j + 1);
 
-	cout << "Recommended Movies by Ranking:" << endl;
-	movieList.print();
+            if (movie1->calculateRating() < movie2->calculateRating()) {
+                // Swap using public set method
+                movieList.set(j, movie2);
+                movieList.set(j + 1, movie1);
+            }
+        }
+    }
+
+    cout << "Recommended Movies by Ranking:" << endl;
+    movieList.print();
 }
