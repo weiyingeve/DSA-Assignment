@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "Printable.h"
 using namespace std;
 
 // Constructor
@@ -96,9 +97,9 @@ bool DoublyLinkedList<T>::remove(const T item) {
         current->next->prev = current->prev;
     }
 
-    delete current;
+    //delete current;
     size--;
-    cout << "Item removed from doubly linked list successfully." << endl;
+    //cout << "Item removed from doubly linked list successfully." << endl;
     return true;
 }
 
@@ -174,9 +175,15 @@ int DoublyLinkedList<T>::getLength() const {
 // Postcondition: The items in the list are printed to the console in order.
 template <typename T>
 void DoublyLinkedList<T>::print() const {
-    Node* current = firstNode;
-    while (current != nullptr) {
-        current->item.print();
-        current = current->next;
+    if constexpr (std::is_base_of_v<Printable, T>) {
+        Node* current = firstNode;
+        while (current != nullptr) {
+            T element = current->item;
+            element.print();
+            current = current->next;
+        }
+    }
+    else {
+        throw std::invalid_argument("T is not Type Printable");
     }
 }

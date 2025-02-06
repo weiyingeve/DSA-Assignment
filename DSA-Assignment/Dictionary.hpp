@@ -1,6 +1,7 @@
 #pragma once
 #include "Dictionary.h"
 #include "DoublyLinkedList.h"
+#include "Printable.h"
 #include <iostream>
 using namespace std;
 
@@ -140,11 +141,29 @@ int Dictionary<KeyType, ItemType>::getLength() const {
 // Postcondition: Prints all key-value pairs to the console.
 template <typename KeyType, typename ItemType>
 void Dictionary<KeyType, ItemType>::print() const {
+    if (std::is_same_v<ItemType, Printable>) {
+        for (int i = 0; i < MAX_SIZE; i++) {
+            Node* current = items[i];
+            while (current != nullptr) {
+                cout << "Key: " << current->key << "\tItem: " << current->item << endl;
+                current = current->next;
+            }
+        }
+    }
+    else {
+        throw std::invalid_argument("ItemType is not Type Printable");
+    }
+}
+
+template <typename KeyType, typename ItemType>
+void Dictionary<KeyType, ItemType>::getCapacity() {
+    int numElements = 0;
     for (int i = 0; i < MAX_SIZE; i++) {
         Node* current = items[i];
         while (current != nullptr) {
-            cout << "Key: " << current->key << "\tItem: " << current->item << endl;
+            numElements += 1;
             current = current->next;
         }
     }
+    cout << numElements << endl;
 }
