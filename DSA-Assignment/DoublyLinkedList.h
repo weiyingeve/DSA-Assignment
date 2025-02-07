@@ -5,6 +5,10 @@ using namespace std;
 
 template <typename T> class DoublyLinkedList {
 private:
+    int size;
+    Node* firstNode;
+    Node* lastNode;
+public:
     struct Node {
         T item;
         Node* next;
@@ -13,10 +17,7 @@ private:
         //default constructor
         Node() : item(), next(nullptr), prev(nullptr) {}
     };
-    int size;
-    Node* firstNode;
-    Node* lastNode;
-public:
+
     // Constructor
     DoublyLinkedList();
 

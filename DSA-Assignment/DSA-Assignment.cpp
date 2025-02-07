@@ -12,10 +12,6 @@
 #include "Admin.h"
 #include "Report.h"
 using namespace std;
-
-void displayMainMenu();
-void displayAdminMenu();
-void displayUserMenu();
 void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies);
 
 int main() {
