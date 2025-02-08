@@ -10,11 +10,7 @@ DoublyLinkedList<T>::DoublyLinkedList() : firstNode(nullptr), lastNode(nullptr),
 
 // Destructor
 template <typename T>
-DoublyLinkedList<T>::~DoublyLinkedList() {
-    while (!isEmpty()) {
-        remove(firstNode->item);
-    }
-}
+DoublyLinkedList<T>::~DoublyLinkedList() {}
 
 // Purpose: Add an item to the back of the list.
 // Precondition: The item must be a valid ItemType value.
@@ -98,9 +94,7 @@ bool DoublyLinkedList<T>::remove(const T item) {
         current->next->prev = current->prev;
     }
 
-    //delete current;
     size--;
-    //cout << "Item removed from doubly linked list successfully." << endl;
     return true;
 }
 
@@ -134,8 +128,13 @@ T& DoublyLinkedList<T>::get(int index) {
         current = current->next;
     }
 
+    if (current == nullptr) {
+        throw std::runtime_error("Attempted to dereference a null pointer.");
+    }
+
     return current->item;
 }
+
 
 // Purpose: Places an item in the list based on the index.
 // Precondition: None.

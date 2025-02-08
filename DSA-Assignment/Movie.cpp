@@ -16,10 +16,7 @@ Movie::Movie(int movieId, string title, string plot, int yearOfRelease)
 }
 
 //deconstructor
-Movie::~Movie() {
-	//cout << "Movie " << title << " is being destroyed" << endl;
-	actors.~DoublyLinkedList();
-}
+Movie::~Movie() {}
 
 //Purpose: Retrieve the movie's id.
 //Precondition : None.

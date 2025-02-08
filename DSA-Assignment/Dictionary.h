@@ -46,7 +46,7 @@ public:
     // Purpose: Retrieve the value associated with a key.
     // Precondition: The key must exist in the dictionary.
     // Postcondition: Returns the value associated with the key.
-    ItemType get(const KeyType& key) const;
+    ItemType& get(const KeyType& key);
 
     // Purpose: Retrieve all values in the dictionary.
     // Precondition: None.

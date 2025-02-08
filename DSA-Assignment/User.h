@@ -11,7 +11,6 @@ class User
 private:
 	string username;
 	int userId;
-
 public:
 	//Constructor
 	User(const string username, const int userId);
@@ -57,7 +56,7 @@ public:
 	//Purpose: Report an error for an actor or movie.
 	//Precondition: Actor or Movie must exist.
 	//Postcondition: Creates new report.
-	void reportError(Dictionary<int, Report> reportDict);
+	void reportError(Dictionary<int, Report>& reportDict);
 
 	//Purpose: Add a new rating for a specific actor.
 	//Precondition: Actor exists in the Dictionary.

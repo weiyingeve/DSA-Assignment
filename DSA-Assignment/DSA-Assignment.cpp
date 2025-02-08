@@ -1,6 +1,5 @@
 // DSA-Assignment.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -12,6 +11,9 @@
 #include "Admin.h"
 #include "Report.h"
 using namespace std;
+void displayMainMenu();
+void displayAdminMenu();
+void displayUserMenu();
 void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies);
 
 int main() {
@@ -22,13 +24,17 @@ int main() {
     loadDataFromCSV(actors, movies);
     Admin admin("Rena", 1);
     User user("Isabelle", 1);
-    while (true) {
+
+
+    bool mainMenuActive = true;
+    while (mainMenuActive) {
         int mainChoice;
         displayMainMenu();
         cin >> mainChoice;
 
         if (mainChoice == 0) {
             cout << "Exiting the program. Goodbye!" << endl;
+            mainMenuActive = false;
             break;
         }
 
@@ -36,13 +42,15 @@ int main() {
             string actorName, movieTitle, type, plot;
             int actorID, movieID, yearOfRelease, yob, adminChoice;
 
-            while (true) {
+            bool adminMenuActive = true;
+            while (adminMenuActive) {
                 displayAdminMenu();
                 cin >> adminChoice;
 
                 switch (adminChoice) {
                 case 0:
                     cout << "Returning to main menu..." << endl;
+                    adminMenuActive = false;
                     break;
                 case 1: // add new actor
                     cout << "Enter actor ID: ";
@@ -94,30 +102,28 @@ int main() {
                 default:
                     cout << "Invalid choice. Please try again." << endl;
                 }
-
             }
         }
 
         if (mainChoice == 2) { // User Menu
             int userChoice;
             string actorName, movieName, choice;
-
-            while (true) {
+            bool userMenuActive = true;
+            while (userMenuActive) {
                 displayUserMenu();
                 cin >> userChoice;
-
-                if (userChoice == 0) {
-                    cout << "Returning to main menu..." << endl;
-                    break;
-                }
-
+                
                 switch (userChoice) {
+                case 0:
+                    cout << "Returning to main menu..." << endl;
+                    userMenuActive = false;
+                    break;
                 case 1: // display actor by age
                     int min;
                     int max;
-                    cout << "Enter min age: " << endl;
+                    cout << "Enter min age: ";
                     cin >> min;
-                    cout << "Enter max age: " << endl;
+                    cout << "Enter max age: ";
                     cin >> max;
 
                     user.displayActorsByAgeRange(actors, min, max);
@@ -184,8 +190,6 @@ int main() {
                 }
             }
         }
-
-        return 0;
     }
 }
 

@@ -27,7 +27,7 @@ int Admin::getAdminId() const {
 //Purpose: Add a new actor to the dictionary
 //Precondition: Actor must not exist already
 //Postcondition: Adds actor to dictionary
-void Admin::addActor(const Actor actor, Dictionary<int, Actor> actors) {
+void Admin::addActor(const Actor actor, Dictionary<int, Actor>& actors) {
     if (actors.contains(actor.getActorId())) {
         cout << "Actor already exists!" << endl;
         return;
@@ -39,7 +39,7 @@ void Admin::addActor(const Actor actor, Dictionary<int, Actor> actors) {
 //Purpose: Add a new movie to the dictionary
 //Precondition: Movie must not exist already
 //Postcondition: Adds movie to dictionary
-void Admin::addMovie(const Movie movie, Dictionary<int, Movie> movies) {
+void Admin::addMovie(const Movie movie, Dictionary<int, Movie>& movies) {
     if (movies.contains(movie.getMovieId())) {
         cout << "Movie already exists!" << endl;
         return;
@@ -51,7 +51,7 @@ void Admin::addMovie(const Movie movie, Dictionary<int, Movie> movies) {
 //Purpose: Add/link actor to a movie
 //Precondition: Movie exists, Actor exists
 //Postcondition: Actor is added to an existing movie
-void Admin::addActorToMovie(const int& actorId, const int& movieId, Dictionary<int, Actor> actors, Dictionary<int, Movie> movies) {
+void Admin::addActorToMovie(const int& actorId, const int& movieId, Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies) {
     if (!actors.contains(actorId)) {
         cout << "Actor does not exist!" << endl;
         return;
@@ -70,7 +70,7 @@ void Admin::addActorToMovie(const int& actorId, const int& movieId, Dictionary<i
 //Purpose: Update movie details
 //Precondition: Movie exists 
 //Postcondition:Movie details are updated
-void Admin::updateDetails(const int& key,const Movie& newValue, Dictionary<int, Movie> movies) {
+void Admin::updateDetails(const int& key,const Movie& newValue, Dictionary<int, Movie>& movies) {
     if (movies.contains(key)) {
         movies.add(key, newValue);
         cout << "Movie details updated successfully." << endl;
@@ -83,7 +83,7 @@ void Admin::updateDetails(const int& key,const Movie& newValue, Dictionary<int, 
 //Purpose: Update actor details
 //Precondition: actor exists 
 //Postcondition: actor details are updated
-void Admin::updateDetails(const int& key, const Actor& newValue, Dictionary<int, Actor> actors) {
+void Admin::updateDetails(const int& key, const Actor& newValue, Dictionary<int, Actor>& actors) {
     if (actors.contains(key)) {
         actors.add(key, newValue);
         cout << "Actor details updated successfully." << endl;
@@ -96,7 +96,7 @@ void Admin::updateDetails(const int& key, const Actor& newValue, Dictionary<int,
 //Purpose: View list of reports made by users.
 //Precondition: none
 //Postcondition: Display all unresolved reports.
-void Admin::viewReports(Dictionary<int, Report> reportDict) {
+void Admin::viewReports(Dictionary<int, Report>& reportDict) {
     for (int key=0; key < reportDict.getLength(); key++) {
         if (reportDict.contains(key)) {
             reportDict.get(key).print();
@@ -107,7 +107,7 @@ void Admin::viewReports(Dictionary<int, Report> reportDict) {
 //Purpose: Resolves a report made by a user.
 //Precondition: Report exists.
 //Postcondition: Updates details based on the report, updates status of report.
-void Admin::resolveIssue(Dictionary<int, Report> reportDict, Dictionary<int, Actor> actorDict, Dictionary<int, Movie> movieDict) {
+void Admin::resolveIssue(Dictionary<int, Report>& reportDict, Dictionary<int, Actor>& actorDict, Dictionary<int, Movie>& movieDict) {
     viewReports(reportDict);
     int reportId;
     cout << "Enter reportId of report you would like to resolve: ";

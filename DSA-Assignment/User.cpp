@@ -26,32 +26,51 @@ int User::getUserId() const {
     return userId;
 }
 
-//Purpose: Display (in ascending order of age) the actors with age between x and y (entered by user)
-//Precondition: x and y entered must be a valid number (y>x)
-//Postcondition: Actors displayed must be in ascending order
+// Purpose: Display (in ascending order of age) the actors with age between x and y (entered by user)
+// Precondition: x and y entered must be a valid number (y > x)
+// Postcondition: Actors displayed must be in ascending order
 void User::displayActorsByAgeRange(Dictionary<int, Actor>& actorDict, int x, int y) {
+    // Validate age range
     if (x >= y) {
         cout << "Invalid age range: y must be greater than x." << endl;
+        return;
     }
 
-    Dictionary<int, Actor> tempDict;
+    // Temporary dictionary to store actors filtered by age
+    Dictionary<int, DoublyLinkedList<Actor*>> tempDict;
+
+    // Get all actors and filter them by age range
     DoublyLinkedList<Actor*> actorList = actorDict.getAllItems();
-    // Populate the temporary dictionary with actors in the specified age range
     for (int i = 0; i < actorList.getLength(); i++) {
-        Actor actor = actorDict.get(i);
-        int age = actor.calculateAge();
+        Actor* actor = actorList.get(i);
+        if (actor == nullptr) continue;
+
+        int age = actor->calculateAge();
         if (age >= x && age <= y) {
-            tempDict.add(age, actor); // Use age as the key for ordering
+            if (!tempDict.contains(age)) {
+                DoublyLinkedList<Actor*> ageList;
+                ageList.add(actor);
+                tempDict.add(age, ageList);
+            }
+            else {
+                tempDict.get(age).add(actor);
+            }
         }
     }
 
+    // Display actors in ascending order of age and name
     cout << "Actors between ages " << x << " and " << y << ":" << endl;
 
-    // Display actors in ascending order of age
-    for (int age = x; age <= y; ++age) {
+    for (int age = x; age <= y; age++) {
         if (tempDict.contains(age)) {
-            Actor actor = tempDict.get(age);
-            cout << "ID: " << actor.getActorId() << ", Name: " << actor.getName() << ", Age: " << age << endl;
+            DoublyLinkedList<Actor*>& ageActorList = tempDict.get(age);
+
+            for (int i = 0; i < ageActorList.getLength(); i++) {
+                Actor* actor = ageActorList.get(i);
+                cout << "ID: " << actor->getActorId()
+                    << ", Name: " << actor->getName()
+                    << ", Age: " << age << endl;
+            }
         }
     }
 }
@@ -202,7 +221,7 @@ void User::displayActorsKnown(Dictionary<int, Movie>& movieDict, const Actor& ac
 //Purpose: Report an error for an actor or movie.
 //Precondition: Actor or Movie must exist.
 //Postcondition: Creates new report.
-void User::reportError(Dictionary<int, Report> reportDict) {
+void User::reportError(Dictionary<int, Report>& reportDict) {
     string type, description;
     int reportId;
     cout << "Enter type of report: ";
