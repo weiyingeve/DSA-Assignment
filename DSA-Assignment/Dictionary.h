@@ -35,7 +35,7 @@ public:
 
     // Purpose: Add a key-value pair to the dictionary.
     // Precondition: Key must be unique.
-    // Postcondition: Adds the key-value pair, or updates the value if the key already exists.
+    // Postcondition: Adds the key-value pair to the dictionary.
     bool add(const KeyType& newKey, const ItemType& newItem);
 
     // Purpose: Remove a key-value pair from the dictionary.
@@ -52,6 +52,11 @@ public:
     // Precondition: None.
     // Postcondition: Returnsall values in the dictionary.
     DoublyLinkedList<ItemType*> getAllItems() const;
+
+    // Purpose: Retrieve all values in the dictionary and sorts it.
+    // Precondition: None.
+    // Postcondition: Returnsall values in the dictionary and sorts it.
+    DoublyLinkedList<ItemType*> getAllItemsSorted(bool (*compare)(ItemType*, ItemType*)) const;
 
     // Purpose: Check if a key exists in the dictionary.
     // Precondition: None.

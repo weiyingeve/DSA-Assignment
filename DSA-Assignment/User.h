@@ -41,12 +41,12 @@ public:
 	//Purpose: Display all movies an actor starred in
 	//Precondition: Actor must exist
 	//Postcondition: Movies displayed must be in alphabetical order
-	void displayMoviesByActor(Dictionary<int, Actor>& actorDict, const string& actorName);
+	void displayMoviesByActor(Dictionary<int, Actor>& actorDict, const int& actorId);
 	
 	//Purpose: Display actors in a movie
 	//Precondition: Movie must exist
 	//Postcondition: Actor displayed must be in alphebetical order
-	void displayActorsByMovie(Dictionary<int, Movie>& movieDict, const string& movieName);
+	void displayActorsByMovie(Dictionary<int, Movie>& movieDict, const int& movieId);
 
 	//Purpose: Display a list of all actors that a particular actor knows.
 	//Precondition: Actor must exist

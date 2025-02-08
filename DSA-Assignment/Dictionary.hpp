@@ -35,7 +35,7 @@ int Dictionary<KeyType, ItemType>::hash(const KeyType& key) const {
 
 // Purpose: Add a key-value pair to the dictionary.
 // Precondition: Key must be unique.
-// Postcondition: Adds the key-value pair, or updates the value if the key already exists.
+// Postcondition: Adds the key-value pair to the dictionary.
 template <typename KeyType, typename ItemType>
 bool Dictionary<KeyType, ItemType>::add(const KeyType& newKey, const ItemType& newItem) {
     int index = hash(newKey);  // Compute the hash index
@@ -83,6 +83,16 @@ DoublyLinkedList<ItemType*> Dictionary<KeyType, ItemType>::getAllItems() const {
             current = current->next;
         }
     }
+    return itemList;
+}
+
+// Purpose: Retrieve all values in the dictionary and sorts it.
+// Precondition: None.
+// Postcondition: Returnsall values in the dictionary and sorts it.
+template <typename KeyType, typename ItemType>
+DoublyLinkedList<ItemType*> Dictionary<KeyType, ItemType>::getAllItemsSorted(bool (*compare)(ItemType*, ItemType*)) const {
+    DoublyLinkedList<ItemType*> itemList = getAllItems();
+    itemList.sort(compare);
     return itemList;
 }
 

@@ -88,6 +88,6 @@ public:
 	void print() const override;
 
 	//for comparison reasons
-	bool operator<(const Movie& movie);
+	bool operator<(const Movie& movie) const;
 };
 

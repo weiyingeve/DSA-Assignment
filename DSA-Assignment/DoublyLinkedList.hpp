@@ -190,12 +190,11 @@ void DoublyLinkedList<T>::print() const {
 
 template <typename T>
 void DoublyLinkedList<T>::sort(bool (*compare)(T, T)) {
-    if (!firstNode || !firstNode->next) {
-        return; // Already sorted or empty
-    }
+    if (!firstNode || !firstNode->next) return; // Already sorted or empty
+
     firstNode = mergeSort(firstNode, compare);
 
-    // Update `lastNode` after sorting
+    // Update lastNode after sorting
     lastNode = firstNode;
     while (lastNode->next) {
         lastNode = lastNode->next;
@@ -250,4 +249,12 @@ typename DoublyLinkedList<T>::Node* DoublyLinkedList<T>::merge(Node* first, Node
         second->prev = nullptr;
         return second;
     }
+}
+
+//for comparison reasons
+template <typename T>
+bool DoublyLinkedList<T>::operator<(const DoublyLinkedList<T>& other) const {
+    if (!this->firstNode) return true;  // Empty list is "smaller"
+    if (!other.firstNode) return false; // Non-empty is "bigger"
+    return *(this->firstNode->item) < *(other.firstNode->item);  // Compare first elements
 }

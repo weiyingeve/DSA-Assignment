@@ -29,5 +29,8 @@ public:
 	//Precondition: None.
 	//Postcondition: Displays details of the report.
 	void print() const override;
+
+	//for comparison reasons
+	bool operator<(const Report& report) const;
 };
 

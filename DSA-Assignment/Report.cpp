@@ -35,3 +35,7 @@ void Report::print() const{
 	cout << "Description: " << description << endl;
 	cout << "Status: " << status << endl;
 }
+
+bool Report::operator<(const Report& report) const {
+	return report.reportId < reportId;
+}

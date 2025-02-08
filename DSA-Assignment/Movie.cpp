@@ -111,14 +111,14 @@ void Movie::getActors() {
 // Precondition: None.
 // Postcondition: The movie is displayed.
 void Movie::print() const{
-	cout << "ID: " << movieId << endl;
-	cout << "Title: " << title << endl;
-	cout << "Plot: " << plot << endl;
-	cout << "Year of Release: " << yearOfRelease << endl;
-	cout << "Rating: " << calculateRating() << "/5" << endl;
+	cout << "ID: " << movieId;
+	cout << "\tTitle: " << title;
+	cout << "\tPlot: " << plot;
+	cout << "\tYear of Release: " << yearOfRelease;
+	cout << "\tRating: " << calculateRating() << "/5" << endl;
 }
 
 //for comparison reasons
-bool Movie::operator<(const Movie& movie) {
+bool Movie::operator<(const Movie& movie) const{
 	return movie.title < title;
 }

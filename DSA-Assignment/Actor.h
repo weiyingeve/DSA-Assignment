@@ -16,7 +16,6 @@ private:
 	int actorId;
 	float totalRatings;
 	int noOfVoters;
-	static DoublyLinkedList<Movie*> movies;
 	static DoublyLinkedList<Movie> movies;
 
 public:
@@ -77,7 +76,7 @@ public:
 	//Purpose: Print list of movies the actor has starred in.
 	//Precondition : None.
 	//Postcondition : Prints movies actor has starred in in alphabetical order.
-	DoublyLinkedList<Movie*>& getMovies();
+	void getMovies();
 
 	// Purpose: Display details of the actor.
 	// Precondition: None.
@@ -85,5 +84,6 @@ public:
 	void print() const override;
 
 	//for comparison reasons
-	bool operator<(const Actor& actor);
+	bool operator<(const Actor& actor) const;\
+	static bool compareMovies(const Movie& a, const Movie& b);
 };

@@ -73,6 +73,9 @@ public:
 
     // sort by alphebetical order
     void sort(bool (*compare)(T, T));
+
+    //for comparison reasons
+    bool operator<(const DoublyLinkedList<T>& other) const;
 };
 
 #include "DoublyLinkedList.hpp";

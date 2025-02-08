@@ -106,8 +106,8 @@ int main() {
         }
 
         if (mainChoice == 2) { // User Menu
-            int userChoice;
-            string actorName, movieName, choice;
+            int userChoice, actorId, movieId;
+            string choice;
             bool userMenuActive = true;
             while (userMenuActive) {
                 displayUserMenu();
@@ -134,16 +134,16 @@ int main() {
                     break;
 
                 case 3: // display all movies an actor starred in
-                    cout << "Enter name of actor: " << endl;
-                    cin >> actorName;
-                    user.displayMoviesByActor(actors, actorName);
+                    cout << "Enter actor id: " << endl;
+                    cin >> actorId;
+                    user.displayMoviesByActor(actors, actorId);
                     break;
 
                 case 4: // display all actors in a movie
                     cout << "Enter movie title: " << endl;
-                    cin >> movieName;
+                    cin >> movieId;
 
-                    user.displayActorsByMovie(movies, movieName);
+                    user.displayActorsByMovie(movies, movieId);
                     break;
 
                 case 5: // display actors actor knows

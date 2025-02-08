@@ -6,7 +6,7 @@ using namespace std;
 #include "Movie.h"
 
 DoublyLinkedList<Movie> Actor::movies;
-DoublyLinkedList<Movie*>& movie;
+
 
 //default constructor
 Actor::Actor() {}
@@ -107,24 +107,38 @@ void Actor::addMovie(const Movie& movie) {
 	movies.add(movie);
 }
 
-//Purpose: Print list of movies the actor has starred in.
-//Precondition : None.
-//Postcondition : Prints movies actor has starred in in alphabetical order.
-DoublyLinkedList<Movie*>& Actor::getMovies() {
-	return movie; 
+// Purpose: Print list of movies the actor has starred in in alphabetical order.
+// Precondition: None.
+// Postcondition: Prints movies actor has starred in in alphabetical order.
+void Actor::getMovies() {
+	cout << "Movies starring " << name << ":" << endl;
+	if (movies.isEmpty()) {
+		cout << "No movies found." << endl;
+		return;
+	}
+
+	// Sort movies alphabetically by title
+	movies.sort(compareMovies());
+
+	// Print sorted movies
+	movies.print();
 }
 
 // Purpose: Display details of the actor.
 // Precondition: None.
 // Postcondition: The actor is displayed.
 void Actor::print() const{
-	cout << "ID: " << actorId << endl;
-	cout << "Name: " << name << endl;
-	cout << "Year of Birth: " << yearOfBirth << endl;
-	cout << "Rating: " << calculateRating() << "/5" << endl;
+	cout << "ID: " << actorId;
+	cout << "\tName: " << name;
+	cout << "\tYear of Birth: " << yearOfBirth;
+	cout << "\tRating: " << calculateRating() << "/5" << endl;
 }
 
 //for comparison reasons
-bool Actor::operator<(const Actor& actor) {
+bool Actor::operator<(const Actor& actor) const{
 	return actor.name < name;
+}
+
+static bool compareMovies(const Movie& a, const Movie& b) {
+	return a.getTitle() < b.getTitle();
 }

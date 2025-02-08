@@ -81,63 +81,71 @@ void User::displayActorsByAgeRange(Dictionary<int, Actor>& actorDict, int x, int
 //Postcondition: Movies displayed in ascending order of year
 void User::displayMoviesPast3Years(Dictionary<int, Movie>& movieDict) {
     int currentYear = 2025;
+    Dictionary<int, DoublyLinkedList<Movie*>> sortedMovies;
 
     cout << "Movies released in the past 3 years:" << endl;
 
+    // Get all movies and sort them by release year
     DoublyLinkedList<Movie*> movieList = movieDict.getAllItems();
 
     for (int i = 0; i < movieList.getLength(); i++) {
         Movie* movie = movieList.get(i);
+        if (movie == nullptr) continue;
+
         int releaseYear = movie->getYearOfRelease();
         if (currentYear - releaseYear <= 3) {
-            cout << "Title: " << movie->getTitle() << ", Year: " << releaseYear << endl;
+            if (!sortedMovies.contains(releaseYear)) {
+                sortedMovies.add(releaseYear, DoublyLinkedList<Movie*>());
+            }
+            sortedMovies.get(releaseYear).add(movie);
+        }
+    }
+
+    // Sort and display movies in ascending order of year
+    DoublyLinkedList<int> sortedYears;
+    for (int i = currentYear - 3; i <= currentYear; i++) {
+        if (sortedMovies.contains(i)) {
+            sortedYears.add(i);
+        }
+    }
+
+    for (int i = 0; i < sortedYears.getLength(); i++) {
+        int year = sortedYears.get(i);
+        DoublyLinkedList<Movie*>& movies = sortedMovies.get(year);
+
+        for (int j = 0; j < movies.getLength(); j++) {
+            Movie* movie = movies.get(j);
+            cout << "Title: " << movie->getTitle() << ", Year: " << year << endl;
         }
     }
 }
 
+
 //Purpose: Display all movies an actor starred in
 //Precondition: Actor must exist
 //Postcondition: Movies displayed must be in alphabetical order
-void User::displayMoviesByActor(Dictionary<int, Actor>& actorDict, const string& actorName) {
-    DoublyLinkedList<Actor*> actorList = actorDict.getAllItems();
-
-    for (int i = 0; i < actorList.getLength(); i++) {
-        Actor* actor = actorList.get(i);
-        string name = actor->getName();
-
-        // Convert both names to lowercase for case-insensitive comparison
-        transform(name.begin(), name.end(), name.begin(), ::tolower);
-        string searchName = actorName;
-        transform(searchName.begin(), searchName.end(), searchName.begin(), ::tolower);
-
-        if (name == searchName) {
-            cout << "Movies " << actor->getName() << " acted in: " << endl;
-
-            // Get the movies and sort alphabetically
-            DoublyLinkedList<Movie*> moviesList = actor->getMovies();
-            moviesList.sort([](Movie* a, Movie* b) { return a->getTitle() < b->getTitle(); });
-
-            for (int j = 0; j < moviesList.getLength(); j++) {
-                cout << "- " << moviesList.get(j)->getTitle() << endl;
-            }
-            return;
-        }
+void User::displayMoviesByActor(Dictionary<int, Actor>& actorDict, const int& actorId) {
+    if (actorDict.contains(actorId)) {
+        Actor actor = actorDict.get(actorId);
+        cout << "Movies " << actor.getName() << " acted in: " << endl;
+        actor.getMovies();
+        return;
     }
     cout << "Actor not found in the dictionary." << endl;
+
 }
 
 
 //Purpose: Display actors in a movie
 //Precondition: Movie must exist
 //Postcondition: Actor displayed must be in alphebetical order
-void User::displayActorsByMovie(Dictionary<int, Movie>& movieDict, const string& movieName) {
+void User::displayActorsByMovie(Dictionary<int, Movie>& movieDict, const int& movieId) {
     DoublyLinkedList<Movie*> movieList = movieDict.getAllItems();
-    for (int i = 0; i < movieList.getLength(); i++) {
-        if (movieDict.get(i).getTitle() == movieName) {
-            cout << "Actors in " << movieName << ": " << endl;
-            movieDict.get(i).getActors();
-            return;
-        }
+    if (movieDict.contains(movieId)) {
+        Movie movie = movieDict.get(movieId);
+        cout << "Actors in " << movie.getTitle() << ": " << endl;
+        movie.getActors();
+        return;
     }
     cout << "Movie not found in the dictionary." << endl;
 }
