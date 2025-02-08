@@ -258,3 +258,22 @@ bool DoublyLinkedList<T>::operator<(const DoublyLinkedList<T>& other) const {
     if (!other.firstNode) return false; // Non-empty is "bigger"
     return *(this->firstNode->item) < *(other.firstNode->item);  // Compare first elements
 }
+
+template <typename T>
+void DoublyLinkedList<T>::sortDescending(bool (*compare)(T, T)) {
+    if (!firstNode || !firstNode->next) return; // Already sorted or empty
+
+    firstNode = mergeSort(firstNode, compare);
+
+    // Update lastNode after sorting
+    lastNode = firstNode;
+    while (lastNode->next) {
+        lastNode = lastNode->next;
+    }
+}
+
+
+template <typename T>
+bool DoublyLinkedList<T>::compareDescending(T a, T b) {
+    return a > b; // Sorting in descending order
+}

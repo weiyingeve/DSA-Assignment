@@ -12,18 +12,15 @@ DoublyLinkedList<Movie> Actor::movies;
 Actor::Actor() {}
 
 //Constructor
-Actor::Actor(int actorId, string name, int yearOfBirth) 
-	: actorId(actorId), name(name), yearOfBirth(yearOfBirth) {
-	noOfVoters = 0;
-	totalRatings = 0;
+// Constructor
+Actor::Actor(int actorId, string name, int yearOfBirth)
+	: actorId(actorId), name(name), yearOfBirth(yearOfBirth), totalRatings(), noOfVoters() {
 }
+
 
 //Deconstructor
 Actor::~Actor() {
-	//cout << "Actor " << name << " is being destroyed" << endl;
 	movies.~DoublyLinkedList();
-	noOfVoters = 0;
-	totalRatings = 0;
 }
 
 //Purpose: Retrieve the actor's name.
@@ -78,26 +75,37 @@ int Actor::calculateAge() const {
 //Precondition: None
 //Postcondition: Returns the updated rating of the actor.
 float Actor::calculateRating() const {
-	float newRating = 0;
-	if (totalRatings != 0 && noOfVoters != 0) {
-		newRating = totalRatings / noOfVoters;
-	}
-	return newRating;
+	if (noOfVoters == 0) return 0.0f;
+	return static_cast<float>(totalRatings) / noOfVoters;
 }
 
 //Purpose: Updates rating based on user input.
 //Precondition : None.
 //Postcondition : Updates rating for the actor.
 void Actor::updateRating() {
-	cout << "Add rating: ";
 	float newRating;
-	cin >> newRating;
-	noOfVoters += 1;
+
+	do {
+		cout << "Enter a rating between 0 and 5: ";
+		cin >> newRating;
+
+		if (cin.fail() || newRating < 0.0f || newRating > 5.0f) {
+			cout << "Invalid rating. Please enter a value between 0 and 5." << endl;
+			cin.clear(); 
+			cin.ignore(1000, '\n');  
+		}
+		else {
+			break;
+		}
+	} while (true);
+
+	// Update rating values
+	noOfVoters++;
 	totalRatings += newRating;
+	float updatedRating = static_cast<float>(totalRatings) / noOfVoters;
 
-	float rating = calculateRating();
-
-	cout << "Rating for " << name << " has been updated to " << rating << "/5." << endl;
+	// Print updated rating
+	cout << "Rating for " << name << " has been updated to " << updatedRating << "/5." << endl;
 }
 
 //Purpose: Add a movie to the actor's list of movies.
@@ -118,7 +126,7 @@ void Actor::getMovies() {
 	}
 
 	// Sort movies alphabetically by title
-	movies.sort(compareMovies());
+	//movies.sort(compareMovies());
 
 	// Print sorted movies
 	movies.print();

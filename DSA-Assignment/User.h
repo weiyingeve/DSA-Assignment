@@ -61,16 +61,21 @@ public:
 	//Purpose: Add a new rating for a specific actor.
 	//Precondition: Actor exists in the Dictionary.
 	//Postcondition: Updates rating for the actor.
-	void addActorRating(Dictionary<int, Actor>& actorDict, const string& actorName);
+	void addActorRating(Dictionary<int, Actor>& actorDict, const int& actorName);
 
 	//Purpose: Add a new rating for a specific movie.
 	//Precondition: Movie exists in the Dictionary.
 	//Postcondition: Updates rating for the movie.
-	void addMovieRating(Dictionary<int, Movie>& movieDict, const string& movieName);
+	void addMovieRating(Dictionary<int, Movie>& movieDict, const int& movieId);
+
+    //Purpose: Get recommendations of a actor by ranking.
+    //Precondition: movieDict not empty.
+    //Postcondition: Displays movies by ranking in descending order.
+	void getActorRecommendationsByRanking(Dictionary<int, Actor>& actorDict);
 
     //Purpose: Get recommendations of a movie by ranking.
     //Precondition: movieDict not empty.
     //Postcondition: Displays movies by ranking in descending order.
-	void getRecommendationsByRanking(Dictionary<int, Movie>& movieDict);
+	void getMovieRecommendationsByRanking(Dictionary<int, Movie>& movieDict);
 };
 

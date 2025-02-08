@@ -140,7 +140,6 @@ void User::displayMoviesByActor(Dictionary<int, Actor>& actorDict, const int& ac
 //Precondition: Movie must exist
 //Postcondition: Actor displayed must be in alphebetical order
 void User::displayActorsByMovie(Dictionary<int, Movie>& movieDict, const int& movieId) {
-    DoublyLinkedList<Movie*> movieList = movieDict.getAllItems();
     if (movieDict.contains(movieId)) {
         Movie movie = movieDict.get(movieId);
         cout << "Actors in " << movie.getTitle() << ": " << endl;
@@ -265,13 +264,11 @@ void User::reportError(Dictionary<int, Report>& reportDict) {
 //Purpose: Add a new rating for a specific actor.
 //Precondition: Actor exists in the Dictionary.
 //Postcondition: Updates rating for the actor.
-void User::addActorRating(Dictionary<int, Actor>& actorDict, const string& actorName) {
-    for (int key = 0; key < actorDict.getLength(); key++) {
-        if (actorDict.get(key).getName() == actorName) {
-            Actor actor = actorDict.get(key);
-            actor.updateRating();
-            return;
-        }
+void User::addActorRating(Dictionary<int, Actor>& actorDict, const int& actorId) {
+    if (actorDict.contains(actorId)) {
+        Actor* actor = &actorDict.get(actorId);
+        actor->updateRating();
+        return;
     }
     cout << "Actor not found in the dictionary." << endl;
 }
@@ -279,38 +276,63 @@ void User::addActorRating(Dictionary<int, Actor>& actorDict, const string& actor
 //Purpose: Add a new rating for a specific movie.
 //Precondition: Movie exists in the Dictionary.
 //Postcondition: Updates rating for the movie.
-void User::addMovieRating(Dictionary<int, Movie>& movieDict, const string& movieName) {
-    for (int key = 0; key < movieDict.getLength(); key++) {
-        if (movieDict.get(key).getTitle() == movieName) {
-            Movie movie = movieDict.get(key);
-            movie.updateRating();
-            return;
-        }
+void User::addMovieRating(Dictionary<int, Movie>& movieDict, const int& movieId) {
+    if (movieDict.contains(movieId)) {
+        Movie* movie = &movieDict.get(movieId);
+        movie->updateRating();
+        return;
     }
     cout << "Movie not found in the dictionary." << endl;
 }
 
-//Purpose: Get recommendations of a movie by ranking.
-//Precondition: movieDict not empty.
-//Postcondition: Displays movies by ranking in descending order.
-void User::getRecommendationsByRanking(Dictionary<int, Movie>& movieDict) {
-    DoublyLinkedList<Movie*> movieList = movieDict.getAllItems();
+// Purpose: Get recommendations of an actor by ranking.
+// Precondition: actorDict is not empty.
+// Postcondition: Displays top 5 actors by ranking in descending order.
+void User::getActorRecommendationsByRanking(Dictionary<int, Actor>& actorDict) {
+    DoublyLinkedList<Actor*> actorList = actorDict.getAllItems();
 
-    // Step 2: Sort the DoublyLinkedList by ranking in descending order
-    int size = movieList.getLength();
-    for (int i = 0; i < size - 1; i++) {
-        for (int j = 0; j < size - i - 1; j++) {
-            Movie* movie1 = movieList.get(j);
-            Movie* movie2 = movieList.get(j + 1);
-
-            if (movie1->calculateRating() < movie2->calculateRating()) {
-                // Swap using public set method
-                movieList.set(j, movie2);
-                movieList.set(j + 1, movie1);
-            }
-        }
+    if (actorList.isEmpty()) {
+        cout << "No actors available for recommendations." << endl;
+        return;
     }
 
-    cout << "Recommended Movies by Ranking:" << endl;
-    movieList.print();
+    // Ensure sorting function does NOT modify data
+    actorList.sortDescending([](Actor* a, Actor* b) {
+        return a->calculateRating() > b->calculateRating();
+        });
+
+    // Display top 5 actors only
+    cout << "Top 5 Recommended Actors by Ranking:" << endl;
+    for (int i = 0; i < min(5, actorList.getLength()); i++) {
+        Actor* actor = actorList.get(i);
+        cout << actor->getName() << " - Rating: " << actor->calculateRating() << "/5" << endl;
+    }
 }
+
+
+// Purpose: Get recommendations of a movie by ranking.
+// Precondition: movieDict is not empty.
+// Postcondition: Displays top 5 movies by ranking in descending order.
+void User::getMovieRecommendationsByRanking(Dictionary<int, Movie>& movieDict) {
+    DoublyLinkedList<Movie*> movieList = movieDict.getAllItems();
+
+    if (movieList.isEmpty()) {
+        cout << "No movies available for recommendations." << endl;
+        return;
+    }
+
+    // Sort in descending order based on rating
+    movieList.sortDescending([](Movie* a, Movie* b) {
+        return a->calculateRating() > b->calculateRating();
+    });
+
+    // Display top 5 movies
+    cout << "Top 5 Recommended Movies by Ranking:" << endl;
+    int count = 0;
+    for (int i = 0; i < movieList.getLength() && count < 5; i++) {
+        Movie* movie = movieList.get(i);
+        cout << movie->getTitle() << " - Rating: " << movie->calculateRating() << "/5" << endl;
+        count++;
+    }
+}
+

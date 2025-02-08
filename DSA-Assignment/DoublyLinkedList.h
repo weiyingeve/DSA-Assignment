@@ -76,6 +76,9 @@ public:
 
     //for comparison reasons
     bool operator<(const DoublyLinkedList<T>& other) const;
+
+    void sortDescending(bool (*compare)(T, T));
+    static bool compareDescending(T a, T b);
 };
 
 #include "DoublyLinkedList.hpp";

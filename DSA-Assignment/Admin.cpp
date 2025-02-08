@@ -28,10 +28,6 @@ int Admin::getAdminId() const {
 //Precondition: Actor must not exist already
 //Postcondition: Adds actor to dictionary
 void Admin::addActor(const Actor actor, Dictionary<int, Actor>& actors) {
-    if (actors.contains(actor.getActorId())) {
-        cout << "Actor already exists!" << endl;
-        return;
-    }
     actors.add(actor.getActorId(), actor);
     cout << "Actor " << actor.getName() << " added successfully." << endl;
 }
@@ -40,10 +36,6 @@ void Admin::addActor(const Actor actor, Dictionary<int, Actor>& actors) {
 //Precondition: Movie must not exist already
 //Postcondition: Adds movie to dictionary
 void Admin::addMovie(const Movie movie, Dictionary<int, Movie>& movies) {
-    if (movies.contains(movie.getMovieId())) {
-        cout << "Movie already exists!" << endl;
-        return;
-    }
     movies.add(movie.getMovieId(), movie);
     cout << "Movie " << movie.getTitle() << " added successfully." << endl;
 }

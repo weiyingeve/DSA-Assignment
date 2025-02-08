@@ -71,26 +71,36 @@ int Movie::getNoOfVoters() const {
 //Precondition: None
 //Postcondition: Returns the updated rating of the actor.
 float Movie::calculateRating() const {
-    float newRating = 0;
-    if (totalRatings != 0 && noOfVoters != 0) {
-        newRating = totalRatings / noOfVoters;
-    }
-    return newRating;
+	if (noOfVoters == 0) return 0.0f;
+	return totalRatings / noOfVoters;
 }
 
 //Purpose: Updates rating based on user input.
 //Precondition : None.
 //Postcondition : Updates rating for the actor.
 void Movie::updateRating() {
-	cout << "Add rating: ";
 	float newRating;
-	cin >> newRating;
-	noOfVoters += 1;
+
+	do {
+		cout << "Enter a rating between 0 and 5: ";
+		cin >> newRating;
+
+		if (cin.fail() || newRating < 0.0f || newRating > 5.0f) {
+			cout << "Invalid rating. Please enter a value between 0 and 5." << endl;
+			cin.clear();
+			cin.ignore(1000, '\n');
+		}
+		else {
+			break;
+		}
+	} while (true);
+
+	// Update rating values
+	noOfVoters++;
 	totalRatings += newRating;
 
-	float rating = calculateRating();
-
-	cout << "Rating for " << title << " has been updated to " << rating << "/5." << endl;
+	// Print updated rating
+	cout << "Rating for " << title << " has been updated to " << calculateRating() << "/5." << endl;
 }
 
 //Purpose: Add an actor to the movie's list of actors.

@@ -55,6 +55,12 @@ int main() {
                 case 1: // add new actor
                     cout << "Enter actor ID: ";
                     cin >> actorID;
+
+                    if (actors.contains(actorID)) {
+                        cout << "Actor already exists!" << endl;
+                        break;
+                    }
+
                     cin.ignore(); // Clear buffer
                     cout << "Enter actor name: ";
                     getline(cin, actorName);
@@ -67,6 +73,12 @@ int main() {
                 case 2: // add new movie
                     cout << "Enter movie ID: ";
                     cin >> movieID;
+
+                    if (movies.contains(movieID)) {
+                        cout << "Movie already exists!" << endl;
+                        break;
+                    }
+
                     cin.ignore();
                     cout << "Enter movie title: ";
                     getline(cin, movieTitle);
@@ -84,8 +96,18 @@ int main() {
                 case 3: // add actor to movie
                     cout << "Enter actor ID: ";
                     cin >> actorID;
+                    if (!actors.contains(actorID)) {
+                        cout << "Error: Actor ID " << actorID << " not found!" << endl;
+                        break;
+                    }
+
                     cout << "Enter movie ID: ";
                     cin >> movieID;
+
+                    if (!movies.contains(movieID)) {
+                        cout << "Error: Movie ID " << movieID << " not found!" << endl;
+                        break;
+                    }
 
                     admin.addActorToMovie(actorID, movieID, actors, movies);
                     break;
@@ -140,7 +162,7 @@ int main() {
                     break;
 
                 case 4: // display all actors in a movie
-                    cout << "Enter movie title: " << endl;
+                    cout << "Enter movie id: " << endl;
                     cin >> movieId;
 
                     user.displayActorsByMovie(movies, movieId);
@@ -164,26 +186,29 @@ int main() {
                     cout << "Add rating to [actor/movie]? " << endl;
                     cin >> choice;
                     if (choice == "actor" || choice == "Actor") {
-                        string actorName;
-                        cout << "Enter name of actor: " << endl;
-                        cin >> actorName;
-                        user.addActorRating(actors, actorName);
+                        int actorId;
+                        cout << "Enter actorId: " << endl;
+                        cin >> actorId;
+                        user.addActorRating(actors, actorId);
                     }
                     else if (choice == "movie" || choice == "Movie") {
-                        string movieTitle;
-                        cout << "Enter movie title: " << endl;
-                        cin >> movieTitle;
-                        user.addMovieRating(movies, movieTitle);
+                        int movieId;
+                        cout << "Enter movie id: " << endl;
+                        cin >> movieId;
+                        user.addMovieRating(movies, movieId);
                     }
                     else {
                         cout << "Invalid input. Please enter [actor/movie]" << endl;
                     }
                     break;
 
-                case 8: // get reccommendation based on ratings
-                    user.getRecommendationsByRanking(movies);
+                case 8: // get reccommendation based on actor ratings
+                    user.getActorRecommendationsByRanking(actors);
                     break;
 
+                case 9: // get reccommendation based on movie ratings
+                    user.getMovieRecommendationsByRanking(movies);
+                    break;
                 default:
                     cout << "Invalid choice. Please try again." << endl;
                     }
@@ -221,7 +246,8 @@ void displayUserMenu() {
     cout << "[5] Display list of all actors that an actor knows\n";
 	cout << "[6] Report error\n";
     cout << "[7] Add rating to an actor or movie\n";
-    cout << "[8] Get recommendations based on ratings (actor/movie)\n";
+    cout << "[8] Get recommendations based on actor ratings\n";
+    cout << "[9] Get recommendations based on movie ratings\n";
     cout << "[0] Return to Main Menu\n";
     cout << "Choose an option: ";
 }
