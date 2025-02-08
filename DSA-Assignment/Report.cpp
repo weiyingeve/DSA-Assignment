@@ -2,6 +2,8 @@
 using namespace std;
 #include <iostream>
 
+DoublyLinkedList<Report> Report::reports;
+
 //default constructor
 Report::Report() {}
 
@@ -13,6 +15,27 @@ Report::Report(int reportId, string type, string description)
 
 //deconstructor
 Report::~Report() {}
+
+//Purpose: Retrieve the report type
+//Precondition : None.
+//Postcondition : Returns the report type
+string Report::getType() const {
+	return type;
+}
+
+//Purpose: Retrieve the report type
+//Precondition : None.
+//Postcondition : Returns the report type
+string Report::getDescription() const {
+	return description;
+}
+
+//Purpose: Retrieve the actor's year of birth.
+//Precondition : None.
+//Postcondition : Returns the year of birth of the actor.
+int Report::getReportId() const {
+	return reportId;
+}
 
 //Purpose: Update status of the report.
 //Precondition: Report status is currently 'U' (Unresolved)

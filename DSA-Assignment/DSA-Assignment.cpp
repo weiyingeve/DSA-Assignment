@@ -128,8 +128,8 @@ int main() {
         }
 
         if (mainChoice == 2) { // User Menu
-            int userChoice, actorId, movieId;
-            string choice;
+            int userChoice, actorId, movieId, reportId;
+            string choice, type, description;
             bool userMenuActive = true;
             while (userMenuActive) {
                 displayUserMenu();
@@ -179,7 +179,16 @@ int main() {
                         cout << "Actor not found" << endl;
                         break;
                 case 6: // report error
-                    user.reportError(reports);
+                    cin.ignore();
+
+                    cout << "Enter type of report: ";
+                    getline(cin, type);
+                    cout << "Enter description of report (include id of actor or movie): ";
+                    getline(cin, description);
+
+                    //generate report Id
+                    reportId = reports.getLength() + 1;
+                    user.reportError(Report(reportId, type, description), reports);
                     break;
 
                 case 7: // add rating to actor or movie

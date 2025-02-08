@@ -89,12 +89,22 @@ void Admin::updateDetails(const int& key, const Actor& newValue, Dictionary<int,
 //Precondition: none
 //Postcondition: Display all unresolved reports.
 void Admin::viewReports(Dictionary<int, Report>& reportDict) {
-    for (int key=0; key < reportDict.getLength(); key++) {
+    cout << "==== Reports ====" << endl;
+
+    bool hasReports = false;
+    for (int key = 0; key < reportDict.getLength(); key++) { 
         if (reportDict.contains(key)) {
-            reportDict.get(key).print();
+            Report report = reportDict.get(key);
+            report.print();
+            hasReports = true;
         }
     }
+
+    if (!hasReports) {
+        cout << "No Reports Found" << endl;
+    }
 }
+
 
 //Purpose: Resolves a report made by a user.
 //Precondition: Report exists.

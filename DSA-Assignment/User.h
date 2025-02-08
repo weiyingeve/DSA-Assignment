@@ -56,7 +56,7 @@ public:
 	//Purpose: Report an error for an actor or movie.
 	//Precondition: Actor or Movie must exist.
 	//Postcondition: Creates new report.
-	void reportError(Dictionary<int, Report>& reportDict);
+	void reportError(const Report reports, Dictionary<int, Report>& reportDict);
 
 	//Purpose: Add a new rating for a specific actor.
 	//Precondition: Actor exists in the Dictionary.
