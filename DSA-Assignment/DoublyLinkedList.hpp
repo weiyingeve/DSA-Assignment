@@ -187,3 +187,67 @@ void DoublyLinkedList<T>::print() const {
         throw std::invalid_argument("T is not Type Printable");
     }
 }
+
+template <typename T>
+void DoublyLinkedList<T>::sort(bool (*compare)(T, T)) {
+    if (!firstNode || !firstNode->next) {
+        return; // Already sorted or empty
+    }
+    firstNode = mergeSort(firstNode, compare);
+
+    // Update `lastNode` after sorting
+    lastNode = firstNode;
+    while (lastNode->next) {
+        lastNode = lastNode->next;
+    }
+}
+
+// Merge Sort Helper Function
+template <typename T>
+typename DoublyLinkedList<T>::Node* DoublyLinkedList<T>::mergeSort(Node* head, bool (*compare)(T, T)) {
+    if (!head || !head->next) {
+        return head;
+    }
+
+    Node* mid = split(head);
+    Node* left = mergeSort(head, compare);
+    Node* right = mergeSort(mid, compare);
+
+    return merge(left, right, compare);
+}
+
+// Function to split a doubly linked list into two halves
+template <typename T>
+typename DoublyLinkedList<T>::Node* DoublyLinkedList<T>::split(Node* head) {
+    Node* slow = head;
+    Node* fast = head;
+    while (fast->next && fast->next->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    Node* mid = slow->next;
+    slow->next = nullptr;
+    if (mid) mid->prev = nullptr;
+    return mid;
+}
+
+// Merge two sorted linked lists
+template <typename T>
+typename DoublyLinkedList<T>::Node* DoublyLinkedList<T>::merge(Node* first, Node* second, bool (*compare)(T, T)) {
+    if (!first) return second;
+    if (!second) return first;
+
+    if (compare(first->item, second->item)) {
+        first->next = merge(first->next, second, compare);
+        if (first->next) first->next->prev = first;
+        first->prev = nullptr;
+        return first;
+    }
+    else {
+        second->next = merge(first, second->next, compare);
+        if (second->next) second->next->prev = second;
+        second->prev = nullptr;
+        return second;
+    }
+}

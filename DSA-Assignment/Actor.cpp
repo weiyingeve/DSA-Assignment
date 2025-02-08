@@ -6,6 +6,7 @@ using namespace std;
 #include "Movie.h"
 
 DoublyLinkedList<Movie> Actor::movies;
+DoublyLinkedList<Movie*>& movie;
 
 //default constructor
 Actor::Actor() {}
@@ -109,14 +110,8 @@ void Actor::addMovie(const Movie& movie) {
 //Purpose: Print list of movies the actor has starred in.
 //Precondition : None.
 //Postcondition : Prints movies actor has starred in in alphabetical order.
-void Actor::getMovies(){
-	cout << "Movie starring " << name << ":" << endl;
-	if (movies.isEmpty()) {
-		cout << "No movies found. " << endl;
-	}
-	else {
-		movies.print();
-	}
+DoublyLinkedList<Movie*>& Actor::getMovies() {
+	return movie; 
 }
 
 // Purpose: Display details of the actor.

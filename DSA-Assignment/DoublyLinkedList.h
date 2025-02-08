@@ -18,6 +18,10 @@ public:
     Node* firstNode;
     Node* lastNode;
 
+    Node* mergeSort(Node* head, bool (*compare)(T, T));
+    Node* merge(Node* first, Node* second, bool (*compare)(T, T));
+    Node* split(Node* head);
+
     // Constructor
     DoublyLinkedList();
 
@@ -66,6 +70,9 @@ public:
     // Precondition: None.
     // Postcondition: The items in the list are printed to the console in order.
     void print() const;
+
+    // sort by alphebetical order
+    void sort(bool (*compare)(T, T));
 };
 
-#include "DoublyLinkedList.hpp"
+#include "DoublyLinkedList.hpp";

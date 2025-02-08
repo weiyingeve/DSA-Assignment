@@ -1,4 +1,5 @@
 #include "User.h"
+#include "Movie.h"
 #include <iostream>
 #include <algorithm>
 #include <ctime>
@@ -84,10 +85,12 @@ void User::displayMoviesPast3Years(Dictionary<int, Movie>& movieDict) {
     cout << "Movies released in the past 3 years:" << endl;
 
     DoublyLinkedList<Movie*> movieList = movieDict.getAllItems();
+
     for (int i = 0; i < movieList.getLength(); i++) {
-        int releaseYear = movieDict.get(i).getYearOfRelease();
+        Movie* movie = movieList.get(i);
+        int releaseYear = movie->getYearOfRelease();
         if (currentYear - releaseYear <= 3) {
-            cout << "Title: " << movieDict.get(i).getTitle() << ", Year: " << releaseYear << endl;
+            cout << "Title: " << movie->getTitle() << ", Year: " << releaseYear << endl;
         }
     }
 }
@@ -97,17 +100,32 @@ void User::displayMoviesPast3Years(Dictionary<int, Movie>& movieDict) {
 //Postcondition: Movies displayed must be in alphabetical order
 void User::displayMoviesByActor(Dictionary<int, Actor>& actorDict, const string& actorName) {
     DoublyLinkedList<Actor*> actorList = actorDict.getAllItems();
+
     for (int i = 0; i < actorList.getLength(); i++) {
-        if (actorDict.get(i).getName() == actorName) {
-            cout << "Movies " << actorName << " acted in: " << endl;
-            Actor actor = actorDict.get(i);
-            actor.getMovies();
+        Actor* actor = actorList.get(i);
+        string name = actor->getName();
+
+        // Convert both names to lowercase for case-insensitive comparison
+        transform(name.begin(), name.end(), name.begin(), ::tolower);
+        string searchName = actorName;
+        transform(searchName.begin(), searchName.end(), searchName.begin(), ::tolower);
+
+        if (name == searchName) {
+            cout << "Movies " << actor->getName() << " acted in: " << endl;
+
+            // Get the movies and sort alphabetically
+            DoublyLinkedList<Movie*> moviesList = actor->getMovies();
+            moviesList.sort([](Movie* a, Movie* b) { return a->getTitle() < b->getTitle(); });
+
+            for (int j = 0; j < moviesList.getLength(); j++) {
+                cout << "- " << moviesList.get(j)->getTitle() << endl;
+            }
             return;
         }
     }
     cout << "Actor not found in the dictionary." << endl;
-
 }
+
 
 //Purpose: Display actors in a movie
 //Precondition: Movie must exist
