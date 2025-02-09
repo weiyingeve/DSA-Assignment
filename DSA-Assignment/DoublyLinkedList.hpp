@@ -188,67 +188,74 @@ void DoublyLinkedList<T>::print() const {
     }
 }
 
+// merge two sorted linked lists
 template <typename T>
-void DoublyLinkedList<T>::sort(bool (*compare)(T, T)) {
-    if (!firstNode || !firstNode->next) return; // Already sorted or empty
+typename DoublyLinkedList<T>::Node* DoublyLinkedList<T>::merge(Node* left, Node* right, bool (*compare)(T, T)) {
+    if (!left) return right;
+    if (!right) return left;
 
-    firstNode = mergeSort(firstNode, compare);
-
-    // Update lastNode after sorting
-    lastNode = firstNode;
-    while (lastNode->next) {
-        lastNode = lastNode->next;
+    Node* head = nullptr;
+    if (compare(left->item, right->item)) {
+        head = left;
+        left = left->next;
     }
+    else {
+        head = right;
+        right = right->next;
+    }
+
+    Node* tail = head;
+    while (left && right) {
+        if (compare(left->item, right->item)) {
+            tail->next = left;
+            left = left->next;
+        }
+        else {
+            tail->next = right;
+            right = right->next;
+        }
+        tail = tail->next;
+    }
+
+    tail->next = left ? left : right;
+
+    return head;
 }
 
-// Merge Sort Helper Function
+// get the node in the middle of the list
+template <typename T>
+typename DoublyLinkedList<T>::Node* DoublyLinkedList<T>::getMiddle(Node* head) {
+    if (!head) return head;
+
+    Node* slow = head;
+    Node* fast = head->next;
+
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
+}
+
+// recursive merge sort 
 template <typename T>
 typename DoublyLinkedList<T>::Node* DoublyLinkedList<T>::mergeSort(Node* head, bool (*compare)(T, T)) {
-    if (!head || !head->next) {
-        return head;
-    }
+    if (!head || !head->next) return head;
 
-    Node* mid = split(head);
+    Node* middle = getMiddle(head);
+    Node* afterMiddle = middle->next;
+    middle->next = nullptr;
+
     Node* left = mergeSort(head, compare);
-    Node* right = mergeSort(mid, compare);
+    Node* right = mergeSort(afterMiddle, compare);
 
     return merge(left, right, compare);
 }
 
-// Function to split a doubly linked list into two halves
+// merge sort function
 template <typename T>
-typename DoublyLinkedList<T>::Node* DoublyLinkedList<T>::split(Node* head) {
-    Node* slow = head;
-    Node* fast = head;
-    while (fast->next && fast->next->next) {
-        slow = slow->next;
-        fast = fast->next->next;
-    }
-
-    Node* mid = slow->next;
-    slow->next = nullptr;
-    if (mid) mid->prev = nullptr;
-    return mid;
-}
-
-// Merge two sorted linked lists
-template <typename T>
-typename DoublyLinkedList<T>::Node* DoublyLinkedList<T>::merge(Node* first, Node* second, bool (*compare)(T, T)) {
-    if (!first) return second;
-    if (!second) return first;
-
-    if (compare(first->item, second->item)) {
-        first->next = merge(first->next, second, compare);
-        if (first->next) first->next->prev = first;
-        first->prev = nullptr;
-        return first;
-    }
-    else {
-        second->next = merge(first, second->next, compare);
-        if (second->next) second->next->prev = second;
-        second->prev = nullptr;
-        return second;
-    }
+void DoublyLinkedList<T>::mergeSort(bool (*compare)(T, T)) {
+    firstNode = mergeSort(firstNode, compare);
 }
 
 //for comparison reasons

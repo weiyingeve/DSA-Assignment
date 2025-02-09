@@ -51,7 +51,7 @@ public:
 	//Purpose: Display a list of all actors that a particular actor knows.
 	//Precondition: Actor must exist
 	//Postcondition: Displays connections between actors.
-	void displayActorsKnown(Dictionary<int, Movie>& movieDict, const Actor& actor);
+	void displayActorsKnown(const Actor& actor);
 
 	//Purpose: Report an error for an actor or movie.
 	//Precondition: Actor or Movie must exist.

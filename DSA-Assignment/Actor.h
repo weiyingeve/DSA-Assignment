@@ -16,7 +16,7 @@ private:
 	int actorId;
 	float totalRatings;
 	int noOfVoters;
-	static DoublyLinkedList<Movie> movies;
+	DoublyLinkedList<Movie> movies;
 
 public:
 	//default constructor
@@ -42,6 +42,11 @@ public:
 	//Precondition : None.
 	//Postcondition : Returns the id of the actor.
 	int getActorId() const;
+
+	//Purpose: Retrieve the actor's list of movies.
+	//Precondition : None.
+	//Postcondition : Returns the list of movies the actor acted in.
+	DoublyLinkedList<Movie> getMovieList() const;
 
 	//Purpose: Retrieve the actor's total ratings.
 	//Precondition : None.
@@ -84,6 +89,6 @@ public:
 	void print() const override;
 
 	//for comparison reasons
-	bool operator<(const Actor& actor) const;\
-	static bool compareMovies(const Movie& a, const Movie& b);
+	bool operator<(const Actor& actor) const;
+	bool operator==(const Actor& actor) const;
 };

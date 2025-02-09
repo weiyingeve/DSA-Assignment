@@ -5,8 +5,11 @@ using namespace std;
 #include <ctime>
 #include "Movie.h"
 
-DoublyLinkedList<Movie> Actor::movies;
 
+//helper methods for sorting
+bool compareMoviesByTitle(Movie a, Movie b) {
+	return b < a;
+}
 
 //default constructor
 Actor::Actor() {}
@@ -44,6 +47,13 @@ int Actor::getActorId() const {
 	return actorId;
 }
 
+//Purpose: Retrieve the actor's list of movies.
+//Precondition : None.
+//Postcondition : Returns the list of movies the actor acted in.
+DoublyLinkedList<Movie> Actor::getMovieList() const {
+	return movies;
+}
+
 //Purpose: Retrieve the actor's total ratings.
 //Precondition : None.
 //Postcondition : Returns the total ratings of the actor.
@@ -76,7 +86,8 @@ int Actor::calculateAge() const {
 //Postcondition: Returns the updated rating of the actor.
 float Actor::calculateRating() const {
 	if (noOfVoters == 0) return 0.0f;
-	return static_cast<float>(totalRatings) / noOfVoters;
+	float ratings = totalRatings / noOfVoters;
+	return ratings;
 }
 
 //Purpose: Updates rating based on user input.
@@ -102,7 +113,7 @@ void Actor::updateRating() {
 	// Update rating values
 	noOfVoters++;
 	totalRatings += newRating;
-	float updatedRating = static_cast<float>(totalRatings) / noOfVoters;
+	float updatedRating = calculateRating();
 
 	// Print updated rating
 	cout << "Rating for " << name << " has been updated to " << updatedRating << "/5." << endl;
@@ -125,9 +136,7 @@ void Actor::getMovies() {
 		return;
 	}
 
-	// Sort movies alphabetically by title
-	//movies.sort(compareMovies());
-
+	movies.mergeSort(compareMoviesByTitle);
 	// Print sorted movies
 	movies.print();
 }
@@ -146,7 +155,6 @@ void Actor::print() const{
 bool Actor::operator<(const Actor& actor) const{
 	return actor.name < name;
 }
-
-static bool compareMovies(const Movie& a, const Movie& b) {
-	return a.getTitle() < b.getTitle();
+bool Actor::operator==(const Actor& actor) const {
+	return actor.getActorId() == actorId;
 }

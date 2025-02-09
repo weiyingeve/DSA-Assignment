@@ -20,7 +20,7 @@ public:
 
     Node* mergeSort(Node* head, bool (*compare)(T, T));
     Node* merge(Node* first, Node* second, bool (*compare)(T, T));
-    Node* split(Node* head);
+    Node* getMiddle(Node* head);
 
     // Constructor
     DoublyLinkedList();
@@ -71,8 +71,8 @@ public:
     // Postcondition: The items in the list are printed to the console in order.
     void print() const;
 
-    // sort by alphebetical order
-    void sort(bool (*compare)(T, T));
+    //merge sort function
+    void mergeSort(bool (*compare)(T, T));
 
     //for comparison reasons
     bool operator<(const DoublyLinkedList<T>& other) const;

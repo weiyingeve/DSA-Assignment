@@ -1,4 +1,4 @@
-#include "Admin.h"
+﻿#include "Admin.h"
 #include <iostream>
 using namespace std;
 
@@ -92,7 +92,7 @@ void Admin::viewReports(Dictionary<int, Report>& reportDict) {
     cout << "==== Reports ====" << endl;
 
     bool hasReports = false;
-    for (int key = 0; key < reportDict.getLength(); key++) { 
+    for (int key = 0; key <= reportDict.getLength(); key++) { 
         if (reportDict.contains(key)) {
             Report report = reportDict.get(key);
             report.print();
@@ -105,92 +105,114 @@ void Admin::viewReports(Dictionary<int, Report>& reportDict) {
     }
 }
 
-
 //Purpose: Resolves a report made by a user.
 //Precondition: Report exists.
 //Postcondition: Updates details based on the report, updates status of report.
 void Admin::resolveIssue(Dictionary<int, Report>& reportDict, Dictionary<int, Actor>& actorDict, Dictionary<int, Movie>& movieDict) {
     viewReports(reportDict);
+
     int reportId;
     cout << "Enter reportId of report you would like to resolve: ";
     cin >> reportId;
-    //loop through reports to check if report exists.
-    for (int key = 0; key < reportDict.getLength(); key++) {
-        if (reportDict.contains(key)) {
-            if (reportDict.contains(reportId)) {
-				reportDict.get(reportId).print();
-                string type;
-                cout << "Update actor / movie: ";
-                cin >> type;
-                int keyOfValue;
-                if (type == "movie" || type == "Movie") {
-					cout << "Enter id of movie:";
-                    cin >> keyOfValue;
-                    for (int i = 0; i < movieDict.getLength(); i++) {
-                        if (movieDict.contains(i)) {
-                            if (movieDict.contains(keyOfValue)) {
-                                Movie toUpdate = movieDict.get(keyOfValue);
-                                toUpdate.print();
-                                string title, plot, year;
-                                cout << "Enter new title (leave blank if no changes needed): ";
-                                cin >> title;
-                                cout << "Enter new plot (leave blank if no changes needed): ";
-                                cin >> plot;
-                                cout << "Enter new year of release (leave blank if no changes needed): ";
-                                cin >> year;
-                                int newYear;
-                                if (title.empty()) {
-                                    title = toUpdate.getTitle();
-                                }
-								if (plot.empty()) {
-									plot = toUpdate.getPlot();
-								}
-                                if (year.empty()) {
-                                    newYear = toUpdate.getYearOfRelease();
-                                }
-                                Movie movie(keyOfValue, title, plot, newYear);
-                                updateDetails(keyOfValue, movie, movieDict);
-                                reportDict.get(reportId).updateStatus();
-                                break;
-                            }
-                        }
-                    }
-                }
-                else if (type == "actor" || type == "Actor") {
-                    cout << "Enter id of Actor: ";
-                    cin >> keyOfValue;
-                    for (int i = 0; i < actorDict.getLength(); i++) {
-                        if (actorDict.contains(i)) {
-                            if (actorDict.contains(keyOfValue)) {
-                                Actor toUpdate = actorDict.get(keyOfValue);
-                                toUpdate.print();
-                                string name, year;
-                                cout << "Enter new name (leave blank if no changes needed): ";
-                                cin >> name;
-                                cout << "Enter new year of birth (Leave blank if no changes needed): ";
-                                cin >> year;
-                                int yearOfBirth;
-                                if (name.empty()) {
-                                    name = toUpdate.getName();
-                                }
-                                if (year.empty()) {
-                                    yearOfBirth = toUpdate.getYearOfBirth();
-                                }
-                                Actor actor(keyOfValue, name, yearOfBirth);
-                                updateDetails(keyOfValue, actor, actorDict);
-								reportDict.get(reportId).updateStatus();
-                                break;
-                            }
-                        }
-                    }
-                }
-                else {
-                    cout << "Invalid type. Please try again." << endl;
-                    break;
-                }
+
+    // ✅ Directly check if report exists
+    if (!reportDict.contains(reportId)) {
+        cout << "Report does not exist. Please try again." << endl;
+        return;
+    }
+
+    reportDict.get(reportId).print();
+
+    string type;
+    cout << "Update actor / movie: ";
+    cin >> type;
+
+    int keyOfValue;
+    if (type == "movie" || type == "Movie") {
+        cout << "Enter id of movie: ";
+        cin >> keyOfValue;
+
+        // ✅ Directly check if movie exists
+        if (!movieDict.contains(keyOfValue)) {
+            cout << "Movie ID does not exist. Please try again." << endl;
+            return;
+        }
+
+        Movie toUpdate = movieDict.get(keyOfValue);
+        toUpdate.print();
+
+        string title, plot, year;
+        cin.ignore(); // ✅ Ignore leftover newline
+        cout << "Enter new title (leave blank if no changes needed): ";
+        getline(cin, title);
+        cout << "Enter new plot (leave blank if no changes needed): ";
+        getline(cin, plot);
+        cout << "Enter new year of release (leave blank if no changes needed): ";
+        getline(cin, year);
+
+        if (title.empty()) title = toUpdate.getTitle();
+        if (plot.empty()) plot = toUpdate.getPlot();
+
+        int newYear = toUpdate.getYearOfRelease();
+        if (!year.empty()) {
+            try {
+                newYear = stoi(year);
+            }
+            catch (const invalid_argument&) {
+                cout << "Invalid year entered. Keeping existing value." << endl;
             }
         }
+
+        Movie updatedMovie(keyOfValue, title, plot, newYear);
+        updateDetails(keyOfValue, updatedMovie, movieDict);
+        reportDict.get(reportId).updateStatus();
+
+        cout << "Movie details updated successfully." << endl;
+        return;
+
     }
-    cout << "Report does not exist. Please try again.";
-    return;
+    else if (type == "actor" || type == "Actor") {
+        cout << "Enter id of Actor: ";
+        cin >> keyOfValue;
+
+        // ✅ Directly check if actor exists
+        if (!actorDict.contains(keyOfValue)) {
+            cout << "Actor ID does not exist. Please try again." << endl;
+            return;
+        }
+
+        Actor toUpdate = actorDict.get(keyOfValue);
+        toUpdate.print();
+
+        string name, year;
+        cin.ignore(); // ✅ Ignore leftover newline
+        cout << "Enter new name (leave blank if no changes needed): ";
+        getline(cin, name);
+        cout << "Enter new year of birth (leave blank if no changes needed): ";
+        getline(cin, year);
+
+        if (name.empty()) name = toUpdate.getName();
+
+        int yearOfBirth = toUpdate.getYearOfBirth();
+        if (!year.empty()) {
+            try {
+                yearOfBirth = stoi(year);
+            }
+            catch (const invalid_argument&) {
+                cout << "Invalid year entered. Keeping existing value." << endl;
+            }
+        }
+
+        Actor updatedActor(keyOfValue, name, yearOfBirth);
+        updateDetails(keyOfValue, updatedActor, actorDict);
+        reportDict.get(reportId).updateStatus();
+
+        cout << "Actor details updated successfully." << endl;
+        return;
+
+    }
+    else {
+        cout << "Invalid type. Please try again." << endl;
+        return;
+    }
 }

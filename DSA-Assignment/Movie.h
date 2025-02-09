@@ -14,7 +14,7 @@ private:
 	int yearOfRelease;
 	float totalRatings;
 	int noOfVoters;
-	static DoublyLinkedList<Actor> actors;
+	DoublyLinkedList<Actor> actors;
 
 
 public:

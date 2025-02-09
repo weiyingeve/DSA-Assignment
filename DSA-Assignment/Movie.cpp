@@ -3,7 +3,10 @@ using namespace std;
 #include <iostream>
 # include "Actor.h"
 
-DoublyLinkedList<Actor> Movie::actors;
+//helper methods for sorting
+bool compareActorByName(Actor a, Actor b) {
+	return b < a;
+}
 
 //default constructor
 Movie::Movie() {}
@@ -72,7 +75,8 @@ int Movie::getNoOfVoters() const {
 //Postcondition: Returns the updated rating of the actor.
 float Movie::calculateRating() const {
 	if (noOfVoters == 0) return 0.0f;
-	return totalRatings / noOfVoters;
+	float ratings = totalRatings / noOfVoters;
+	return ratings;
 }
 
 //Purpose: Updates rating based on user input.
@@ -114,6 +118,14 @@ void Movie::addActor(const Actor& actor) {
 //Precondition: None.
 //Postcondition: Prints the actors.
 void Movie::getActors() {
+	cout << "Actors starring in " << title << ":" << endl;
+	if (actors.isEmpty()) {
+		cout << "No movies found." << endl;
+		return;
+	}
+
+	actors.mergeSort(compareActorByName);
+	// Print sorted movies
 	actors.print();
 }
 

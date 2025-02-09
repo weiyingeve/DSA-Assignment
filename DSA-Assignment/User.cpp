@@ -149,96 +149,42 @@ void User::displayActorsByMovie(Dictionary<int, Movie>& movieDict, const int& mo
     cout << "Movie not found in the dictionary." << endl;
 }
 
+bool compareStrings(string a, string b) {
+    return a < b;
+}
+
 /// Purpose: Display a list of all actors that a particular actor knows.
 /// Precondition: The actor must exist in the movies.
 /// Postcondition: Outputs the names of all actors known to the given actor. 
-void User::displayActorsKnown(Dictionary<int, Movie>& movieDict, const Actor& actor) {
-    Dictionary<string, bool> knownActors;
-    Dictionary<string, bool> visitedMovies;
+void User::displayActorsKnown(const Actor& actor) {
+    DoublyLinkedList<Movie> movies = actor.getMovieList();
+    DoublyLinkedList<string> knownActors;
 
-    cout << "Actors known by " << actor.getName() << ":" << endl;
-
-    // Step 1: Process all movies the given actor starred in
-    DoublyLinkedList<Movie*> movieList = movieDict.getAllItems();
-    auto movieNode = movieList.getFirstNode();  // Use getFirstNode()
-
-    while (movieNode != nullptr) {
-        Movie* movie = movieNode->item;
-
-        // Check if actor starred in the movie
-        DoublyLinkedList<Actor> cast = movie->getActorList();
-        bool actorInMovie = false;
-
-        typename DoublyLinkedList<Actor>::Node* actorNode = cast.getFirstNode();  // Use getFirstNode()
-        while (actorNode != nullptr) {
-            if (actorNode->item.getName() == actor.getName()) {
-                actorInMovie = true;
-                break;
+    for (int i = 0; i < movies.getLength(); i++) {
+        DoublyLinkedList<Actor> actors = movies.get(i).getActorList();
+        for (int x = 0; x < actors.getLength(); x++) {
+            if (actors.get(x).getActorId() != actor.getActorId()) {
+                bool alreadyExists = false;
+                for (int y = 0; y < knownActors.getLength(); y++) {
+                    if (knownActors.get(y) == actors.get(x).getName()) {
+                        alreadyExists = true;
+                        break;
+                    }
+                }
+                if (!alreadyExists) {
+                    knownActors.add(actors.get(x).getName());
+                }
             }
-            actorNode = actorNode->next;
         }
-
-        if (!actorInMovie) {
-            movieNode = movieNode->next;
-            continue;
-        }
-
-        // Mark movie as visited
-        visitedMovies.add(movie->getTitle(), true);
-
-        // Collect co-actors from the movie
-        actorNode = cast.getFirstNode();  // Use getFirstNode()
-        while (actorNode != nullptr) {
-            const Actor& coActor = actorNode->item;
-            if (coActor.getName() != actor.getName() && !knownActors.contains(coActor.getName())) {
-                knownActors.add(coActor.getName(), true);
-                cout << "- " << coActor.getName() << endl;
-            }
-            actorNode = actorNode->next;
-        }
-
-        movieNode = movieNode->next;
     }
-
-    // Step 2: Find second-degree connections
-    movieNode = movieList.getFirstNode();  // Use getFirstNode()
-    while (movieNode != nullptr) {
-        Movie* movie = movieNode->item;
-        if (visitedMovies.contains(movie->getTitle())) {
-            movieNode = movieNode->next;
-            continue;
-        }
-
-        // Check if any known actor is in this movie
-        DoublyLinkedList<Actor> cast = movie->getActorList();
-        bool related = false;
-
-        typename DoublyLinkedList<Actor>::Node* actorNode = cast.getFirstNode();  // Use getFirstNode()
-        while (actorNode != nullptr) {
-            if (knownActors.contains(actorNode->item.getName())) {
-                related = true;
-                break;
-            }
-            actorNode = actorNode->next;
-        }
-
-        if (!related) {
-            movieNode = movieNode->next;
-            continue;
-        }
-
-        // Add new actors from the movie
-        actorNode = cast.getFirstNode();  // Use getFirstNode()
-        while (actorNode != nullptr) {
-            const Actor& coActor = actorNode->item;
-            if (!knownActors.contains(coActor.getName())) {
-                knownActors.add(coActor.getName(), true);
-                cout << "- " << coActor.getName() << endl;
-            }
-            actorNode = actorNode->next;
-        }
-
-        movieNode = movieNode->next;
+    knownActors.mergeSort(compareStrings);
+    cout << "Actors known by " << actor.getName() << ":" << endl;
+    if (knownActors.getLength() == 0) {
+        cout << "No know connections for this actor!" << endl;
+        return;
+    }
+    for (int i = 0; i < knownActors.getLength(); i++) {
+        cout << knownActors.get(i) << endl;
     }
 }
 

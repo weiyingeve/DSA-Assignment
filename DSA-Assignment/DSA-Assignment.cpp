@@ -173,7 +173,7 @@ int main() {
                     cout << "Enter actor id: " << endl;
                     cin >> actorID;
                     if (actors.contains(actorID)) {
-                        user.displayActorsKnown(movies, actors.get(actorID));
+                        user.displayActorsKnown(actors.get(actorID));
                     }
                     else {
                         cout << "Actor not found" << endl;
@@ -361,10 +361,13 @@ static void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movi
 				try {
 					int aId = stoi(actorId);
 					int mId = stoi(movieId);
-					if (actors.contains(aId) && movies.contains(mId)) {
-						actors.get(aId).addMovie(movies.get(mId));
-						movies.get(mId).addActor(actors.get(aId));
-					}
+                    if (actors.contains(aId) && movies.contains(mId)) {
+                        Actor& actorRef = actors.get(aId);
+                        Movie& movieRef = movies.get(mId);
+
+                        actorRef.addMovie(movieRef);
+                        movieRef.addActor(actorRef);
+                    }
 				}
 				catch (const invalid_argument&) {
 					cerr << "Invalid cast entry: " << line << endl;
