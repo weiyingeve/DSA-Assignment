@@ -135,10 +135,10 @@ void Actor::getMovies() {
 		cout << "No movies found." << endl;
 		return;
 	}
-
-	movies.mergeSort(compareMoviesByTitle);
+	DoublyLinkedList<Movie> movieList = movies;
+	movieList.mergeSort(compareMoviesByTitle);
 	// Print sorted movies
-	movies.print();
+	movieList.print();
 }
 
 // Purpose: Display details of the actor.

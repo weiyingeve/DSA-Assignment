@@ -2,7 +2,6 @@
 using namespace std;
 #include <iostream>
 
-DoublyLinkedList<Report> Report::reports;
 
 //default constructor
 Report::Report() {}

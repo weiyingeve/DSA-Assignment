@@ -39,7 +39,7 @@ public:
     // Purpose: Remove an item at a specified position in the list.
     // Precondition: The index must be between 0 and the current size of the list - 1 (inclusive).
     // Postcondition: The item at the specified index is removed. The size of the list decreases by 1.
-    bool remove(const T item);
+    void remove(int index);
 
     // Purpose: Check if an item exists in the list.
     // Precondition: The list is non-empty (although it works for empty lists as well).

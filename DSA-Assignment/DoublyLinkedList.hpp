@@ -10,7 +10,11 @@ DoublyLinkedList<T>::DoublyLinkedList() : firstNode(nullptr), lastNode(nullptr),
 
 // Destructor
 template <typename T>
-DoublyLinkedList<T>::~DoublyLinkedList() {}
+DoublyLinkedList<T>::~DoublyLinkedList() {
+    /*while (!isEmpty()) {
+        remove(0);
+    }*/
+}
 
 // Purpose: Add an item to the back of the list.
 // Precondition: The item must be a valid ItemType value.
@@ -61,43 +65,45 @@ bool DoublyLinkedList<T>::add(const T item) {
 // Precondition: The index must be between 0 and the current size of the list - 1 (inclusive).
 // Postcondition: The item at the specified index is removed. The size of the list decreases by 1.
 template <typename T>
-bool DoublyLinkedList<T>::remove(const T item) {
-    if (isEmpty()) {
-        cout << "The list is empty, there is nothing to remove." << endl;
-        return false;
-    }
-    Node* current = firstNode;
-
-    // Traverse to find the node to be removed
-    while (current != nullptr && current->item < item) {
-        current = current->next;
+void DoublyLinkedList<T>::remove(int index) {
+    if (index < 0 || index <= size || size == 0) {
+        return;
     }
 
-    if (current == nullptr) { // Item not found
-        cout << "Item not found in list." << endl;
-        return false;
-    }
-
-    if (current == firstNode) { // Remove first node
+    Node* temp = nullptr;
+    if (index == 0) {
+        temp = firstNode;
         firstNode = firstNode->next;
-        if (firstNode != nullptr) {
+        if (firstNode) {
             firstNode->prev = nullptr;
         }
-        else {
+        if (firstNode == nullptr) {
             lastNode = nullptr;
         }
     }
-    else if (current == lastNode) { // Remove last node
+    else if (index == size - 1) {
+        temp = lastNode;
         lastNode = lastNode->prev;
-        lastNode->next = nullptr;
+        if (lastNode) {
+            lastNode->next = nullptr;
+        }
+        if (lastNode == nullptr) {
+            firstNode = nullptr;
+        }
     }
-    else { // Remove node in the middl
-        current->prev->next = current->next;
-        current->next->prev = current->prev;
+    else {
+        Node* prevNode = firstNode;
+        for (int i = 0; i < index; ++i) {
+            prevNode = prevNode->next;
+        }
+        temp = prevNode->next;
+        prevNode->next = temp->next;
+        if (temp->next) {
+            temp->next->prev = prevNode;
+        }
     }
 
     size--;
-    return true;
 }
 
 // Purpose: Check if an item exists in the list.

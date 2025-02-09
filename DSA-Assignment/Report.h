@@ -11,7 +11,7 @@ private:
 	string description;
 	int reportId;
 	char status;
-	static DoublyLinkedList<Report> reports;
+	DoublyLinkedList<Report> reports;
 public:
 	//default constructor
 	Report();
