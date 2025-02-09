@@ -1,3 +1,7 @@
+// Done by: Isabelle Tan_Group 4_S10257093F
+// Done by Isabelle_Advanced Features: getMovieRecommendationsByRating, getActorRecommendationsByRating (Done by Isabelle)
+// Done by Rena_Advanced Feature: addMovieRating(), addActorRating()
+
 #include "User.h"
 #include "Movie.h"
 #include <iostream>
