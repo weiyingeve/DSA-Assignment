@@ -11,9 +11,9 @@ DoublyLinkedList<T>::DoublyLinkedList() : firstNode(nullptr), lastNode(nullptr),
 // Destructor
 template <typename T>
 DoublyLinkedList<T>::~DoublyLinkedList() {
-    /*while (!isEmpty()) {
+    while (!isEmpty()) {
         remove(0);
-    }*/
+    }
 }
 
 // Purpose: Add an item to the back of the list.
@@ -66,18 +66,19 @@ bool DoublyLinkedList<T>::add(const T item) {
 // Postcondition: The item at the specified index is removed. The size of the list decreases by 1.
 template <typename T>
 void DoublyLinkedList<T>::remove(int index) {
-    if (index < 0 || index <= size || size == 0) {
+    if (index < 0 || index >= size || size == 0) { // Fixed boundary check
         return;
     }
 
     Node* temp = nullptr;
+
     if (index == 0) {
         temp = firstNode;
         firstNode = firstNode->next;
         if (firstNode) {
             firstNode->prev = nullptr;
         }
-        if (firstNode == nullptr) {
+        else {
             lastNode = nullptr;
         }
     }
@@ -87,13 +88,13 @@ void DoublyLinkedList<T>::remove(int index) {
         if (lastNode) {
             lastNode->next = nullptr;
         }
-        if (lastNode == nullptr) {
+        else {
             firstNode = nullptr;
         }
     }
     else {
         Node* prevNode = firstNode;
-        for (int i = 0; i < index; ++i) {
+        for (int i = 0; i < index - 1; ++i) {
             prevNode = prevNode->next;
         }
         temp = prevNode->next;
