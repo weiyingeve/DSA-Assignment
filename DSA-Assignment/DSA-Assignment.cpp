@@ -17,15 +17,17 @@ void displayUserMenu();
 void loadDataFromCSV(Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies);
 
 int main() {
+    // Create dictionaries to store actors, movies, and reports
     static Dictionary<int, Actor> actors;
     static Dictionary<int, Movie> movies;
     static Dictionary<int, Report> reports;
 
+    // Load data from CSV files into dictionaries
     loadDataFromCSV(actors, movies);
     Admin admin("Rena", 1);
     User user("Isabelle", 1);
 
-
+    // Create Admin and User objects
     bool mainMenuActive = true;
     while (mainMenuActive) {
         int mainChoice;

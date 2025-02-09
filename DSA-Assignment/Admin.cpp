@@ -28,7 +28,7 @@ int Admin::getAdminId() const {
 //Precondition: Actor must not exist already
 //Postcondition: Adds actor to dictionary
 void Admin::addActor(const Actor actor, Dictionary<int, Actor>& actors) {
-    actors.add(actor.getActorId(), actor);
+    actors.add(actor.getActorId(), actor); // Adds actor using actor ID as the key
     cout << "Actor " << actor.getName() << " added successfully." << endl;
 }
 
@@ -36,7 +36,7 @@ void Admin::addActor(const Actor actor, Dictionary<int, Actor>& actors) {
 //Precondition: Movie must not exist already
 //Postcondition: Adds movie to dictionary
 void Admin::addMovie(const Movie movie, Dictionary<int, Movie>& movies) {
-    movies.add(movie.getMovieId(), movie);
+    movies.add(movie.getMovieId(), movie);  // Adds movie using movie ID as the key
     cout << "Movie " << movie.getTitle() << " added successfully." << endl;
 }
 
@@ -44,7 +44,7 @@ void Admin::addMovie(const Movie movie, Dictionary<int, Movie>& movies) {
 //Precondition: Movie exists, Actor exists
 //Postcondition: Actor is added to an existing movie
 void Admin::addActorToMovie(const int& actorId, const int& movieId, Dictionary<int, Actor>& actors, Dictionary<int, Movie>& movies) {
-    if (!actors.contains(actorId)) {
+    if (!actors.contains(actorId)) { 
         cout << "Actor does not exist!" << endl;
         return;
     }
@@ -54,7 +54,7 @@ void Admin::addActorToMovie(const int& actorId, const int& movieId, Dictionary<i
     }
     Movie movie = movies.get(movieId);
     Actor actor = actors.get(actorId);
-    movie.addActor(actor); 
+    movie.addActor(actor); // Adds the actor to the movie's cast list
     movies.add(movieId, movie);
     cout << "Actor " << actor.getName() << " added to movie " << movie.getTitle() << " successfully." << endl;
 }
@@ -64,7 +64,7 @@ void Admin::addActorToMovie(const int& actorId, const int& movieId, Dictionary<i
 //Postcondition:Movie details are updated
 void Admin::updateDetails(const int& key,const Movie& newValue, Dictionary<int, Movie>& movies) {
     if (movies.contains(key)) {
-        movies.add(key, newValue);
+        movies.add(key, newValue); // Overwrites the existing movie with updated details
         cout << "Movie details updated successfully." << endl;
     }
     else {
@@ -77,7 +77,7 @@ void Admin::updateDetails(const int& key,const Movie& newValue, Dictionary<int, 
 //Postcondition: actor details are updated
 void Admin::updateDetails(const int& key, const Actor& newValue, Dictionary<int, Actor>& actors) {
     if (actors.contains(key)) {
-        actors.add(key, newValue);
+        actors.add(key, newValue); // Overwrites the existing actor with updated details
         cout << "Actor details updated successfully." << endl;
     }
     else {
@@ -95,7 +95,7 @@ void Admin::viewReports(Dictionary<int, Report>& reportDict) {
     for (int key = 0; key <= reportDict.getLength(); key++) { 
         if (reportDict.contains(key)) {
             Report report = reportDict.get(key);
-            report.print();
+            report.print(); // Prints details of the report
             hasReports = true;
         }
     }
@@ -109,19 +109,19 @@ void Admin::viewReports(Dictionary<int, Report>& reportDict) {
 //Precondition: Report exists.
 //Postcondition: Updates details based on the report, updates status of report.
 void Admin::resolveIssue(Dictionary<int, Report>& reportDict, Dictionary<int, Actor>& actorDict, Dictionary<int, Movie>& movieDict) {
-    viewReports(reportDict);
+    viewReports(reportDict); // Displays all unresolved reports
 
     int reportId;
     cout << "Enter reportId of report you would like to resolve: ";
     cin >> reportId;
 
-    // ✅ Directly check if report exists
-    if (!reportDict.contains(reportId)) {
+    // Directly check if report exists
+    if (!reportDict.contains(reportId)) { // Checks if the report exists
         cout << "Report does not exist. Please try again." << endl;
         return;
     }
 
-    reportDict.get(reportId).print();
+    reportDict.get(reportId).print(); // Displays the report details
 
     string type;
     cout << "Update actor / movie: ";
@@ -132,17 +132,17 @@ void Admin::resolveIssue(Dictionary<int, Report>& reportDict, Dictionary<int, Ac
         cout << "Enter id of movie: ";
         cin >> keyOfValue;
 
-        // ✅ Directly check if movie exists
-        if (!movieDict.contains(keyOfValue)) {
+        // Directly check if movie exists
+        if (!movieDict.contains(keyOfValue)) { // Ensures movie exists
             cout << "Movie ID does not exist. Please try again." << endl;
             return;
         }
 
         Movie toUpdate = movieDict.get(keyOfValue);
-        toUpdate.print();
+        toUpdate.print(); // Displays current movie details
 
         string title, plot, year;
-        cin.ignore(); // ✅ Ignore leftover newline
+        cin.ignore(); // Ignore leftover newline
         cout << "Enter new title (leave blank if no changes needed): ";
         getline(cin, title);
         cout << "Enter new plot (leave blank if no changes needed): ";
@@ -165,7 +165,7 @@ void Admin::resolveIssue(Dictionary<int, Report>& reportDict, Dictionary<int, Ac
 
         Movie updatedMovie(keyOfValue, title, plot, newYear);
         updateDetails(keyOfValue, updatedMovie, movieDict);
-        reportDict.get(reportId).updateStatus();
+        reportDict.get(reportId).updateStatus(); // Marks report as resolved
 
         cout << "Movie details updated successfully." << endl;
         return;
@@ -175,17 +175,17 @@ void Admin::resolveIssue(Dictionary<int, Report>& reportDict, Dictionary<int, Ac
         cout << "Enter id of Actor: ";
         cin >> keyOfValue;
 
-        // ✅ Directly check if actor exists
-        if (!actorDict.contains(keyOfValue)) {
+        // Directly check if actor exists
+        if (!actorDict.contains(keyOfValue)) {  // Ensures actor exists
             cout << "Actor ID does not exist. Please try again." << endl;
             return;
         }
 
         Actor toUpdate = actorDict.get(keyOfValue);
-        toUpdate.print();
+        toUpdate.print(); // Displays current actor details
 
         string name, year;
-        cin.ignore(); // ✅ Ignore leftover newline
+        cin.ignore(); // Ignore leftover newline
         cout << "Enter new name (leave blank if no changes needed): ";
         getline(cin, name);
         cout << "Enter new year of birth (leave blank if no changes needed): ";
@@ -198,14 +198,14 @@ void Admin::resolveIssue(Dictionary<int, Report>& reportDict, Dictionary<int, Ac
             try {
                 yearOfBirth = stoi(year);
             }
-            catch (const invalid_argument&) {
+            catch (const invalid_argument&) { // validation
                 cout << "Invalid year entered. Keeping existing value." << endl;
             }
         }
 
         Actor updatedActor(keyOfValue, name, yearOfBirth);
         updateDetails(keyOfValue, updatedActor, actorDict);
-        reportDict.get(reportId).updateStatus();
+        reportDict.get(reportId).updateStatus(); // Marks report as resolved
 
         cout << "Actor details updated successfully." << endl;
         return;

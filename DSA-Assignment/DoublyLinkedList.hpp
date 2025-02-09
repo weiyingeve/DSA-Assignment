@@ -30,21 +30,22 @@ bool DoublyLinkedList<T>::add(const T item) {
         Node* current = firstNode;
         Node* previous = nullptr;
 
+        // Traverse the list to find the correct insertion point
         while (current != nullptr && current->item < item) {
             previous = current;
             current = current->next;
         }
-        if (previous == nullptr) {
+        if (previous == nullptr) { // Insert at the beginning
             newNode->next = firstNode;
             firstNode->prev = newNode;
             firstNode = newNode;
         }
-        else if (current == nullptr) {
+        else if (current == nullptr) { // Insert at the end
             previous->next = newNode;
             newNode->prev = previous;
             lastNode = newNode;
         }
-        else {
+        else { // Insert in the middle
             previous->next = newNode;
             newNode->prev = previous;
             newNode->next = current;
@@ -67,16 +68,17 @@ bool DoublyLinkedList<T>::remove(const T item) {
     }
     Node* current = firstNode;
 
+    // Traverse to find the node to be removed
     while (current != nullptr && current->item < item) {
         current = current->next;
     }
 
-    if (current == nullptr) {
+    if (current == nullptr) { // Item not found
         cout << "Item not found in list." << endl;
         return false;
     }
 
-    if (current == firstNode) {
+    if (current == firstNode) { // Remove first node
         firstNode = firstNode->next;
         if (firstNode != nullptr) {
             firstNode->prev = nullptr;
@@ -85,11 +87,11 @@ bool DoublyLinkedList<T>::remove(const T item) {
             lastNode = nullptr;
         }
     }
-    else if (current == lastNode) {
+    else if (current == lastNode) { // Remove last node
         lastNode = lastNode->prev;
         lastNode->next = nullptr;
     }
-    else {
+    else { // Remove node in the middl
         current->prev->next = current->next;
         current->next->prev = current->prev;
     }
